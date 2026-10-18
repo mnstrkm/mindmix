@@ -2,6 +2,12 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.0.1 – 2026-10-18
+
+- Einen Timingfehler im Browsertest für das Beenden per Navigation behoben: Die Prüfung wartet auf die abgeschlossene Navigation und die gespeicherte Partie, statt den noch vorherigen Verlauf zu lesen. Zusätzlich werden Ergebnis, Beendigungsgrund und genau ein neuer Eintrag geprüft.
+- GitHub-Pages-Anleitung um die Diagnose einer leeren Seite bei versehentlicher Veröffentlichung des Repository-Quellcodes ergänzt. Die Pages-Quelle muss den vorhandenen GitHub-Actions-Workflow verwenden.
+- App-Version auf 1.0.1 erhöht. Spielregeln, Inhalte und Speicherformat bleiben vergleichbar; vorhandene Rekorde behalten ihre Gültigkeit.
+
 ## 1.0.0 – 2026-10-18
 
 Erste vollständige Version von MindMix:

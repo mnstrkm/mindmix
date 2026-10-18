@@ -4,7 +4,7 @@ MindMix ist eine Sammlung von acht kleinen Browser-Spielen auf Deutsch und Türk
 
 Die Ergebnisse beschreiben ausschließlich die jeweils gespielte Aufgabe. Es gibt keine Gesamtbewertung der Person, medizinischen Aussagen, Konten, Werbung oder Tracking. Einstellungen und Ergebnisse bleiben im verwendeten Browser.
 
-**Version:** 1.0.0 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
+**Version:** 1.0.1 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
 
 | Spiel | Ergebnis |
 | --- | --- |
@@ -50,6 +50,8 @@ Das Repository ist der Quellcode. `pnpm build` erzeugt daraus die statischen Dat
 4. Nach erfolgreichem Deployment ist die vorgesehene Adresse [https://mnstrkm.github.io/mindmix/](https://mnstrkm.github.io/mindmix/).
 
 Die Konfiguration bereitet die Veröffentlichung vor. Ein lokaler Commit allein lädt nichts zu GitHub hoch; ein erfolgreiches externes Deployment muss separat im Actions-Lauf bestätigt werden.
+
+**Falls die veröffentlichte Seite leer bleibt:** Unter **Pages → Source** muss tatsächlich **GitHub Actions** ausgewählt sein. **Deploy from a branch → main → /(root)** veröffentlicht bei diesem Projekt die ungebaute Quelldatei und ergibt keine funktionierende App. Der richtige Workflow heißt **Check and deploy MindMix**; erst wenn darin sowohl **check** als auch **deploy** erfolgreich sind, wurde der geprüfte Vite-Build veröffentlicht. Ein separater grüner Lauf namens **pages build and deployment** kann dagegen aus der falschen Branch-Konfiguration stammen.
 
 ### Basispfad und Routing
 

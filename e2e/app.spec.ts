@@ -51,9 +51,18 @@ test('digits concealment, correction, result, restart, persistence and navigatio
   const next = (await page.locator('.digit-sequence').innerText()).replace(/\s/g, '');
   await page.getByRole('button', { name: 'Gemerkte Folge ausblenden' }).click();
   await digitEntry(page, next);
+  await expect(page.locator('.live-score')).toHaveText('2');
   await page.getByRole('link', { name: 'Einstellungen', exact: true }).click();
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('mindmix:data')!));
-  expect(saved.history.at(-1).reason).toBe('stopped');
+  await expect(page.getByRole('heading', { name: 'Einstellungen', exact: true })).toBeVisible();
+  // Route cleanup writes the result in a React effect. Wait for that observable
+  // outcome instead of racing it with an immediate localStorage snapshot.
+  await expect.poll(async () => page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem('mindmix:data')!) as {
+      history: { game: string; reason: string; score: number }[];
+    };
+    const rounds = saved.history.filter(item => item.game === 'digits');
+    return { count: rounds.length, reason: rounds.at(-1)?.reason, score: rounds.at(-1)?.score };
+  })).toEqual({ count: 2, reason: 'stopped', score: 2 });
 });
 
 test('recognition evaluates previous appearance and ends on wrong answer', async ({ page }) => {

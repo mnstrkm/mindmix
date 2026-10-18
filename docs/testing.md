@@ -46,6 +46,16 @@ Zufallstests verwenden kontrollierte Quellen und prüfen garantierte Eigenschaft
 
 ## Prüfprotokoll dieser Version
 
+### Deployment-Korrektur 1.0.1
+
+Der erste tatsächliche [GitHub-Lauf von Version 1.0.0](https://github.com/mnstrkm/mindmix/actions/runs/39082850830) bestand Typprüfung, 75 Tests und Build, scheiterte aber an einem von 15 Browserfällen. Beim Navigationsfall wurde der bisherige Verlauf gelesen, bevor React die verlassene Partie gespeichert hatte. Die korrigierte Prüfung wartet auf die Einstellungsseite und prüft anschließend mit `expect.poll` genau zwei Zahlenpartien, den Beendigungsgrund `stopped` und den erreichten Score 2. Es wurden weder Prüfungen deaktiviert noch pauschale Testwiederholungen zum Verdecken eines Fehlers eingerichtet.
+
+Für **1.0.1** bestanden lokal am **18.10.2026** erneut `pnpm check` (Typprüfung, **75 Tests**, Produktionsbuild) und **fünf aufeinanderfolgende Durchläufe des betroffenen Browserfalls** mit Microsoft Edge. Die erneute Linux-/Chromium-Prüfung und Veröffentlichung sind im jeweiligen [GitHub-Actions-Lauf](https://github.com/mnstrkm/mindmix/actions/workflows/pages.yml) separat nachvollziehbar.
+
+Parallel wurde bei der Diagnose festgestellt, dass die öffentliche Seite mit der Pages-Quelle `Deploy from a branch`, `main`, `/(root)` den ungebauten Repository-Einstieg auslieferte. Für die funktionierende Website ist die Quelle `GitHub Actions` und das erfolgreiche Deployment des erzeugten `dist/`-Artefakts erforderlich.
+
+### Erstprüfung 1.0.0
+
 Prüfstand **18.10.2026**, App **1.0.0**, Windows, Node.js **24.19.0**, pnpm **11.25.0**:
 
 | Tatsächlich ausgeführte Prüfung | Ergebnis |
