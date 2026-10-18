@@ -1,12 +1,12 @@
-# Spielregeln – Version 1.3.1
+# Spielregeln – Version 1.4.0
 
-Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Das Wortspiel verwendet **Regelversion 3**. Räumliches Gedächtnis, Reaktion und nur der gemischte Rechenmodus verwenden weiterhin **2**. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt gespeichert; die Wortspiel-Ansicht zeigt nur die aktuellen Bestleistungen; technische Regelnummern erscheinen nicht mehr in der Spieloberfläche.
+Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Das Wortspiel verwendet **Regelversion 4**. Räumliches Gedächtnis, Reaktion und nur der gemischte Rechenmodus verwenden weiterhin **2**. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt gespeichert; alle Bestleistungsansichten zeigen nur die aktuellen Vergleichsgruppen ohne Archiv-Dropdowns. Technische Regelnummern erscheinen nicht in der Spieloberfläche.
 
 ## Gemeinsame Regeln
 
 Die Versionen 1.3.0 und 1.3.1 ändern Navigation, Audio und Darstellung; Spielregeln, Wertung und Vergleichsgruppen bleiben unverändert. „Noch einmal“ führt zur Vorbereitung desselben Spiels, „Zum Menü“ aus dem Ergebnis zur Spielauswahl. Der obere Menüpunkt „Spiele“ führt an den Anfang der Startseite. Eine neue Sitzung beginnt erst mit „Spiel starten“. Normale Bedienelemente erhalten einen leisen UI-Ton; gewertete Antworten verwenden ihren eigenen Rückmeldeton. Fehler haben Vorrang vor einem gleichzeitig erreichten Rekordton.
 
-- Eine richtige gewertete Antwort erhöht das jeweilige Ergebnis. Es gibt keine gemeinsame Gesamtpunktzahl über verschiedene Spiele.
+- Jedes Spiel besitzt eine eigene Wertung. Im Wortspiel erhöhen nur richtig erkannte neue Wörter den Punktestand; richtig erkannte Wiederholungen führen ohne Zusatzpunkt zum nächsten Wort. Es gibt keine gemeinsame Gesamtpunktzahl über verschiedene Spiele.
 - Außer der Reaktions-Challenge laufen Partien ohne feste Aufgabenanzahl und ohne Antwortzeitlimit weiter, bis eine falsche gewertete Antwort erfolgt oder freiwillig beendet wird. Das Wortspiel endet zusätzlich bei vollständig ausgeschöpftem Wortvorrat.
 - „Beenden“ und das Verlassen der Spielseite bewahren das erreichte Ergebnis. Die Reaktions-Challenge benötigt für den Durchschnitt alle fünf gültigen Messungen; der schnellste gültige Einzelversuch wird separat berücksichtigt.
 - Eine geöffnete Partie ohne gewertete Aktion erzeugt keinen Verlaufseintrag. Eine erste falsche Antwort zählt als Aktion und kann einen Verlaufseintrag mit Ergebnis 0 erzeugen; sie erzeugt keinen positiven Rekord.
@@ -22,7 +22,7 @@ Die ersten beiden Wörter sind neu und unterschiedlich. Anschließend wird zuers
 
 Wörter können mehrfach wiederkehren und bleiben während der gesamten Partie bekannt. Der Status wird vor dem Eintragen des aktuellen Wortes in die Gesehen-Menge bestimmt. Eine richtige Entscheidung zeigt das nächste Wort; die erste falsche Entscheidung beendet. Ein Eingabeschutz von **260 ms** verhindert unmittelbare Mehrfachwertung, ohne eine Antwortfrist einzuführen.
 
-**Ergebnis:** Anzahl richtiger Entscheidungen. Zusatzwerte: richtig erkannte neue Wörter und Wiederholungen. Bei einem Fehler wird die richtige Beurteilung angegeben. Sobald alle Wörter korrekt durchlaufen und keine neuen Wörter mehr vorhanden sind, endet die Partie mit einem transparenten Hinweis auf den abgeschlossenen Vorrat. Die Gesehen-Menge wird nicht zurückgesetzt.
+**Ergebnis:** Anzahl richtig als „Neu“ erkannter neuer Wörter. Jedes neue Wort kann genau einen Punkt geben. Richtig erkannte Wiederholungen geben keine Punkte, bleiben aber notwendige Antworten und erhalten denselben Bestätigungston. Zusatzwerte: richtig erkannte neue Wörter und Wiederholungen. Bei einem Fehler wird die richtige Beurteilung angegeben. Sobald alle Wörter korrekt durchlaufen und keine neuen Wörter mehr vorhanden sind, endet die Partie mit einem transparenten Hinweis auf den abgeschlossenen Vorrat. Die Gesehen-Menge wird nicht zurückgesetzt. Die früheren Regeln 1–3 vergaben auch für richtige Wiederholungen Punkte und sind deshalb nicht mit Regelversion 4 vergleichbar.
 
 **Vergleich:** getrennt nach Spielsprache, Regelversion und Inhaltsversion. Die gewählte Sprache und ihr Wortpool bleiben innerhalb einer Partie fest.
 
@@ -38,7 +38,7 @@ Die erste Aufgabe zeigt **zwei Ziffern** gleichzeitig. Die Merkzeit ist selbstbe
 
 Führende Nullen und wiederholte Ziffern sind gültig; Folgen bleiben Zeichenfolgen. Nach vollständiger richtiger Bestätigung wird eine **vollständig neue** Folge erzeugt, die eine Ziffer länger ist. Es wird nicht die vorherige Folge verlängert. Die erste falsch bestätigte Folge beendet.
 
-**Ergebnis:** Länge der längsten vollständig richtig wiedergegebenen Folge. Zusatzwert: Anzahl vollständig geschaffter Aufgaben. Ein freiwilliges Ende mitten in einer Eingabe erhöht die bisher erreichte Länge nicht.
+**Ergebnis:** Länge der längsten vollständig richtig wiedergegebenen Folge. Zusatzwert: Anzahl vollständig geschaffter Aufgaben. Ein freiwilliges Ende mitten in einer Eingabe erhöht die bisher erreichte Länge nicht. Nach einer falsch bestätigten Folge zeigt die Ergebnisansicht je Stelle die richtige Ziffer über der eingegebenen Ziffer; Fehler und fehlende Ziffern erhalten ein ×, richtige Stellen ein ✓. Führende Nullen bleiben sichtbar. Diese Übersicht bleibt nur für die aktuelle Ergebnisansicht erhalten und wird nicht gespeichert.
 
 Die Vorlage bleibt in der Abrufphase auch bei einer Erklärung oder Pause verborgen und aus dem Accessibility-Baum entfernt. Lange Folgen dürfen umbrechen; das Spiel setzt keine künstliche Aufgabenanzahl fest.
 
@@ -157,6 +157,6 @@ Die Zeitbasis ist `performance.now()`. Das Signal wird innerhalb eines `requestA
 
 Die fünfte Zeit bleibt wie alle vorherigen Zeiten sichtbar. Erst **„Ergebnis ansehen“** öffnet die Zusammenfassung. Es gibt keinen automatischen Sprung, der diesen Wert überspringt.
 
-**Ergebnis:** arithmetischer Durchschnitt der fünf gültigen Zeiten, auf Millisekunden gerundet. **Weniger ist besser.** Zwei unabhängige Rekorde werden geführt: bester Durchschnitt einer vollständigen Partie und schnellster gültiger Einzelversuch. Der schnellste Einzelversuch darf auch aus einer bewusst beendeten oder nach drei Fehlstarts abgebrochenen Partie stammen; ohne fünf gültige Versuche gibt es dagegen keinen Durchschnittsrekord. Die optionalen Probemessungen zählen für keinen Rekord. Die Ergebnisansicht zeigt den Durchschnitt einmal und darunter die Einzelzeiten mit grün und textlich markierter schnellster Zeit. Gültige Versuche und Fehlstarts ergänzen die Zusammenfassung. Die Einzelzeiten werden nur für diese Ansicht vorgehalten; Rekordwerte bleiben gespeichert. Frühere Werte aus Regelversion 1 bleiben ausdrücklich als Median im Archiv sichtbar.
+**Ergebnis:** arithmetischer Durchschnitt der fünf gültigen Zeiten, auf Millisekunden gerundet. **Weniger ist besser.** Zwei unabhängige Rekorde werden geführt: bester Durchschnitt einer vollständigen Partie und schnellster gültiger Einzelversuch. Der schnellste Einzelversuch darf auch aus einer bewusst beendeten oder nach drei Fehlstarts abgebrochenen Partie stammen; ohne fünf gültige Versuche gibt es dagegen keinen Durchschnittsrekord. Die optionalen Probemessungen zählen für keinen Rekord. Die Ergebnisansicht zeigt den Durchschnitt einmal und darunter die Einzelzeiten mit grün und textlich markierter schnellster Zeit. Gültige Versuche und Fehlstarts ergänzen die Zusammenfassung. Die Einzelzeiten werden nur für diese Ansicht vorgehalten; Rekordwerte bleiben gespeichert. Frühere Medianwerte aus Regelversion 1 bleiben intern getrennt gespeichert und erscheinen nicht in der aktuellen Bestleistungsansicht.
 
 Bei Pause, Erklärung oder Hintergrundwechsel wird ein wartender oder bereits signalisierter Versuch verworfen. Er zählt weder als Messung noch als Fehlstart. Nach Fortsetzung muss ein neuer Versuch gestartet werden. Die übrigen gültigen Messungen bleiben erhalten. Unterschiedliche Geräte und Eingabemethoden können die Werte beeinflussen; Altersnormen oder medizinische Deutungen werden nicht verwendet.

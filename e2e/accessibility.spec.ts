@@ -63,13 +63,14 @@ test('reaction records show average and fastest independently while preserving o
   await page.goto('#/game/reaction');
   await expect(page.locator('.best-summary')).toContainText('310 ms');
   await expect(page.locator('.secondary-record')).toContainText('180 ms');
+  await expect(page.getByRole('link', { name: /Frühere Bestleistungen/ })).toHaveCount(0);
   await page.getByRole('link', { name: 'Bestleistungen', exact: true }).click();
   const reaction = page.locator('.record-card').filter({ has: page.getByRole('heading', { name: 'Reaktions-Challenge', exact: true }) });
   await expect(reaction).toContainText('Bester Durchschnitt');
   await expect(reaction).toContainText('Schnellste Einzelzeit');
-  await reaction.locator('summary').click();
-  await expect(reaction).toContainText('Median, frühere Wertung');
-  await expect(reaction).toContainText('190 ms');
+  await expect(reaction.locator('summary')).toHaveCount(0);
+  await expect(reaction).not.toContainText('190 ms');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('mindmix:data')!).records.find((item: { id: string }) => item.id === 'old-median').score)).toBe(190);
 });
 
 test('storage denial remains playable and displays a clear warning', async ({ page }) => {

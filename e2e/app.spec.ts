@@ -70,16 +70,20 @@ test('digits concealment, correction, result, restart, persistence and navigatio
 test('recognition evaluates previous appearance and ends on wrong answer', async ({ page }) => {
   await start(page, 'recognition');
   const seen = new Set<string>();
-  for (let score = 1; score <= 6; score++) {
+  let newWords = 0;
+  let repeats = 0;
+  for (let action = 0; action < 6; action++) {
     const word = await page.locator('.stimulus').innerText();
+    if (seen.has(word)) repeats++; else newWords++;
     await page.getByRole('button', { name: seen.has(word) ? 'Schon gesehen' : 'Neu', exact: true }).click();
     seen.add(word);
-    await expect(page.locator('.live-score')).toHaveText(String(score));
+    await expect(page.locator('.live-score')).toHaveText(String(newWords));
     await expect(page.getByRole('button', { name: 'Neu', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
   }
+  expect(repeats).toBeGreaterThan(0);
   const word = await page.locator('.stimulus').innerText();
   await page.getByRole('button', { name: seen.has(word) ? 'Neu' : 'Schon gesehen', exact: true }).click();
-  await expect(page.locator('.result-score')).toContainText('6');
+  await expect(page.locator('.result-score')).toContainText(String(newWords));
   await expect(page.locator('.result-stats')).toContainText('Richtige Antwort');
 });
 

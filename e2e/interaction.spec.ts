@@ -93,7 +93,8 @@ test('menu targets the catalog and a fitting desktop game does not scroll unnece
     await expect(page.locator('#game-list')).toBeFocused();
     await expect.poll(() => page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top)).toBeLessThanOrEqual(64);
     await expect(page.locator('.game-card').first()).toBeInViewport();
-    expect(await page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top)).toBeGreaterThanOrEqual(24);
+    // Browser scrolling rounds to physical pixels, while the margin can be fractional.
+    expect(await page.locator('#game-selection').evaluate(element => Math.abs(element.getBoundingClientRect().top - parseFloat(getComputedStyle(element).scrollMarginTop)))).toBeLessThanOrEqual(1);
   }
 });
 

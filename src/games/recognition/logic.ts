@@ -55,7 +55,7 @@ export function answerRecognition(
   const correct = (answer === 'repeat') === state.prompt.seenBefore;
   if (!correct) return { ...state, actions: state.actions + 1, ended: 'mistake' };
   const next = {
-    ...state, score: state.score + 1, actions: state.actions + 1,
+    ...state, score: state.score + Number(!state.prompt.seenBefore), actions: state.actions + 1,
     newCorrect: state.newCorrect + Number(!state.prompt.seenBefore),
     repeatCorrect: state.repeatCorrect + Number(state.prompt.seenBefore),
   };

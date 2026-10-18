@@ -30,7 +30,7 @@ App-, Regel-, Inhalts- und Schemaversionen bleiben getrennt. Eine kosmetische Ap
 
 ## Kein allgemeines Antwortzeitlimit
 
-Die Aufgaben belohnen richtige Antworten beziehungsweise vollständig erinnerte Folgen. Ein Zeitbonus würde ruhiges Spielen benachteiligen. Nur die Reaktions-Challenge misst Zeit. Seit 1.1.0 verwendet sie auf Nutzerwunsch den verständlichen Durchschnitt aus fünf gültigen Versuchen; der schnellste Einzelversuch ist ein eigenständiger Rekord. Frühere Medianwerte bleiben getrennt beschriftet. Geräte- und Eingabelatenz bleiben enthalten.
+Die Aufgaben belohnen richtige Antworten beziehungsweise vollständig erinnerte Folgen. Seit 1.4.0 zählt das Wortspiel nur richtig erkannte neue Wörter; Wiederholungen müssen weiterhin richtig beantwortet werden, geben aber keine Zusatzpunkte. Ein Zeitbonus würde ruhiges Spielen benachteiligen. Nur die Reaktions-Challenge misst Zeit. Seit 1.1.0 verwendet sie auf Nutzerwunsch den verständlichen Durchschnitt aus fünf gültigen Versuchen; der schnellste Einzelversuch ist ein eigenständiger Rekord. Frühere Medianwerte bleiben intern getrennt gespeichert; die Oberfläche zeigt nur aktuelle Vergleichsgruppen. Geräte- und Eingabelatenz bleiben enthalten.
 
 ## Fortschritt mit bedienbarem Plateau
 

@@ -25,7 +25,11 @@ describe('recognition rules', () => {
     expect(state.prompt).toEqual({ word: 'Apfel', seenBefore: true });
     state = answerRecognition(state, 'repeat', pool, () => 0);
     expect(state.prompt).toEqual({ word: 'Birne', seenBefore: true });
-    expect(state).toMatchObject({ score: 3, newCorrect: 2, repeatCorrect: 1, actions: 3, ended: false });
+    expect(state).toMatchObject({ score: 2, newCorrect: 2, repeatCorrect: 1, actions: 3, ended: false });
+    for (let i = 0; i < 20; i++) state = answerRecognition(state, 'repeat', pool, () => 0);
+    expect(state).toMatchObject({ score: 2, newCorrect: 2, repeatCorrect: 21, actions: 23, ended: false });
+    const wrong = answerRecognition(state, 'new', pool, () => 0);
+    expect(wrong).toMatchObject({ score: 2, actions: 24, ended: 'mistake' });
   });
 
   it.each([0, 0.03, 0.1, 0.44, 0.45, 0.9, 0.999])('never repeats consecutive words with random=%s, for new or seen prompts', (value) => {

@@ -122,7 +122,6 @@ function GameHost({ id }: { id?: string }) {
         {game.id === 'arithmetic' && <fieldset className="mode-picker"><legend>{t('mode')}</legend><div className="segmented">{['basic', 'mixed'].map(mode => <button key={mode} aria-pressed={variant === mode} onClick={() => setVariant(mode)}>{t(`arithmetic:variants.${mode}`)}</button>)}</div></fieldset>}
         <div className="best-summary"><span>{t(`${game.id}:recordLabel`, { defaultValue: t('personalBest') })}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
         {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="secondary-record" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${number(best.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
-        {game.id !== 'recognition' && data.records.some(item => item.game === game.id && item.variant === variant && item.ruleVersion !== meta.ruleVersion) && <Link className="text-link" to="/records">{t('previousRules')} →</Link>}
         <button className="button primary start-button" onClick={start}>{t('start')}<span aria-hidden="true">→</span></button>
         {game.id === 'recognition' && <p className="hint">{t('recognitionLanguage')}</p>}
       </section>

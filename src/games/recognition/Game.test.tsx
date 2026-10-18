@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { RECOGNITION_CONFIG } from './config';
 import Game from './Game';
+import { audio } from '../../services/audio/audio';
 
 vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
 vi.mock('../../services/audio/audio', () => ({ audio: { play: vi.fn() } }));
@@ -11,7 +12,7 @@ describe('recognition interaction', () => {
   beforeEach(() => { vi.useFakeTimers(); vi.spyOn(Math, 'random').mockReturnValue(0); });
   afterEach(() => { vi.useRealTimers(); });
 
-  it('scores new and repeat choices, rejects duplicate clicks, and finalizes an error once', () => {
+  it('scores only new words, acknowledges correct repeats, rejects duplicate clicks, and finalizes an error once', () => {
     const onProgress = vi.fn();
     const onFinish = vi.fn();
     render(<Game paused={false} language="de" variant="default" onProgress={onProgress} onFinish={onFinish} />);
@@ -28,13 +29,15 @@ describe('recognition interaction', () => {
     act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
     expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Apfel');
     fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
-    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 3, stats: { 'stats.newWords': 2, 'stats.repeats': 1 } }));
+    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 2, actions: 3, stats: { 'stats.newWords': 2, 'stats.repeats': 1 } }));
+    expect(audio.play).toHaveBeenCalledTimes(3);
+    expect(audio.play).toHaveBeenLastCalledWith('correct');
     act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
     expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Birne');
     fireEvent.click(newButton);
     fireEvent.click(newButton);
     expect(onFinish).toHaveBeenCalledTimes(1);
-    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 3, actions: 4, reason: 'mistake' }));
+    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 2, actions: 4, reason: 'mistake' }));
   });
 
   it('cancels input timers on pause and freezes the original word pool', () => {

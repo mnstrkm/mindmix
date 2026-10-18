@@ -7,6 +7,7 @@ import { START_LENGTH } from './config';
 import { completedScore, createSequence, matchesSequence } from './logic';
 import './digits.css';
 import { focusAndReveal } from '../../shared/ui/viewport';
+import ResultReview from './ResultReview';
 
 interface State {
   phase: 'memorize' | 'recall' | 'ended';
@@ -46,7 +47,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     if (paused || previous.phase !== 'recall') return;
     if (!matchesSequence(previous.sequence, previous.answer)) {
       update({ ...previous, phase: 'ended' });
-      onFinish({ ...progress(previous), actions: previous.solved + 1, reason: 'mistake' });
+      onFinish({ ...progress(previous), actions: previous.solved + 1, reason: 'mistake', review: <ResultReview sequence={previous.sequence} answer={previous.answer} /> });
       return;
     }
     const next: State = {

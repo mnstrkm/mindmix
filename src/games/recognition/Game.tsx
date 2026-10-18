@@ -48,7 +48,7 @@ export default function RecognitionGame({ language, paused, onProgress, onFinish
     const next = answerRecognition(current.current, choice, pool);
     current.current = next;
     setState(next);
-    if (next.score > state.score) audio.play('correct');
+    if (next.ended !== 'mistake') audio.play('correct');
     unlockTimer.current = setTimeout(() => { lockedRef.current = false; setLocked(false); }, RECOGNITION_CONFIG.inputGuardMs);
   }
 

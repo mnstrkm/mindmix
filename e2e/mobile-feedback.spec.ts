@@ -5,6 +5,29 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => { Math.random = () => 0.1; });
 });
 
+test('digit results compare leading zeroes, wrong and missing digits at 320px with large text in both languages', async ({ page }) => {
+  for (const turkish of [false, true]) {
+    await page.goto('#/settings');
+    if (turkish) await page.getByRole('button', { name: 'Türkçe', exact: true }).tap();
+    await page.getByRole('button', { name: turkish ? 'Çok büyük' : 'Sehr groß', exact: true }).tap();
+    await page.goto('#/game/digits');
+    await page.evaluate(() => { Math.random = () => 0; });
+    await page.getByRole('button', { name: turkish ? 'Oyuna başla' : 'Spiel starten', exact: true }).tap();
+    await expect(page.locator('.digit-sequence')).toHaveText('00');
+    await page.getByRole('button', { name: turkish ? 'Ezberlediğim diziyi gizle' : 'Gemerkte Folge ausblenden', exact: true }).tap();
+    await page.getByRole('button', { name: turkish ? '1' : '0', exact: true }).tap();
+    await expect(page.locator('.result-review')).toHaveCount(0);
+    await page.getByRole('button', { name: turkish ? 'Onayla' : 'Bestätigen', exact: true }).last().tap();
+    await expect(page.locator('.digit-pair')).toHaveCount(2);
+    await expect(page.locator('.digit-missing')).toHaveCount(1);
+    await expect(page.locator(turkish ? '.digit-wrong' : '.digit-correct')).toHaveCount(1);
+    await expect(page.locator('.digit-pair').first()).toHaveAttribute('aria-label', turkish ? /doğru rakam 0, girilen 1/ : /richtig 0, eingegeben 0/);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    expect(await page.evaluate(() => localStorage.getItem('mindmix:data')!.includes('review'))).toBe(false);
+    await page.screenshot({ path: `.preview/digits-review-1.4.0-${turkish ? 'tr' : 'de'}.png`, fullPage: true });
+  }
+});
+
 test('symmetric numeric controls, ordered settings, aligned history and no technical rule labels', async ({ page }) => {
   await page.addInitScript(() => {
     const base = { game: 'simon', variant: 'default', ruleVersion: 1, actions: 5, date: '2026-10-18T12:00:00Z' };

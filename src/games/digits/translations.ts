@@ -16,6 +16,11 @@ export const translations = {
     input: 'Deine Eingabe: {{sequence}}',
     empty: 'Noch keine Ziffer eingegeben',
     entered: '{{count}} von {{required}} Ziffern eingegeben',
+    reviewTitle: 'Deine letzte Zahlenfolge',
+    reviewLegend: 'Oben: richtige Folge. Unten: deine Eingabe. × = falsch oder fehlt.',
+    reviewDigit: 'Stelle {{position}}: richtig {{expected}}, eingegeben {{entered}}. {{status}}.',
+    missing: 'keine Ziffer',
+    reviewStates: { correct: 'Richtig', wrong: 'Falsch', missing: 'Fehlt' },
     stats: { completedRounds: 'Richtig wiedergegebene Folgen' },
   },
   tr: {
@@ -35,6 +40,11 @@ export const translations = {
     input: 'Girişin: {{sequence}}',
     empty: 'Henüz rakam girilmedi',
     entered: '{{required}} rakamdan {{count}} tanesi girildi',
+    reviewTitle: 'Son sayı dizin',
+    reviewLegend: 'Üstte doğru dizi, altta girişin. × = yanlış veya eksik.',
+    reviewDigit: '{{position}}. konum: doğru rakam {{expected}}, girilen {{entered}}. {{status}}.',
+    missing: 'rakam yok',
+    reviewStates: { correct: 'Doğru', wrong: 'Yanlış', missing: 'Eksik' },
     stats: { completedRounds: 'Doğru hatırlanan diziler' },
   },
 };

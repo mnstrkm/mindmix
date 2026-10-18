@@ -9,3 +9,11 @@
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
+
+.digit-comparison { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; list-style: none; padding: 0; margin: 1rem 0 0; }
+.digit-pair { display: grid; justify-items: center; min-width: 2.25rem; border: 1px solid var(--line); border-radius: .5rem; padding: .4rem; font-variant-numeric: tabular-nums; }
+.digit-pair > span { line-height: 1.6; }
+.digit-pair > span + span { width: 100%; border-top: 1px solid var(--line); text-align: center; }
+.digit-pair small { line-height: 1.4; }
+.digit-correct { color: var(--green); }
+.digit-wrong, .digit-missing { color: var(--error); border-style: dashed; }

@@ -21,9 +21,6 @@ export default function Records() {
           {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="record-line" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${best.score.toLocaleString(data.settings.language)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
         </div>;
       })}
-      {game.id !== 'recognition' && data.records.some(item => item.game === game.id && item.ruleVersion !== getRuleVersion(game, item.variant)) && <details className="archived-records"><summary>{t('previousRules')}</summary>
-        {data.records.filter(item => item.game === game.id && item.ruleVersion !== getRuleVersion(game, item.variant)).map(item => <div className="record-line" key={comparisonKey(item)}><span>{new Date(item.date).toLocaleDateString(data.settings.language)}{game.id === 'recognition' ? ` · ${t(item.language === 'tr' ? 'turkish' : 'german')}` : game.id === 'arithmetic' ? ` · ${t(`arithmetic:variants.${item.variant}`)}` : game.id === 'reaction' ? ` · ${t('reaction:legacyMedian')}` : ''}</span><strong>{item.score.toLocaleString(data.settings.language)} {t(`${game.id}:unit`)}</strong></div>)}
-      </details>}
       <Link className="text-link" to={`/game/${game.id}`}>{t('start')}<ArrowIcon /></Link>
     </section>)}</div>
     <p className="hint records-note">{t('recordsNote')}</p>

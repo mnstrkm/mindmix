@@ -2,6 +2,13 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.4.0 – 2026-10-18
+
+- „Schon gesehen?“ vergibt nur für richtig als neu erkannte Wörter einen Punkt. Richtig erkannte Wiederholungen zählen weiterhin als Antworten und erhalten ihren Bestätigungston, erhöhen aber den Punktestand nicht. Die erste falsche Antwort beendet weiterhin die Partie. Regelversion 4 trennt die neue Wertung von bisherigen Rekorden; Wortvorrat und Inhaltsversion bleiben unverändert.
+- Zahlenfolge: Die Ergebnisansicht vergleicht nach einem Fehler jede Stelle der richtigen Folge mit der eigenen Eingabe. Richtige, falsche und fehlende Ziffern sind mit Symbolen und zugänglichen Beschriftungen erkennbar; führende Nullen bleiben erhalten. Die Ansicht wird nicht dauerhaft gespeichert.
+- Dropdowns für frühere Bestleistungen und ihre Verweise in allen Spielen entfernt. Gespeicherte ältere Leistungen bleiben unverändert und werden nicht mit aktuellen Regeln verglichen.
+- „Spiele entdecken“ und „Zum Menü“ scrollen sechs Pixel weiter nach unten. Die gemeinsame Bereichsüberschrift bleibt sichtbar; der obere Menüpunkt „Spiele“ führt weiterhin an den Seitenanfang.
+
 ## 1.3.1 – 2026-10-18
 
 - Navigation korrigiert: „Spiele“ im oberen Menü und „Alle Spiele“ führen an den Anfang. Nur „Zum Menü“ im Ergebnis öffnet direkt die Spielauswahl.

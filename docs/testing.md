@@ -1,6 +1,6 @@
 # Qualitätssicherung
 
-## Prüfstand 1.3.1
+## Prüfstand 1.4.0
 
 **18.10.2026 · Windows · Node.js 24.19.0 · pnpm 11.25.0 · Microsoft Edge (Chromium)**
 
@@ -8,9 +8,9 @@
 | --- | --- |
 | Strikte TypeScript-Prüfung | Bestanden |
 | Logik-, Komponenten-, Audio- und Übersetzungstests | 98 Tests in 22 Dateien bestanden |
-| Produktionsbuild einschließlich PWA | Bestanden; 31 Precache-Dateien, rund 474 KiB |
-| Playwright am Produktionsbuild | 30 Browserprüfungen bestanden |
-| Visuelle Durchsicht | Symmetrisches Zahlenfeld, Katalogziele, neue Rastermuster, Einstellungen, Rekordspalten und Ergebnisansichten; Deutsch und Türkisch, auch 320 Pixel mit sehr großer Schrift |
+| Produktionsbuild einschließlich PWA | Bestanden; 31 Precache-Dateien, rund 475 KiB |
+| Playwright am Produktionsbuild | 31 Browserprüfungen bestanden |
+| Visuelle Durchsicht | Zahlenfolgenvergleich, Katalogziele, neue Rastermuster, Einstellungen, Rekordspalten und Ergebnisansichten; Deutsch und Türkisch, auch 320 Pixel mit sehr großer Schrift |
 
 Lokale Browserprüfungen verwenden `PLAYWRIGHT_CHANNEL=msedge`. Der [CI-Workflow](https://github.com/mnstrkm/mindmix/actions/workflows/pages.yml) führt die Prüfungen mit Chromium unter Linux aus. Der jeweilige Workflow-Lauf dokumentiert den externen Stand separat.
 
@@ -36,8 +36,8 @@ pnpm test:e2e
 
 | Bereich | Nachgewiesene Eigenschaften |
 | --- | --- |
-| Wörter | Neuer/bekannter Status vor Eintragung, nie unmittelbar identische Wörter, Zufallsrandfälle, Poolende, Normalisierung und Dubletten beider Sprachen |
-| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge, kleine und große Bestätigung mit derselben Prüfung |
+| Wörter | Nur neue Wörter geben Punkte, richtige Wiederholungen behalten ihren Bestätigungston, falsche Wiederholungen beenden; neuer/bekannter Status vor Eintragung, nie unmittelbar identische Wörter, Zufallsrandfälle, Poolende, Normalisierung und Dubletten beider Sprachen |
+| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge, kleine und große Bestätigung mit derselben Prüfung, Ergebnisvergleich mit richtigen/falschen/fehlenden Ziffern und führenden Nullen in beiden Sprachen bei 320 Pixeln mit großer Schrift |
 | Farbreihenfolge | Gesperrte Vorführung, Eingabereihenfolge, sichtbare letzte Eingabe, Pause vor/nach erster Eingabe, Timerbereinigung |
 | Räumliches Gedächtnis | Eindeutige und unterschiedliche Muster, Mengengleichheit, Progression bis 8×4, mindestens 48×48-Pixel-Touchziele, verborgene Vorlage auch bei Pause, sichtbarer Musteranfang nach den ersten fünf Zeilen-/Spaltenwechseln bei 320/390/1366 Pixeln |
 | Kopfrechnen | Zahlenbereiche, alle Rechenarten, ganzzahlige Division, keine direkte Aufgabenwiederholung, begrenzte Erzeugung und ausgewogene Rechenarten |
@@ -48,7 +48,7 @@ pnpm test:e2e
 | Navigation | Wiederholen öffnet Vorbereitung in allen acht Spielen, gewählter Modus bleibt erhalten, keine unbeabsichtigte neue Sitzung, Ergebnis-Menü führt zum Katalog, oberes „Spiele“ führt zum Anfang |
 | Scrollen und Fokus | Sichtbare Inhalte bleiben stehen, große Bereiche werden ausgerichtet, vollständige Katalogüberschrift mit Rand bei 320/390/1366 Pixeln, nur minimale Korrektur angeschnittener Fokusziele, Tastatur und 200-Prozent-Textvergrößerung |
 | Einstellungen | Sprache und Theme bleiben erhalten, drei ungebrochene Buchstabengrößen, neue Lautstärken bei 50 Prozent, gespeicherte Werte unverändert |
-| Archive | Frühere Wortspielwerte ausgeblendet und intern unverändert erhalten; Vergleichshinweis mit Abstand |
+| Archive | Frühere Leistungen in allen Spielen ausgeblendet; alte Wortspiel- und Reaktionswerte intern unverändert erhalten und nicht mit aktuellen Werten vermischt; Vergleichshinweis mit Abstand |
 | Mobile Rekorde | Durchschnitt und Einzelzeit bündig in Vorbereitung und Bestleistungen, auch mit sehr großer türkischer Schrift bei 320 Pixeln |
 | Audio | Einzelner UI-Ton, keine zusätzliche Klickebene auf Farbtönen, Fehlerton trotz neuem Rekord, stumme Effekte, Regleränderungen, optionale Dateien und kein verspäteter Ersatzton nach Pause |
 | Speicherung | Validierung, Speicherausfall, maximal 30 Partien je Spiel, langfristige Rekorde, getrennte Vergleichsgruppen und keine doppelte Finalisierung |
