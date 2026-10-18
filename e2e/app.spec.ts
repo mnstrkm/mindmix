@@ -41,6 +41,8 @@ test('digits concealment, correction, result, restart, persistence and navigatio
   await expect(page.getByRole('heading', { name: 'Eine neue Bestleistung!' })).toBeVisible();
   await expect(page.locator('.result-score')).toContainText('2');
   await page.getByRole('button', { name: 'Noch einmal' }).click();
+  await expect(page.locator('.game-content')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Spiel starten', exact: true }).click();
   await expect(page.locator('.live-score')).toHaveText('0');
   await page.getByRole('button', { name: 'Partie beenden' }).click();
   await page.reload();
@@ -167,6 +169,7 @@ test('reaction measures five valid trials and rejects three false starts', async
   const data = await page.evaluate(() => JSON.parse(localStorage.getItem('mindmix:data')!));
   expect(data.records.find((item: { game: string }) => item.game === 'reaction').eligible).toBe(true);
   await page.getByRole('button', { name: 'Noch einmal' }).click();
+  await page.getByRole('button', { name: 'Spiel starten', exact: true }).click();
   await page.getByRole('button', { name: /Direkt zur Messung/ }).click();
   await page.getByRole('button', { name: /Versuch starten/ }).click();
   for (let index = 0; index < 3; index++) {

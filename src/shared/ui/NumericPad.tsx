@@ -6,11 +6,10 @@ export default function NumericPad({ value, onChange, onConfirm, maxLength = 100
     <output className="number-output" aria-label={t('answer')} aria-live="polite">{value || '—'}</output>
     <div className="number-pad">
       {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(digit => <button key={digit} className="number-key" disabled={disabled || value.length >= maxLength} onClick={() => onChange(value + digit)}>{digit}</button>)}
+      <button className="number-key zero-key" disabled={disabled || value.length >= maxLength} onClick={() => onChange(value + '0')}>0</button>
       <button className="number-key" aria-label={t('backspace')} disabled={disabled || !value} onClick={() => onChange(value.slice(0, -1))}>⌫</button>
-      <button className="number-key" disabled={disabled || value.length >= maxLength} onClick={() => onChange(value + '0')}>0</button>
-      <span aria-hidden="true" />
     </div>
-    <button className="button primary full-width" disabled={disabled || !value} onClick={onConfirm}>{t('confirm')}</button>
+    <button className="button primary full-width" data-ui-sound="off" disabled={disabled || !value} onClick={onConfirm}>{t('confirm')}</button>
   </div>;
 }
 export { NumericPad };

@@ -5,6 +5,7 @@ import { audio } from '../../services/audio/audio';
 import { createPattern, difficultyIndex, getDifficulty, matchesPattern, toggleCell } from './logic';
 import './spatial.css';
 import ResultReview from './ResultReview';
+import { focusAndReveal } from '../../shared/ui/viewport';
 
 interface State {
   phase: 'memorize' | 'recall' | 'ended';
@@ -43,7 +44,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
 
   useEffect(() => { onProgress(progress(current.current)); }, [onProgress]);
   useEffect(() => {
-    if (!paused) container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+    if (!paused) focusAndReveal(container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)'));
   }, [state.phase, state.solved, paused]);
 
   function conceal() {
@@ -104,7 +105,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
       ) : (
         <>
           <p className="hint" aria-live="polite">{t('selectedCount', { count: state.selected.length, required: difficulty.marked })}</p>
-          <button type="button" className="button primary" onClick={confirm} disabled={paused}>{t('confirm')}</button>
+          <button type="button" className="button primary" data-ui-sound="off" onClick={confirm} disabled={paused}>{t('confirm')}</button>
         </>
       )}
     </div>

@@ -5,6 +5,7 @@ import { audio } from '../../services/audio/audio';
 import { INPUT_FEEDBACK_MS, PAD_SYMBOLS, PRESENTATION_DELAY_MS, ROUND_FEEDBACK_MS, SIGNAL_DURATION_MS, SIGNAL_GAP_MS, START_LENGTH } from './config';
 import { checkSignal, createSequence, extendSequence, type Signal } from './logic';
 import './simon.css';
+import { focusAndReveal } from '../../shared/ui/viewport';
 
 interface State {
   phase: 'presenting' | 'input' | 'round-complete' | 'ended';
@@ -35,7 +36,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   }
 
   useEffect(() => { onProgress(progress(current.current)); }, [onProgress]);
-  useEffect(() => () => { audio.stopEffects(); }, []);
+  useEffect(() => () => { audio.stopEffects({ preserveUi: true }); }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -87,7 +88,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   }, [state.phase, paused]);
 
   useEffect(() => {
-    if (state.phase === 'input' && !paused) firstPad.current?.focus();
+    if (state.phase === 'input' && !paused) focusAndReveal(firstPad.current);
   }, [state.phase, paused]);
 
   function choose(signal: Signal) {
@@ -124,7 +125,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     <div className="game-content simon-game">
       <p className="status-line">{t('length', { count: state.sequence.length })}</p>
       <p className="simon-phase" role="status">{t(state.phase === 'input' ? 'yourTurn' : state.phase === 'round-complete' ? 'roundComplete' : 'watching')}</p>
-      <div className="simon-grid">
+      <div className="simon-grid" data-ui-sound="off">
         {PAD_SYMBOLS.map((symbol, index) => (
           <button
             type="button"

@@ -53,7 +53,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
       </svg>
       <span aria-hidden="true">{t('colorLabel', { color: t(`colors.${task.color}`) })}</span>
     </div>
-    <div className="switch-answers" role="group" aria-label={t('answers')}>
+    <div className="switch-answers" data-ui-sound="off" role="group" aria-label={t('answers')}>
       <button className="button secondary" type="button" disabled={paused || state.feedback} onClick={(event) => choose('left', event.detail)}>{t('left')}</button>
       <button className="button secondary" type="button" disabled={paused || state.feedback} onClick={(event) => choose('right', event.detail)}>{t('right')}</button>
     </div>

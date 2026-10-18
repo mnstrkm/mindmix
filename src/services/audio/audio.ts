@@ -3,10 +3,10 @@ import { audioConfig, type Sound } from './config';
 
 class AudioService {
   private context?: AudioContext;
-  private settings: Pick<Settings, 'effects' | 'effectVolume' | 'music' | 'musicVolume'> = { effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2 };
+  private settings: Pick<Settings, 'effects' | 'effectVolume' | 'music' | 'musicVolume'> = { effects: true, effectVolume: 0.5, music: false, musicVolume: 0.5 };
   private files = new Map<Sound, HTMLAudioElement>();
   private attempted = new Set<Sound>();
-  private active = new Set<OscillatorNode>();
+  private active = new Map<OscillatorNode, Sound>();
   private music?: HTMLAudioElement;
   private musicFailed = false;
   private generation = 0;
@@ -59,26 +59,29 @@ class AudioService {
     try {
       const ctx = this.context;
       if (!ctx || ctx.state !== 'running') return;
-      const frequencies: Record<Sound, number> = { click: 450, correct: 660, error: 180, record: 880, simon0: 262, simon1: 330, simon2: 392, simon3: 523 };
+      const frequencies: Record<Sound, number> = { ui: 950, click: 450, correct: 660, error: 180, record: 880, simon0: 262, simon1: 330, simon2: 392, simon3: 523 };
       const oscillator = ctx.createOscillator();
       const gain = ctx.createGain();
-      const duration = sound.startsWith('simon') ? 0.36 : 0.13;
+      const duration = sound === 'ui' ? 0.045 : sound.startsWith('simon') ? 0.36 : 0.13;
       oscillator.frequency.value = frequencies[sound];
       gain.gain.setValueAtTime(0, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(this.settings.effectVolume * 0.25, ctx.currentTime + 0.015);
+      gain.gain.linearRampToValueAtTime(this.settings.effectVolume * (sound === 'ui' ? 0.09 : 0.25), ctx.currentTime + (sound === 'ui' ? 0.004 : 0.015));
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
       oscillator.connect(gain); gain.connect(ctx.destination);
-      this.active.add(oscillator);
+      this.active.set(oscillator, sound);
       oscillator.onended = () => { this.active.delete(oscillator); oscillator.disconnect(); gain.disconnect(); };
       oscillator.start(); oscillator.stop(ctx.currentTime + duration + 0.01);
     } catch { /* Playback failures must never interrupt a round. */ }
   }
-  stopEffects() {
+  stopEffects({ preserveUi = false }: { preserveUi?: boolean } = {}) {
     this.generation++;
-    for (const node of this.active) { try { node.stop(); } catch { /* Already stopped. */ } }
-    this.active.clear();
-    for (const file of this.files.values()) file.pause();
+    for (const [node, sound] of this.active) {
+      if (preserveUi && sound === 'ui') continue;
+      try { node.stop(); } catch { /* Already stopped. */ }
+      this.active.delete(node);
+    }
+    for (const [sound, file] of this.files) if (!preserveUi || sound !== 'ui') file.pause();
   }
-  pause() { this.stopEffects(); this.music?.pause(); }
+  pause(options?: { preserveUi?: boolean }) { this.stopEffects(options); this.music?.pause(); }
 }
 export const audio = new AudioService();

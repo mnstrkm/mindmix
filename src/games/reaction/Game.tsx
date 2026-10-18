@@ -8,6 +8,7 @@ import { average, beginTrial, chooseReactionMode, completeReaction, createReacti
   reactToSignal, showSignal, type ReactionState } from './logic';
 import './reaction.css';
 import ResultReview from './ResultReview';
+import { focusAndReveal } from '../../shared/ui/viewport';
 
 export default function ReactionGame({ paused, language, onProgress, onFinish }: GameProps) {
   const { t } = useTranslation('reaction');
@@ -27,7 +28,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
   function commit(next: ReactionState) { current.current = next; setState(next); }
 
   useEffect(() => {
-    if (!paused && (state.phase === 'ready' || state.phase === 'feedback')) nextAction.current?.focus();
+    if (!paused && (state.phase === 'ready' || state.phase === 'feedback')) focusAndReveal(nextAction.current, nextAction.current?.parentElement?.querySelector('.stimulus'));
   }, [state.phase, paused]);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
 
   useEffect(() => {
     if (state.phase !== 'waiting' || paused) return;
-    target.current?.focus();
+    focusAndReveal(target.current);
     pending.current = setTimeout(() => {
       frame.current = requestAnimationFrame(() => {
         if (pausedRef.current || current.current.phase !== 'waiting') return;
@@ -81,7 +82,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
     if (next === current.current) return;
     lastInput.current = now;
     commit(next);
-    if (!next.lastWasEarly) audio.play('correct');
+    if (next.phase !== 'ended') audio.play(next.lastWasEarly ? 'error' : 'correct');
   }
   function start() {
     if (paused || performance.now() - lastInput.current < REACTION_CONFIG.inputGuardMs) return;
@@ -105,7 +106,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
       <p role="status">{t(interrupted ? 'interrupted' : 'ready')}</p>
       <button ref={nextAction} className="button primary" disabled={paused} onClick={start}>{t(state.practice ? 'startPractice' : 'startTrial')}</button>
     </>}
-    {active && <button ref={target} className={`reaction-target ${state.phase}`} disabled={paused}
+    {active && <button ref={target} className={`reaction-target ${state.phase}`} data-ui-sound="off" disabled={paused}
       aria-label={t(state.phase === 'signal' ? 'nowLabel' : 'waitingLabel')}
       onPointerDown={event => {
         if (!event.isPrimary || event.button !== 0) return;
@@ -123,7 +124,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
       <p className="stimulus" role="status">{state.lastWasEarly
         ? t(state.practice ? 'practiceEarly' : 'early')
         : t(state.practice ? 'practiceTime' : 'measuredTime', { time: format(state.lastTime ?? 0) })}</p>
-      <button ref={nextAction} className="button primary" disabled={paused} onClick={() => {
+      <button ref={nextAction} className="button primary" data-ui-sound={!state.practice && isEligible(state) ? 'off' : undefined} disabled={paused} onClick={() => {
         if (state.practice) commit(chooseReactionMode(current.current, false));
         else if (isEligible(state)) commit(completeReaction(current.current));
         else start();

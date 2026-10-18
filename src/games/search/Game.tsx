@@ -46,7 +46,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
       <Arrow direction={task.target} />
     </div>
     <p className="hint" role="status">{state.feedback ? t('correct') : t('hint')}</p>
-    <div className="game-grid search-grid" style={{ gridTemplateColumns: `repeat(${task.columns}, minmax(0, 1fr))` }} role="group" aria-label={t('grid')}>
+    <div className="game-grid search-grid" data-ui-sound="off" style={{ gridTemplateColumns: `repeat(${task.columns}, minmax(0, 1fr))` }} role="group" aria-label={t('grid')}>
       {task.cells.map((direction, index) => <button type="button" className={`tile${state.selected === index ? ' selected' : ''}`} key={index}
         disabled={paused || state.feedback} onClick={(event) => choose(index, event.detail)}
         aria-label={t('cell', { row: Math.floor(index / task.columns) + 1, column: index % task.columns + 1, direction: t(`directions.${direction}`) })}>

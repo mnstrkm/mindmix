@@ -10,14 +10,14 @@ export default function Settings() {
   return <div className="page-narrow">
     <div className="page-title"><p className="eyebrow">{t('brand')}</p><h1>{t('settings')}</h1><p>{t('tagline')}</p></div>
     <section className="panel settings-section"><h2>{t('language')}</h2><p>{t('languageDescription')}</p>
-      <div className="segmented" role="group" aria-label={t('language')}>
+      <div className="segmented language-picker" role="group" aria-label={t('language')}>
         <button lang="de" aria-pressed={settings.language === 'de'} onClick={() => set({ language: 'de' })}>{t('german')}</button>
         <button lang="tr" aria-pressed={settings.language === 'tr'} onClick={() => set({ language: 'tr' })}>{t('turkish')}</button>
       </div>
     </section>
     <section className="panel settings-section"><h2>{t('textSize')}</h2><p>{t('textDescription')}</p>
-      <div className="segmented" role="group" aria-label={t('textSize')}>
-        {(['normal', 'large', 'extra'] as const).map(size => <button key={size} aria-pressed={settings.textSize === size} onClick={() => set({ textSize: size })}>{t(size)}</button>)}
+      <div className="segmented text-size-picker" role="group" aria-label={t('textSize')}>
+        {(['normal', 'large', 'extra'] as const).map(size => <button key={size} aria-label={t(size)} title={t(size)} aria-pressed={settings.textSize === size} onClick={() => set({ textSize: size })}><span aria-hidden="true" className={`text-size-sample sample-${size}`}>{t('textSizeSample')}</span></button>)}
       </div>
     </section>
     <section className="panel settings-section"><h2>{t('appearance')}</h2><p>{t('appearanceDescription')}</p>

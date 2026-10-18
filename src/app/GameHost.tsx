@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getGame, getRuleVersion } from './registry';
@@ -8,6 +8,12 @@ import { comparisonKey, isBetter, storage, type Result } from '../services/stora
 import { audio } from '../services/audio/audio';
 import { GameIcon } from '../shared/ui/Icon';
 import { ErrorBoundary } from '../shared/ui/ErrorBoundary';
+import { revealRegion } from '../shared/ui/viewport';
+
+function ReadyContent({ onReady, children }: { onReady: () => void; children: ReactNode }) {
+  useEffect(onReady, [onReady]);
+  return children;
+}
 
 function Instructions({ id }: { id: string }) {
   const { t } = useTranslation('common');
@@ -37,6 +43,7 @@ function GameHost({ id }: { id?: string }) {
   const title = useRef<HTMLHeadingElement>(null);
   const pauseTitle = useRef<HTMLHeadingElement>(null);
   const gameArea = useRef<HTMLDivElement>(null);
+  const page = useRef<HTMLDivElement>(null);
   const wasPaused = useRef(false);
   const finish = useCallback((value: GameResult, show = true) => {
     const current = session.current;
@@ -47,7 +54,7 @@ function GameHost({ id }: { id?: string }) {
     const previous = storage.getSnapshot().data.records.find(item => comparisonKey(item) === comparisonKey(saved));
     const best = value.actions > 0 && value.eligible !== false && value.score > 0 && isBetter(saved, previous);
     storage.finalize(saved);
-    audio.pause();
+    audio.pause({ preserveUi: !show });
     if (show) {
       setResult(value); setPhase('result'); setPause(null); setNewBest(best); setPreviousBest(best && previous ? previous.score : null);
     }
@@ -62,7 +69,7 @@ function GameHost({ id }: { id?: string }) {
   useEffect(() => () => {
     const current = session.current;
     if (current && !current.done) finish({ ...current.progress, reason: 'stopped' }, false);
-    audio.pause();
+    audio.pause({ preserveUi: true });
   }, [finish]);
   useEffect(() => {
     const interrupt = () => {
@@ -76,28 +83,37 @@ function GameHost({ id }: { id?: string }) {
   useEffect(() => { title.current?.focus({ preventScroll: true }); }, [phase]);
   // Child cleanup stops sequence audio first; only then start the result cue.
   useEffect(() => {
-    if (phase === 'result' && result) audio.play(newBest ? 'record' : result.reason === 'mistake' ? 'error' : 'click');
+    if (phase === 'result' && result) audio.play(result.reason === 'mistake' || result.reason === 'false-starts' ? 'error' : newBest ? 'record' : 'click');
   }, [phase, result, newBest]);
-  useEffect(() => { if (pause) pauseTitle.current?.focus(); }, [pause]);
+  useEffect(() => { if (pause) pauseTitle.current?.focus({ preventScroll: true }); }, [pause]);
   useEffect(() => {
-    if (wasPaused.current && !pause && phase === 'playing') gameArea.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+    if (wasPaused.current && !pause && phase === 'playing') gameArea.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus({ preventScroll: true });
     wasPaused.current = Boolean(pause);
   }, [pause, phase]);
+  const positionContent = useCallback(() => {
+    const region = page.current?.querySelector<HTMLElement>(pause ? '.pause-panel' : phase === 'prepare' ? '.preparation' : phase === 'playing' ? '.play-panel' : '.result-panel');
+    revealRegion(region, page.current?.querySelector('.game-title'));
+  }, [phase, pause]);
+  useEffect(() => {
+    if (phase === 'playing') return;
+    const frame = requestAnimationFrame(positionContent);
+    return () => cancelAnimationFrame(frame);
+  }, [phase, positionContent]);
   if (!game) return <div className="panel"><h1>{t('notFound')}</h1><Link to="/">{t('menu')}</Link></div>;
   const meta = { game: game.id, variant, ruleVersion: getRuleVersion(game, variant), language: game.id === 'recognition' ? phase === 'prepare' ? data.settings.language : language : undefined, contentVersion: game.contentVersion };
   const key = comparisonKey(meta);
   const record = data.records.find(item => comparisonKey(item) === key);
   const history = data.history.filter(item => comparisonKey(item) === key).slice(-5).reverse();
   const start = () => {
-    audio.unlock(); audio.play('click');
+    audio.unlock();
     const initial = { score: 0, actions: 0, eligible: game.id !== 'reaction' };
     session.current = { id: crypto.randomUUID(), done: false, meta: { ...meta, language: game.id === 'recognition' ? data.settings.language : undefined }, progress: initial };
     setLanguage(data.settings.language); setResult(null); setNewBest(false); setProgress(initial); setPause(null); setRound(value => value + 1); setPhase('playing'); setActive(true);
   };
   const Game = game.component;
   const number = (value: number) => value.toLocaleString(data.settings.language, { maximumFractionDigits: 1 });
-  return <div className="page-game">
-    <Link className="text-link back-link" to="/">← {t('back')}</Link>
+  return <div className="page-game" ref={page}>
+    <Link className="text-link back-link" to="/" state={{ scrollTarget: 'games' }}>← {t('back')}</Link>
     <div className="game-title"><span className={`game-icon ${game.tone}`}><GameIcon id={game.id} /></span><div><p className="eyebrow">{t(`category.${game.id}`)}</p><h1 ref={title} tabIndex={-1}>{t(`${game.id}:title`)}</h1></div></div>
     {phase === 'prepare' && <>
       <section className="panel preparation"><p className="lead">{t(`${game.id}:description`)}</p>
@@ -115,8 +131,8 @@ function GameHost({ id }: { id?: string }) {
     {phase === 'playing' && <section className="panel play-panel">
       <div className="play-toolbar"><div><span className="score-label">{t(`${game.id}:scoreLabel`, { defaultValue: t(`${game.id}:unit`) })}</span><strong className="live-score">{progress.eligible === false ? '—' : number(progress.score)}</strong></div><button className="button secondary" onClick={() => { audio.pause(); setPause('help'); }}>{t('explain')}</button></div>
       {pause && <div className="pause-panel"><h2 ref={pauseTitle} tabIndex={-1}>{t(pause === 'help' ? 'explain' : 'paused')}</h2>{pause === 'help' ? <Instructions id={game.id} /> : <p>{t('pausedText')}</p>}<button className="button primary" onClick={() => { audio.unlock(); setPause(null); }}>{t('continue')}</button></div>}
-      <div ref={gameArea} hidden={Boolean(pause)}><ErrorBoundary><Suspense fallback={<p role="status">{t('loading')}</p>}><Game key={round} language={language} variant={variant} paused={Boolean(pause)} onProgress={onProgress} onFinish={onFinish} /></Suspense></ErrorBoundary></div>
-      <div className="stop-row"><button className="button quiet" onClick={() => finish({ ...session.current!.progress, reason: 'stopped' })}>{t('stop')}</button><p className="hint">{t('sessionNavigation')}</p></div>
+      <div ref={gameArea} hidden={Boolean(pause)}><ErrorBoundary><Suspense fallback={<p role="status">{t('loading')}</p>}><ReadyContent key={round} onReady={positionContent}><Game language={language} variant={variant} paused={Boolean(pause)} onProgress={onProgress} onFinish={onFinish} /></ReadyContent></Suspense></ErrorBoundary></div>
+      <div className="stop-row"><button className="button quiet" data-ui-sound="off" onClick={() => finish({ ...session.current!.progress, reason: 'stopped' })}>{t('stop')}</button><p className="hint">{t('sessionNavigation')}</p></div>
     </section>}
     {phase === 'result' && result && <section className="panel result-panel">
       <p className="eyebrow">{t(`reasons.${result.reason ?? 'completed'}`)}</p><h2>{t(newBest ? 'newBest' : 'result')}</h2>
@@ -126,7 +142,7 @@ function GameHost({ id }: { id?: string }) {
       {!game.hideResultRecord && !newBest && record && <div className="best-summary"><span>{t('bestSoFar')}</span><strong>{number(record.score)} {t(`${game.id}:unit`)}</strong></div>}
       {result.review}
       {result.stats && <dl className="result-stats">{Object.entries(result.stats).map(([stat, value]) => <div key={stat}><dt>{t(`${game.id}:${stat}`)}</dt><dd>{typeof value === 'number' ? number(value) : value}</dd></div>)}</dl>}
-      <div className="actions"><button className="button primary" onClick={start}>{t('again')}</button><Link className="button secondary" to="/">{t('menu')}</Link></div><p className="hint">{t('resultNote')}</p>
+      <div className="actions"><button className="button primary" onClick={() => { setResult(null); setShowHelp(false); setPhase('prepare'); }}>{t('again')}</button><Link className="button secondary" to="/" state={{ scrollTarget: 'games' }}>{t('menu')}</Link></div><p className="hint">{t('resultNote')}</p>
     </section>}
   </div>;
 }

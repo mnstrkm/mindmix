@@ -16,6 +16,7 @@ MindMix ist eine statische React-/TypeScript-Anwendung. Vite erzeugt den Produkt
 | `src/games/<id>/Game.tsx` | Lokaler Spielzustand, Darstellung und Eingaben |
 | `src/games/<id>/translations.ts` | Deutsche und türkische Texte eines Spiels |
 | `src/shared/ui/` | Gemeinsame Bedienelemente ohne Spielregeln |
+| `src/shared/ui/viewport.ts` | Inhaltsbereiche messen, gezielt sichtbar machen und Fokus ohne natives Nachscrollen setzen |
 | `src/services/storage/` | Validierung, lokale Einstellungen, Verlauf, Rekorde und Speicherung |
 | `src/services/audio/` | Semantische Soundereignisse, erzeugte Töne und optionale Audio-Dateien |
 | `src/i18n/` | Gemeinsame Texte und Registrierung aller Sprachressourcen |
@@ -40,6 +41,10 @@ Der Host fixiert beim Start die Vergleichsmetadaten und erzeugt eine Sitzungsken
 Seit 1.2.0 kann ein Spiel mit `review` eine eigene, nicht interaktive React-Ergebnisansicht liefern. Die zugehörigen `ResultReview.tsx`-Komponenten bleiben im Spielmodul; der Host kennt ihre Regeln nicht. Er zeigt diese Ansicht erst nach dem Ende und entfernt sie vor der Speicherung. Raster und einzelne Reaktionszeiten werden so nicht als Eingabeprotokoll gespeichert. `hideResultRecord` unterdrückt bei Bedarf den allgemeinen Rekordblock, damit die Reaktionsübersicht ihren Durchschnitt nicht mehrfach zeigt. Bei einer verbesserten Hauptbestleistung hält der Host den vorherigen vergleichbaren Wert für die Ergebnisansicht fest.
 
 Der Host besitzt eine Finalisierungssperre pro Sitzung. Der Speicherdienst weist zusätzlich dieselbe Sitzungskennung zurück. Dadurch erzeugen wiederholte Ereignisse keine doppelten Verlaufseinträge. Navigieren aus einem Spiel beendet die aktuelle Partie mit dem zuletzt gemeldeten Stand. Ein vollständiges Schließen des Browsers stellt keine laufende Partie wieder her.
+
+Nach dem Ergebnis führt „Noch einmal“ in die Vorbereitung zurück, ohne eine Sitzung zu eröffnen. Variante und Vergleichsgruppe bleiben ausgewählt. Erst der ausdrückliche Start erzeugt wieder eine Sitzungskennung. Rücklinks zur Spielauswahl setzen `scrollTarget: 'games'` im Routenzustand; der Einstiegstext der Startseite wird dann übersprungen.
+
+Die Scrollführung verwendet gemessene Elementgrenzen und die aktuelle Fensterhöhe. Passende Inhalte bleiben sichtbar, große Bereiche beginnen mit einem kleinen Rand im Sichtbereich. `ReadyContent` richtet nach dem Laden eines Spielmoduls dessen tatsächliche Ansicht aus. Programmatische Fokuswechsel unterbinden zunächst das native Scrollen, bevor der benötigte Bereich gezielt eingeblendet wird. Es werden keine festen Gerätemodelle oder Scrollkoordinaten vorausgesetzt.
 
 Die Regeln arbeiten, soweit erforderlich, mit übergebenen Zufallsquellen und Zeitwerten. Tests können dadurch gezielt Randfälle erzeugen. Es gibt keine dauernde Render-Schleife; zeitabhängige Spiele verwenden begrenzte Timer beziehungsweise einen Animationsframe für das Reaktionssignal.
 

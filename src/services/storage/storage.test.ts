@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { comparisonKey, createStorage, isBetter, parseData, type Result } from './storage';
 const result = (patch: Partial<Result> = {}): Result => ({ id: 'one', game: 'digits', variant: 'default', ruleVersion: 1, score: 2, actions: 1, date: '2026-10-18T12:00:00Z', ...patch });
 describe('storage and records', () => {
+  it('defaults both volume controls to 50 percent while preserving saved choices', () => {
+    expect(parseData(null).settings).toMatchObject({ effectVolume: 0.5, musicVolume: 0.5 });
+    expect(parseData(JSON.stringify({ version: 1, settings: { effectVolume: 0.25, musicVolume: 0.2 } })).settings).toMatchObject({ effectVolume: 0.25, musicVolume: 0.2 });
+  });
   it('finalizes a session once and ignores an untouched round', () => {
     const store = createStorage();
     expect(store.finalize(result({ actions: 0 }))).toBe(false);

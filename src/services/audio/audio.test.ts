@@ -124,4 +124,18 @@ describe('optional audio and generated fallback', () => {
     await Promise.resolve();
     expect(context.createOscillator).not.toHaveBeenCalled();
   });
+
+  it('preserves the brief navigation tick during game cleanup but stops it on pause', async () => {
+    const { oscillators, context } = installAudio();
+    const { audio } = await import('./audio');
+    audio.unlock();
+    audio.play('ui');
+    audio.play('simon0');
+    audio.pause({ preserveUi: true });
+    expect(oscillators[0]!.stop).toHaveBeenCalledTimes(1);
+    expect(oscillators[1]!.stop).toHaveBeenLastCalledWith();
+    audio.pause();
+    expect(oscillators[0]!.stop).toHaveBeenLastCalledWith();
+    expect(context.createOscillator).toHaveBeenCalledTimes(2);
+  });
 });

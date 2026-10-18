@@ -12,7 +12,7 @@ export interface Result extends Omit<GameResult, 'review'> {
 }
 export interface SavedData { version: 1; settings: Settings; history: Result[]; records: Result[] }
 export interface Snapshot { data: SavedData; persistent: boolean }
-export const defaultSettings: Settings = { language: 'de', theme: 'dark', effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2, textSize: 'normal' };
+export const defaultSettings: Settings = { language: 'de', theme: 'dark', effects: true, effectVolume: 0.5, music: false, musicVolume: 0.5, textSize: 'normal' };
 const emptyData = (): SavedData => ({ version: 1, settings: { ...defaultSettings }, history: [], records: [] });
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0;

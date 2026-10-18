@@ -6,6 +6,7 @@ import { NumericPad } from '../../shared/ui/NumericPad';
 import { START_LENGTH } from './config';
 import { completedScore, createSequence, matchesSequence } from './logic';
 import './digits.css';
+import { focusAndReveal } from '../../shared/ui/viewport';
 
 interface State {
   phase: 'memorize' | 'recall' | 'ended';
@@ -32,7 +33,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
 
   useEffect(() => { onProgress(progress(current.current)); }, [onProgress]);
   useEffect(() => {
-    if (!paused) container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus();
+    if (!paused) focusAndReveal(container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)'), container.current?.querySelector('.digit-sequence'));
   }, [state.phase, state.sequence, paused]);
 
   function conceal() {

@@ -65,8 +65,8 @@ test('reaction records show average and fastest independently while preserving o
   await expect(page.locator('.secondary-record')).toContainText('180 ms');
   await page.getByRole('link', { name: 'Bestleistungen', exact: true }).click();
   const reaction = page.locator('.record-card').filter({ has: page.getByRole('heading', { name: 'Reaktions-Challenge', exact: true }) });
-  await expect(reaction).toContainText('Bester Durchschnitt aus 5 Versuchen');
-  await expect(reaction).toContainText('Schnellster Einzelversuch');
+  await expect(reaction).toContainText('Bester Durchschnitt');
+  await expect(reaction).toContainText('Schnellste Einzelzeit');
   await reaction.locator('summary').click();
   await expect(reaction).toContainText('Median, frühere Wertung');
   await expect(reaction).toContainText('190 ms');

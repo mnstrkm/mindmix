@@ -1,8 +1,10 @@
-# Spielregeln – Version 1.2.0
+# Spielregeln – Version 1.3.0
 
 Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Das Wortspiel verwendet **Regelversion 3**. Räumliches Gedächtnis, Reaktion und nur der gemischte Rechenmodus verwenden weiterhin **2**. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt einsehbar; technische Regelnummern erscheinen nicht mehr in der Spieloberfläche.
 
 ## Gemeinsame Regeln
+
+Version 1.3.0 ändert Navigation, Audio und Darstellung; Spielregeln, Wertung und Vergleichsgruppen bleiben unverändert. „Noch einmal“ führt zur Vorbereitung desselben Spiels, „Zum Menü“ zur Spielauswahl. Eine neue Sitzung beginnt erst mit „Spiel starten“. Normale Bedienelemente erhalten einen leisen UI-Ton; gewertete Antworten verwenden ihren eigenen Rückmeldeton. Fehler haben Vorrang vor einem gleichzeitig erreichten Rekordton.
 
 - Eine richtige gewertete Antwort erhöht das jeweilige Ergebnis. Es gibt keine gemeinsame Gesamtpunktzahl über verschiedene Spiele.
 - Außer der Reaktions-Challenge laufen Partien ohne feste Aufgabenanzahl und ohne Antwortzeitlimit weiter, bis eine falsche gewertete Antwort erfolgt oder freiwillig beendet wird. Das Wortspiel endet zusätzlich bei vollständig ausgeschöpftem Wortvorrat.

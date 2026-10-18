@@ -55,7 +55,7 @@ export default function RecognitionGame({ language, paused, onProgress, onFinish
   return <section className="game-content">
     <p className="status-line" aria-live="polite">{t('score', { count: state.score })}</p>
     <div className="stimulus" aria-label={t('promptLabel')} aria-live="polite">{state.prompt.word}</div>
-    <div className="actions">
+    <div className="actions" data-ui-sound="off">
       <button className="button secondary" disabled={paused || !!state.ended} aria-disabled={locked || undefined} onClick={event => { if (event.detail <= 1) answer('new'); }}>{t('new')}</button>
       <button className="button primary" disabled={paused || !!state.ended} aria-disabled={locked || undefined} onClick={event => { if (event.detail <= 1) answer('repeat'); }}>{t('repeat')}</button>
     </div>

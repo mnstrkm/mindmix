@@ -48,6 +48,12 @@ Farben werden durch Symbole oder lesbare Farbnamen ergänzt. Suchpfeile sind kon
 
 Web Audio vermeidet notwendige Audio-Downloads und zusätzliche Bibliotheken. Eigene Dateien können später zentral eingetragen werden. Die Hintergrundmusik bleibt ohne Datei still. Audiofehler dürfen keinen Spielablauf blockieren.
 
+Ein eigener, kurzer und leiser UI-Ton bestätigt gewöhnliche Aktivierungen. Bedienelemente mit semantischem Spielton melden sich über `data-ui-sound="off"` von diesem Ton ab. Das verhindert eine zusätzliche Klickebene auf Farb- oder Antworttönen. Beim Ergebnis hat ein Fehler Vorrang vor dem Rekordton. Spiel-Audio wird bei Navigation beendet; der kurze Navigationston darf ausklingen. Hintergrundwechsel und deaktivierte Effekte stoppen weiterhin alle Töne.
+
+## Ausrichtung nach Inhalt und Sichtbereich
+
+Die Vorbereitung bleibt zwischen Ergebnis und erneutem Start als bewusster Zwischenschritt erhalten. Rückwege zum Katalog zielen direkt auf die Auswahl. Andere Scrollwechsel messen den Inhalt und die Fensterhöhe: Was bereits passt, bleibt stehen; größere Bereiche werden mit Rand ausgerichtet. Das passt sich kleinen Smartphones, großen Schriftgraden und flachen Laptopfenstern an, ohne für jedes Gerät eigene Koordinaten zu pflegen.
+
 ## Ehrliche Qualitätsgrenzen
 
 Automatisierte Prüfungen sichern konkrete Regeln, Zustandsübergänge und Browserabläufe. Eine simulierte kleine Bildschirmbreite ersetzt weder Android-Systemschrift noch iOS/Safari auf einem echten Gerät. Die offene Gerätecheckliste gehört deshalb zur Dokumentation; die erste Version verspricht keine Fehlerfreiheit oder medizinisch bewertbare Leistung.

@@ -2,6 +2,17 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.3.0 – 2026-10-18
+
+- „Noch einmal“ öffnet die Spielvorbereitung und erhält den gewählten Modus. Erst der nächste Start legt eine Sitzung an. Rückwege zur Spielauswahl überspringen den Einstiegstext.
+- Gemeinsame, gemessene Scroll- und Fokusführung für unterschiedlich große Sichtbereiche. Bereits sichtbare Inhalte bleiben stehen; große Spielbereiche werden gezielt ausgerichtet. Geladene Spielmodule, Pausen und Ergebniswechsel werden berücksichtigt.
+- Dezenter UI-Ton für Navigation, gewöhnliche Bedienelemente und Lautstärkeänderungen. Farbflächen und gewertete Antworten erhalten ausschließlich ihren eigenen Spielton. Ein Farbreihenfolge-Fehler spielt auch bei neuer Bestleistung den Fehlerton. Reaktionsfehlstarts erhalten ebenfalls eine Fehlerrückmeldung; das Signal bleibt tonlos.
+- Zusammengehörige Bestleistungen bleiben in festen Spalten rechtsbündig, auch bei 320 Pixeln und großer Schrift. Die drei Schriftgrößen werden durch unterschiedlich große Buchstaben dargestellt und bleiben zugänglich beschriftet.
+- Breite Null und Löschtaste rechts füllen das Zahlenfeld aus; es bleibt bei einem großen Bestätigungsknopf.
+- Standardlautstärke beider Regler auf 50 Prozent gesetzt. Bereits gespeicherte Einstellungen bleiben erhalten.
+- README mit direktem Spieleinstieg und übersichtlicher Dokumentation überarbeitet. Veröffentlichungsanleitung entfernt; Entwicklerhinweise in einen eigenen Leitfaden verschoben und Qualitätsnachweise gestrafft.
+- Keine Änderungen an Spielregeln, Inhalten oder Speicherformat; vorhandene Rekorde bleiben vergleichbar.
+
 ## 1.2.0 – 2026-10-18
 
 - Mobile Verläufe mit festen Spalten: unterschiedliche Abschlussbeschriftungen verschieben die Ergebnisse nicht mehr.
