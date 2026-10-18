@@ -1,0 +1,13 @@
+.reaction-target {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.5rem; width: 100%; min-height: 15rem; padding: 1.5rem;
+  border: 3px solid currentColor; border-radius: var(--radius-lg, 1.25rem);
+  font: inherit; font-size: clamp(1.5rem, 5vw, 2.6rem); font-weight: 750;
+  cursor: pointer; touch-action: manipulation; overflow-wrap: anywhere;
+}
+.reaction-target.waiting { background: #fbe3d5; color: #732816; }
+.reaction-target.signal { background: #d3f5de; color: #125632; }
+.reaction-target:disabled { cursor: default; }
+.reaction-indicator { font-size: 1.8em; line-height: 1.2; }
+.reaction-counts { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.25rem 1rem; }
+.reaction-counts p { margin: 0; }

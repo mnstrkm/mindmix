@@ -1,0 +1,5 @@
+.search-target { display: grid; justify-items: center; gap: .65rem; font-weight: 700; }
+.search-target svg { width: 5rem; height: 5rem; color: var(--text); }
+.search-grid { width: 100%; max-width: 30rem; margin-inline: auto; gap: .5rem; }
+.search-grid .tile { display: grid; place-items: center; padding: .35rem; min-width: 0; min-height: 3rem; aspect-ratio: 1; }
+.search-grid svg { width: 100%; max-width: 3rem; height: auto; }

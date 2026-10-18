@@ -1,0 +1,28 @@
+export const translations = {
+  de: {
+    title: 'Visuelle Suche', description: 'Finde den passenden Pfeil im Raster.',
+    goal: 'Finde im Raster genau den Pfeil, der über dem Raster gezeigt wird.',
+    controls: 'Wähle den Pfeil mit derselben Richtung wie die sichtbare Vorlage. Die Vorlage bleibt sichtbar. Es gibt kein Zeitlimit.',
+    ending: 'Eine falsche Auswahl beendet die Partie. Du kannst auch jederzeit freiwillig beenden.',
+    scoring: 'Jede richtige Suche zählt einmal. Erst wächst das Raster bis 4 × 4. Danach kommen ähnlichere Pfeilrichtungen dazu. Auf dieser Schwierigkeit geht es ohne Aufgabenlimit weiter.',
+    unit: 'richtige Suchaufgaben', find: 'Finde diesen Pfeil', target: 'Ziel: {{direction}}',
+    grid: 'Pfeilraster', cell: 'Zeile {{row}}, Spalte {{column}}: {{direction}}',
+    status: '{{count}} richtig · Stufe {{level}}', correct: 'Gefunden! Die nächste Aufgabe folgt.',
+    hint: 'Wähle genau den Pfeil aus der Vorlage.',
+    directions: { up: 'nach oben', upRight: 'nach rechts oben', right: 'nach rechts', downRight: 'nach rechts unten', down: 'nach unten', downLeft: 'nach links unten', left: 'nach links', upLeft: 'nach links oben' },
+    stats: { level: 'Stufe', grid: 'Raster' },
+  },
+  tr: {
+    title: 'Görsel arama', description: 'Izgarada aynı yöne bakan oku bul.',
+    goal: 'Izgaranın üzerinde gösterilen okla aynı yöne bakan tek oku bul.',
+    controls: 'Görünen örnekle aynı yöne bakan oku seç. Örnek görünür kalır. Süre sınırı yoktur.',
+    ending: 'Yanlış bir seçim oyunu bitirir. İstediğin zaman kendin de bitirebilirsin.',
+    scoring: 'Her doğru arama bir puandır. Önce ızgara 4 × 4’e kadar büyür. Sonra daha benzer ok yönleri eklenir. Bu zorlukta görev sınırı olmadan devam eder.',
+    unit: 'doğru arama', find: 'Bu oku bul', target: 'Hedef: {{direction}}',
+    grid: 'Ok ızgarası', cell: '{{row}}. satır, {{column}}. sütun: {{direction}}',
+    status: '{{count}} doğru · Seviye {{level}}', correct: 'Buldun! Sıradaki görev geliyor.',
+    hint: 'Örnekteki okla aynı yöne bakan oku seç.',
+    directions: { up: 'yukarı', upRight: 'sağ yukarı', right: 'sağa', downRight: 'sağ aşağı', down: 'aşağı', downLeft: 'sol aşağı', left: 'sola', upLeft: 'sol yukarı' },
+    stats: { level: 'Seviye', grid: 'Izgara' },
+  },
+};

@@ -1,0 +1,23 @@
+.spatial-game .spatial-grid {
+  display: grid;
+  gap: clamp(.35rem, 2vw, .75rem);
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+.spatial-game .spatial-cell {
+  min-width: 48px;
+  min-height: 48px;
+  aspect-ratio: 1;
+  padding: .35rem;
+  border: 2px solid var(--border, #9baead);
+  border-radius: .75rem;
+}
+.spatial-game .spatial-cell:disabled { opacity: 1; }
+.spatial-game .spatial-cell.marked,
+.spatial-game .spatial-cell.selected {
+  color: #fff;
+  background: #245a59;
+  border-color: #153f3e;
+}
+.spatial-cell svg { display: block; width: 100%; max-width: 3rem; margin: auto; }

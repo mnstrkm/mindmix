@@ -1,0 +1,26 @@
+export const translations = {
+  de: {
+    title: 'Kopfrechnen', description: 'Löse Rechenaufgaben in deinem eigenen Tempo.',
+    goal: 'Löse möglichst viele Aufgaben hintereinander richtig.',
+    controls: 'Gib das Ergebnis über das große Zahlenfeld ein. Mit der Rücktaste kannst du korrigieren. Erst Bestätigen wertet die Antwort.',
+    ending: 'Die erste falsch bestätigte Antwort beendet die Partie. Du kannst auch jederzeit freiwillig beenden. Es gibt kein Zeitlimit.',
+    scoring: 'Jede richtige Aufgabe zählt einmal. Grundrechnen und Gemischt haben getrennte Rekorde. Die Schwierigkeit steigt behutsam und bleibt dann gleich.',
+    unit: 'richtige Aufgaben', variants: { basic: 'Grundrechnen', mixed: 'Gemischt' },
+    basicDetail: 'Addition und Subtraktion bis 100.', mixedDetail: 'Addition und Subtraktion bis 200, kleines Einmaleins und passende Divisionen.',
+    question: '{{left}} {{operation}} {{right}} = ?', correct: 'Richtig! Die nächste Aufgabe folgt.',
+    status: '{{count}} richtig · Stufe {{level}}', answer: 'Dein Ergebnis',
+    stats: { level: 'Stufe', solution: 'Richtige Lösung' },
+  },
+  tr: {
+    title: 'Zihinden hesap', description: 'İşlemleri kendi hızında çöz.',
+    goal: 'Art arda mümkün olduğunca çok işlemi doğru çöz.',
+    controls: 'Sonucu büyük sayı tuşlarıyla gir. Silme tuşuyla düzeltebilirsin. Yanıt ancak Onayla seçildiğinde değerlendirilir.',
+    ending: 'Onaylanan ilk yanlış yanıt oyunu bitirir. İstediğin zaman kendin de bitirebilirsin. Süre sınırı yoktur.',
+    scoring: 'Her doğru işlem bir puandır. Temel ve Karma için rekorlar ayrıdır. Zorluk yavaşça artar, sonra sabit kalır.',
+    unit: 'doğru işlem', variants: { basic: 'Temel', mixed: 'Karma' },
+    basicDetail: '100’e kadar toplama ve çıkarma.', mixedDetail: '200’e kadar toplama ve çıkarma, çarpım tablosu ve tam sonuçlu bölme.',
+    question: '{{left}} {{operation}} {{right}} = ?', correct: 'Doğru! Sıradaki işlem geliyor.',
+    status: '{{count}} doğru · Seviye {{level}}', answer: 'Sonucun',
+    stats: { level: 'Seviye', solution: 'Doğru çözüm' },
+  },
+};

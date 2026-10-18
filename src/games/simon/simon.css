@@ -1,0 +1,35 @@
+.simon-game .simon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline: auto;
+}
+.simon-game .simon-pad {
+  min-height: 100px;
+  min-width: 48px;
+  aspect-ratio: 1.2;
+  padding: .75rem;
+  border: 4px solid transparent;
+  border-radius: 1.4rem;
+  font-size: clamp(2.5rem, 11vw, 4rem);
+  color: #fff;
+  line-height: 1;
+  transition: transform 100ms ease, box-shadow 100ms ease;
+}
+.simon-game .simon-pad:disabled { opacity: 1; }
+.simon-game .simon-pad-0 { background: #255a9e; }
+.simon-game .simon-pad-1 { background: #a24812; }
+.simon-game .simon-pad-2 { background: #76509a; }
+.simon-game .simon-pad-3 { background: #216852; }
+.simon-game .simon-pad.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 4px var(--text, #162d2c), inset 0 0 0 3px currentColor;
+  transform: scale(.94);
+}
+.simon-phase { font-weight: 750; }
+@media (prefers-reduced-motion: reduce) {
+  .simon-game .simon-pad { transition: none; }
+  .simon-game .simon-pad.active { transform: none; }
+}
