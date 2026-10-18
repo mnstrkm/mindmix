@@ -4,6 +4,7 @@ import { games } from './registry';
 import { GameIcon, ArrowIcon } from '../shared/ui/Icon';
 import { useSavedData } from './state';
 import { comparisonKey } from '../services/storage/storage';
+import { revealGameSelection } from '../shared/ui/viewport';
 
 export default function Home() {
   const { t } = useTranslation('common');
@@ -14,7 +15,7 @@ export default function Home() {
         <p className="eyebrow">{t('eyebrow')}</p>
         <h1>{t('heroFirst')}<br /><span>{t('heroSecond')}</span></h1>
         <p className="hero-description">{t('heroDescription')}</p>
-        <a className="button primary hero-button" href="#game-list" onClick={event => { event.preventDefault(); document.getElementById('game-list')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); document.getElementById('game-list')?.focus({ preventScroll: true }); }}>{t('explore')}<ArrowIcon /></a>
+        <a className="button primary hero-button" href="#game-selection" onClick={event => { event.preventDefault(); revealGameSelection(); }}>{t('explore')}<ArrowIcon /></a>
         <p className="hero-note">{t('heroNote')}</p>
       </div>
       <div className="hero-art" aria-hidden="true">
@@ -24,7 +25,7 @@ export default function Home() {
         <div className="art-tile art-four yellow"><GameIcon id="reaction" /></div>
       </div>
     </section>
-    <section className="catalog" aria-labelledby="game-list">
+    <section id="game-selection" className="catalog" aria-labelledby="game-list">
       <div className="section-heading"><div><p className="eyebrow">{t('games')}</p><h2 id="game-list" tabIndex={-1}>{t('allGames')}</h2></div><p>{t('allGamesDescription')}</p></div>
       <div className="game-cards">
         {games.map((game, index) => {

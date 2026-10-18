@@ -17,5 +17,21 @@ export function revealRegion(region: HTMLElement | null | undefined, context?: H
 export function focusAndReveal(element: HTMLElement | null | undefined, context?: HTMLElement | null) {
   if (!element) return;
   element.focus({ preventScroll: true });
-  revealRegion(element, context);
+  const bounds = element.getBoundingClientRect();
+  const margin = Math.min(24, window.innerHeight * 0.035);
+  const top = Math.min(bounds.top, context?.getBoundingClientRect().top ?? bounds.top);
+  if (bounds.bottom - top > window.innerHeight - margin * 2) {
+    revealRegion(context ?? element);
+    return;
+  }
+  // A slightly clipped button needs only a small correction, not top alignment.
+  const delta = top < margin ? top - margin : Math.max(0, bounds.bottom - window.innerHeight + margin);
+  const destination = Math.max(0, window.scrollY + delta);
+  if (Math.abs(destination - window.scrollY) >= 1) window.scrollTo({ top: destination, behavior: 'instant' });
+}
+
+/** Explicit catalog actions include its eyebrow and leave room above the section. */
+export function revealGameSelection() {
+  document.getElementById('game-list')?.focus({ preventScroll: true });
+  document.getElementById('game-selection')?.scrollIntoView({ block: 'start', behavior: 'instant' });
 }

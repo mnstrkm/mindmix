@@ -5,7 +5,7 @@ import { audio } from '../../services/audio/audio';
 import { createPattern, difficultyIndex, getDifficulty, matchesPattern, toggleCell } from './logic';
 import './spatial.css';
 import ResultReview from './ResultReview';
-import { focusAndReveal } from '../../shared/ui/viewport';
+import { focusAndReveal, revealRegion } from '../../shared/ui/viewport';
 
 interface State {
   phase: 'memorize' | 'recall' | 'ended';
@@ -44,7 +44,14 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
 
   useEffect(() => { onProgress(progress(current.current)); }, [onProgress]);
   useEffect(() => {
-    if (!paused) focusAndReveal(container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)'));
+    if (paused) return;
+    const control = container.current?.querySelector<HTMLButtonElement>('button:not(:disabled)');
+    if (state.phase === 'memorize') {
+      container.current?.querySelector<HTMLElement>('.status-line')?.focus({ preventScroll: true });
+      revealRegion(container.current);
+    } else if (state.phase === 'recall') {
+      focusAndReveal(control, container.current?.querySelector('.status-line'));
+    }
   }, [state.phase, state.solved, paused]);
 
   function conceal() {
@@ -79,7 +86,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
 
   return (
     <div className="game-content spatial-game" ref={container}>
-      <p className="status-line">{t('difficulty', { level: difficultyIndex(state.solved) + 1, ...difficulty })}</p>
+      <p className="status-line" tabIndex={-1}>{t('difficulty', { level: difficultyIndex(state.solved) + 1, ...difficulty })}</p>
       <p>{t(state.phase === 'memorize' ? 'memorize' : 'recall')}</p>
       <div className="game-grid spatial-grid" role="group" aria-label={t('grid', { ...difficulty })} style={{ gridTemplateColumns: `repeat(${difficulty.columns}, minmax(0, 1fr))` }}>
         {Array.from({ length: difficulty.rows * difficulty.columns }, (_, cell) => {

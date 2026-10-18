@@ -10,7 +10,7 @@ import { BrandMark } from '../shared/ui/Icon';
 import { OfflineStatus } from '../pwa/OfflineStatus';
 import { audio } from '../services/audio/audio';
 import { UiSounds } from '../services/audio/UiSounds';
-import { focusAndReveal } from '../shared/ui/viewport';
+import { focusAndReveal, revealGameSelection } from '../shared/ui/viewport';
 import packageInfo from '../../package.json';
 function Shell() {
   const { t, i18n } = useTranslation('common');
@@ -34,9 +34,7 @@ function Shell() {
     if (location.pathname.startsWith('/game/')) return;
     const frame = requestAnimationFrame(() => {
       if (location.pathname === '/' && location.state?.scrollTarget === 'games') {
-        const catalog = document.getElementById('game-list');
-        catalog?.focus({ preventScroll: true });
-        catalog?.scrollIntoView({ block: 'start', behavior: 'instant' });
+        revealGameSelection();
       } else if (location.pathname === '/') {
         if (navigated) main.current?.focus({ preventScroll: true });
         window.scrollTo({ top: 0, behavior: 'instant' });
@@ -53,7 +51,7 @@ function Shell() {
     <UiSounds />
     <a className="skip-link" href="#main" onClick={e => { e.preventDefault(); main.current?.focus(); }}>{t('skip')}</a>
     <header className="site-header"><div className="header-inner"><Link to="/" className="brand" aria-label={t('brand')}><BrandMark /><span>{t('brand')}</span></Link>
-      <nav aria-label={t('menu')}><NavLink to="/" state={{ scrollTarget: 'games' }} end>{t('games')}</NavLink><NavLink to="/records">{t('records')}</NavLink><NavLink to="/settings">{t('settings')}</NavLink></nav>
+      <nav aria-label={t('menu')}><NavLink to="/" end>{t('games')}</NavLink><NavLink to="/records">{t('records')}</NavLink><NavLink to="/settings">{t('settings')}</NavLink></nav>
       <span className="language-badge" aria-label={t('language')}>{data.settings.language.toLocaleUpperCase(data.settings.language)}</span>
     </div></header>
     <main id="main" ref={main} tabIndex={-1} className="site-main">{!persistent && <p className="notice" role="status">{t('storageWarning')}</p>}<Routes><Route path="/" element={<Home />} /><Route path="/records" element={<Records />} /><Route path="/settings" element={<Settings />} /><Route path="/game/:id" element={<GameRoute />} /><Route path="*" element={<Home />} /></Routes></main>

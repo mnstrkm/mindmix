@@ -23,6 +23,7 @@ describe('spatial recall interaction', () => {
     fireEvent.click(screen.getByRole('button', { name: 'confirm' }));
     expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 1, actions: 1 }));
     expect(within(screen.getByRole('group')).getAllByRole('button')).toHaveLength(6);
+    expect(screen.getByText('difficulty')).toHaveFocus();
   });
 
   it('does not expose the pattern on pause and counts a wrong confirmation once', () => {

@@ -42,11 +42,13 @@ Seit 1.2.0 kann ein Spiel mit `review` eine eigene, nicht interaktive React-Erge
 
 Der Host besitzt eine Finalisierungssperre pro Sitzung. Der Speicherdienst weist zusätzlich dieselbe Sitzungskennung zurück. Dadurch erzeugen wiederholte Ereignisse keine doppelten Verlaufseinträge. Navigieren aus einem Spiel beendet die aktuelle Partie mit dem zuletzt gemeldeten Stand. Ein vollständiges Schließen des Browsers stellt keine laufende Partie wieder her.
 
-Nach dem Ergebnis führt „Noch einmal“ in die Vorbereitung zurück, ohne eine Sitzung zu eröffnen. Variante und Vergleichsgruppe bleiben ausgewählt. Erst der ausdrückliche Start erzeugt wieder eine Sitzungskennung. Rücklinks zur Spielauswahl setzen `scrollTarget: 'games'` im Routenzustand; der Einstiegstext der Startseite wird dann übersprungen.
+Nach dem Ergebnis führt „Noch einmal“ in die Vorbereitung zurück, ohne eine Sitzung zu eröffnen. Variante und Vergleichsgruppe bleiben ausgewählt. Erst der ausdrückliche Start erzeugt wieder eine Sitzungskennung. Ausschließlich „Zum Menü“ aus dem Ergebnis setzt `scrollTarget: 'games'` im Routenzustand; der Einstiegstext der Startseite wird dann übersprungen.
 
 Die Scrollführung verwendet gemessene Elementgrenzen und die aktuelle Fensterhöhe. Passende Inhalte bleiben sichtbar, große Bereiche beginnen mit einem kleinen Rand im Sichtbereich. `ReadyContent` richtet nach dem Laden eines Spielmoduls dessen tatsächliche Ansicht aus. Programmatische Fokuswechsel unterbinden zunächst das native Scrollen, bevor der benötigte Bereich gezielt eingeblendet wird. Es werden keine festen Gerätemodelle oder Scrollkoordinaten vorausgesetzt.
 
 Die Regeln arbeiten, soweit erforderlich, mit übergebenen Zufallsquellen und Zeitwerten. Tests können dadurch gezielt Randfälle erzeugen. Es gibt keine dauernde Render-Schleife; zeitabhängige Spiele verwenden begrenzte Timer beziehungsweise einen Animationsframe für das Reaktionssignal.
+
+Normale Fokuswechsel scrollen nur um den tatsächlich verdeckten Bereich. Bei einem neuen räumlichen Muster wird die Rastervorlage mit Stufenangabe ausgerichtet, statt dem Ausblendknopf unter dem wachsenden Raster zu folgen. Das Zahlenfeld bietet symmetrisch Löschen, Null und eine kleine Bestätigung; der große Bestätigungsknopf bleibt zusätzlich erhalten. Beide lösen dieselbe Prüfung aus.
 
 ## Unterbrechungen und Eingaben
 
@@ -66,7 +68,7 @@ Pro Spiel bleiben höchstens 30 Verlaufseinträge erhalten, über alle Varianten
 
 Der Vergleichsschlüssel enthält Spiel, Variante, Regelversion und gegebenenfalls Inhaltsversion. Nur das Wortspiel verwendet zusätzlich die Spielsprache. Die UI-Sprache trennt keine sprachunabhängigen Rekorde. Beim Kopfrechnen trennen `basic` und `mixed` die Rekorde. Bei Reaktionszeiten ist kleiner besser; bei den anderen Spielen ist größer besser. Gleichstände ersetzen den bestehenden Rekord nicht.
 
-Seit 1.1.0 enthält der Vergleichsschlüssel zusätzlich eine optionale Metrikkennung. `recordScores` meldet weitere unabhängige Rekorde derselben Vergleichsrichtung; bei der Reaktion ist dies `fastest`. Der Speicher hält diesen Rekord getrennt vom Durchschnitt, auch wenn seine ursprüngliche Partie aus dem 30-Einträge-Verlauf herausfällt. Eine gültige Einzelzeit kann einen solchen Rekord ergeben, obwohl die Partie noch keinen vollständigen Durchschnitt besitzt. `variantRuleVersions` ermöglicht eine Regeländerung nur im gemischten Rechenmodus. Frühere Vergleichsgruppen bleiben unter den Bestleistungen einsehbar.
+Seit 1.1.0 enthält der Vergleichsschlüssel zusätzlich eine optionale Metrikkennung. `recordScores` meldet weitere unabhängige Rekorde derselben Vergleichsrichtung; bei der Reaktion ist dies `fastest`. Der Speicher hält diesen Rekord getrennt vom Durchschnitt, auch wenn seine ursprüngliche Partie aus dem 30-Einträge-Verlauf herausfällt. Eine gültige Einzelzeit kann einen solchen Rekord ergeben, obwohl die Partie noch keinen vollständigen Durchschnitt besitzt. `variantRuleVersions` ermöglicht eine Regeländerung nur im gemischten Rechenmodus. Frühere Vergleichsgruppen bleiben gespeichert. Das Wortspiel zeigt auf Wunsch ausschließlich die aktuellen deutschen und türkischen Bestleistungen; sein früheres Archiv und der dorthin führende Link sind ausgeblendet. Andere Spiele behalten ihre Archivansichten.
 
 Versionen haben unterschiedliche Aufgaben:
 

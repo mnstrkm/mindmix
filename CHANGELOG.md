@@ -2,6 +2,15 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.3.1 – 2026-10-18
+
+- Navigation korrigiert: „Spiele“ im oberen Menü und „Alle Spiele“ führen an den Anfang. Nur „Zum Menü“ im Ergebnis öffnet direkt die Spielauswahl.
+- „Spiele entdecken“ und der Ergebnis-Rückweg verwenden denselben Kataloganker mit vollständig sichtbarer Bereichsüberschrift und mehr Abstand darüber.
+- Fokuswechsel scrollen nur die fehlende Strecke statt kleine Bedienelemente an den oberen Rand zu ziehen. Beim räumlichen Gedächtnis bleiben nach Zeilen-/Spaltenwechseln Stufenangabe und Anfang des neuen Musters sichtbar; der Ausblendknopf zieht die Ansicht nicht mehr nach unten.
+- Symmetrisches Zahlenfeld wiederhergestellt: Löschen links, Null mittig, kleine Bestätigung rechts; der große Bestätigungsknopf bleibt zusätzlich erhalten. Beide verwenden dieselbe Wertung und erzeugen keinen zusätzlichen UI-Ton über dem Spielton.
+- Frühere Wortspiel-Bestleistungen und deren Verweis ausgeblendet, ohne gespeicherte Rekorde zu löschen oder Vergleichsgruppen zusammenzuführen. Der Vergleichshinweis unter den Bestleistungen erhält mehr Abstand.
+- Spielregeln, Inhalte und Speicherformat bleiben unverändert.
+
 ## 1.3.0 – 2026-10-18
 
 - „Noch einmal“ öffnet die Spielvorbereitung und erhält den gewählten Modus. Erst der nächste Start legt eine Sitzung an. Rückwege zur Spielauswahl überspringen den Einstiegstext.

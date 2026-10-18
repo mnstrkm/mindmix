@@ -113,7 +113,7 @@ function GameHost({ id }: { id?: string }) {
   const Game = game.component;
   const number = (value: number) => value.toLocaleString(data.settings.language, { maximumFractionDigits: 1 });
   return <div className="page-game" ref={page}>
-    <Link className="text-link back-link" to="/" state={{ scrollTarget: 'games' }}>← {t('back')}</Link>
+    <Link className="text-link back-link" to="/">← {t('back')}</Link>
     <div className="game-title"><span className={`game-icon ${game.tone}`}><GameIcon id={game.id} /></span><div><p className="eyebrow">{t(`category.${game.id}`)}</p><h1 ref={title} tabIndex={-1}>{t(`${game.id}:title`)}</h1></div></div>
     {phase === 'prepare' && <>
       <section className="panel preparation"><p className="lead">{t(`${game.id}:description`)}</p>
@@ -122,7 +122,7 @@ function GameHost({ id }: { id?: string }) {
         {game.id === 'arithmetic' && <fieldset className="mode-picker"><legend>{t('mode')}</legend><div className="segmented">{['basic', 'mixed'].map(mode => <button key={mode} aria-pressed={variant === mode} onClick={() => setVariant(mode)}>{t(`arithmetic:variants.${mode}`)}</button>)}</div></fieldset>}
         <div className="best-summary"><span>{t(`${game.id}:recordLabel`, { defaultValue: t('personalBest') })}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
         {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="secondary-record" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${number(best.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
-        {data.records.some(item => item.game === game.id && item.variant === variant && item.ruleVersion !== meta.ruleVersion) && <Link className="text-link" to="/records">{t('previousRules')} →</Link>}
+        {game.id !== 'recognition' && data.records.some(item => item.game === game.id && item.variant === variant && item.ruleVersion !== meta.ruleVersion) && <Link className="text-link" to="/records">{t('previousRules')} →</Link>}
         <button className="button primary start-button" onClick={start}>{t('start')}<span aria-hidden="true">→</span></button>
         {game.id === 'recognition' && <p className="hint">{t('recognitionLanguage')}</p>}
       </section>

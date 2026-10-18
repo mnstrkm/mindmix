@@ -91,9 +91,9 @@ test('menu targets the catalog and a fitting desktop game does not scroll unnece
     await page.getByRole('button', { name: 'Partie beenden', exact: true }).click();
     await page.getByRole('link', { name: 'Zum Menü', exact: true }).click();
     await expect(page.locator('#game-list')).toBeFocused();
-    await expect.poll(() => page.locator('#game-list').evaluate(element => element.getBoundingClientRect().top)).toBeLessThanOrEqual(24);
+    await expect.poll(() => page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top)).toBeLessThanOrEqual(64);
     await expect(page.locator('.game-card').first()).toBeInViewport();
-    expect(await page.locator('#game-list').evaluate(element => element.getBoundingClientRect().top)).toBeGreaterThanOrEqual(0);
+    expect(await page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top)).toBeGreaterThanOrEqual(24);
   }
 });
 

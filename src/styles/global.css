@@ -101,7 +101,7 @@ nav a.active { background: var(--surface); color: var(--green); }
 .sample-normal { font-size: 18px; }
 .sample-large { font-size: 25px; }
 .sample-extra { font-size: 32px; }
-#game-list { scroll-margin-top: 1rem; }
+#game-selection { scroll-margin-top: clamp(1.5rem, 5vh, 3rem); }
 .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .7rem 0; min-height: 52px; font-weight: 550; }
 .toggle-row input { margin: 0; flex-shrink: 0; }
 input[type='checkbox'] { min-width: 26px; min-height: 26px; margin: 12px; accent-color: var(--green); cursor: pointer; }
@@ -113,6 +113,7 @@ input[type='range'] { width: 100%; min-height: 48px; accent-color: var(--green);
 .notice { border-radius: .8rem; padding: 1rem; background: var(--notice-bg); border: 1px solid var(--control-border); color: var(--notice-ink); margin-top: 1.5rem; }
 .record-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
 .record-card { margin: 0; }
+.records-note { margin-block: 2rem 0; }
 .record-heading { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.3rem; }
 .record-heading h2 { font-size: 1.25rem; margin: 0; }
 .record-line { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .65fr); align-items: baseline; gap: .4rem 1rem; margin-bottom: .7rem; font-size: .95rem; }
@@ -163,7 +164,6 @@ input[type='range'] { width: 100%; min-height: 48px; accent-color: var(--green);
 .number-output { display: block; padding: .8rem; border: 2px solid var(--control-border); border-radius: .9rem; background: var(--surface); min-height: 4rem; font-size: 2rem; letter-spacing: .12em; line-height: 1.5; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; margin-bottom: 1rem; }
 .number-pad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin-bottom: 1rem; }
 .number-key { padding: .8rem .4rem; min-height: 64px; font-size: 1.5rem; border-radius: .8rem; border: 1px solid var(--control-border); background: var(--surface); color: var(--green); }
-.zero-key { grid-column: span 2; }
 @media (hover: hover) { .number-key:hover:not(:disabled) { background: var(--hover); } }
 .full-width { width: 100%; }
 .stop-row { border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 1.7rem; text-align: center; }

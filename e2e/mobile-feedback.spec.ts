@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => { Math.random = () => 0.1; });
 });
 
-test('one numeric confirmation, ordered settings, aligned history and no technical rule labels', async ({ page }) => {
+test('symmetric numeric controls, ordered settings, aligned history and no technical rule labels', async ({ page }) => {
   await page.addInitScript(() => {
     const base = { game: 'simon', variant: 'default', ruleVersion: 1, actions: 5, date: '2026-10-18T12:00:00Z' };
     localStorage.setItem('mindmix:data', JSON.stringify({ version: 1, settings: {}, records: [], history: [
@@ -23,7 +23,9 @@ test('one numeric confirmation, ordered settings, aligned history and no technic
   await page.screenshot({ path: '.preview/history-mobile.png', fullPage: true });
   await page.goto('#/game/arithmetic');
   await page.getByRole('button', { name: 'Spiel starten', exact: true }).tap();
-  await expect(page.getByRole('button', { name: 'Bestätigen', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Bestätigen', exact: true })).toHaveCount(2);
+  const lastRow = await page.locator('.number-pad button').evaluateAll(buttons => buttons.slice(-3).map(button => button.getAttribute('aria-label') ?? button.textContent));
+  expect(lastRow).toEqual(['Letzte Ziffer löschen', '0', 'Bestätigen']);
   await expect(page.locator('.game-content')).not.toContainText('Plus und Minus');
 });
 
@@ -79,7 +81,7 @@ test('a new record retains the previous comparable score in the result', async (
     const sequence = (await page.locator('.digit-sequence').innerText()).replace(/\s/g, '');
     await page.getByRole('button', { name: 'Gemerkte Folge ausblenden' }).tap();
     for (const digit of sequence) await page.getByRole('button', { name: digit, exact: true }).tap();
-    await page.getByRole('button', { name: 'Bestätigen', exact: true }).tap();
+    await page.getByRole('button', { name: 'Bestätigen', exact: true }).last().tap();
     await expect(page.locator('.live-score')).toHaveText(String(length));
   }
   await page.getByRole('button', { name: 'Partie beenden', exact: true }).tap();
@@ -101,5 +103,31 @@ test('result grids fit very large Turkish text on a 320px touch screen', async (
     await expect(page.locator('.result-review')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.screenshot({ path: `.preview/${game}-review-mobile-large-tr.png`, fullPage: true });
+  }
+});
+
+test('spatial row and column changes keep the new pattern visible instead of following the hide button', async ({ page }) => {
+  test.setTimeout(60000);
+  for (const [width, height] of [[320, 640], [390, 844], [1366, 768]]) {
+    await page.setViewportSize({ width, height });
+    await page.goto('#/game/spatial');
+    await page.getByRole('button', { name: 'Spiel starten', exact: true }).tap();
+    for (let solved = 0; solved < 5; solved++) {
+      await expect(page.locator('.spatial-cell.marked')).not.toHaveCount(0);
+      const pattern = await page.locator('.spatial-cell').evaluateAll(cells => cells.flatMap((cell, index) => cell.classList.contains('marked') ? [index] : []));
+      await page.getByRole('button', { name: 'Muster ausblenden', exact: true }).tap();
+      for (const index of pattern) await page.locator('.spatial-cell').nth(index).tap();
+      await page.getByRole('button', { name: 'Auswahl bestätigen', exact: true }).tap();
+      await expect(page.locator('.live-score')).toHaveText(String(solved + 1));
+      await expect(page.locator('.spatial-game .status-line')).toBeInViewport({ ratio: 1 });
+      await expect(page.locator('.spatial-game .status-line')).toBeFocused();
+      // Allow layout and native scroll anchoring to settle before checking the top edge.
+      await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+      const top = await page.locator('.spatial-grid').evaluate(element => element.getBoundingClientRect().top);
+      expect(top, `${width}px, solved=${solved + 1}`).toBeGreaterThanOrEqual(0);
+      if (solved === 0) await page.screenshot({ path: `.preview/spatial-row-change-1.3.1-${width}.png` });
+    }
+    await page.getByRole('button', { name: 'Partie beenden', exact: true }).tap();
+    await page.getByRole('button', { name: 'Noch einmal', exact: true }).tap();
   }
 });

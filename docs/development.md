@@ -57,9 +57,11 @@ Optionale Dateien lassen sich in `src/services/audio/config.ts` eintragen, mit P
 
 ## Navigation und Layout
 
-„Noch einmal“ öffnet die Vorbereitung desselben Spiels und erhält den gewählten Modus. Erst „Spiel starten“ legt eine neue Sitzung an. Rückwege zur Spielauswahl verwenden den Routenzustand `scrollTarget: 'games'`, damit der Einstiegstext übersprungen wird.
+„Noch einmal“ öffnet die Vorbereitung desselben Spiels und erhält den gewählten Modus. Erst „Spiel starten“ legt eine neue Sitzung an. Ausschließlich „Zum Menü“ aus dem Ergebnis verwendet den Routenzustand `scrollTarget: 'games'`, damit der Einstiegstext übersprungen wird. Der obere Menüpunkt „Spiele“ und „Alle Spiele“ führen an den Seitenanfang. „Spiele entdecken“ und der Ergebnis-Rückweg verwenden denselben Kataloganker einschließlich Bereichsüberschrift und oberem Abstand.
 
 `viewport.ts` misst Zielbereich und verfügbare Höhe. Sichtbare Inhalte bleiben an ihrer Position; große Bereiche werden mit etwas Abstand am oberen Rand ausgerichtet. Fokuswechsel verhindern zunächst das native Scrollen. Nach dem Laden eines Spielmoduls wird der tatsächlich gerenderte Inhalt berücksichtigt. Es gibt keine gerätespezifischen festen Scrollkoordinaten.
+
+Normale Fokuswechsel scrollen nur um den tatsächlich verdeckten Bereich. Bei einem neuen räumlichen Muster wird die Rastervorlage mit Stufenangabe ausgerichtet, statt dem Ausblendknopf unter dem wachsenden Raster zu folgen. Das Zahlenfeld bietet symmetrisch Löschen, Null und eine kleine Bestätigung; der große Bestätigungsknopf bleibt zusätzlich erhalten. Beide lösen dieselbe Prüfung aus.
 
 ## Pfade und Daten
 

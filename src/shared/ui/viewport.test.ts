@@ -37,3 +37,18 @@ it('focuses without native scrolling before revealing the target', () => {
   expect(focus).toHaveBeenCalledWith({ preventScroll: true });
   expect(window.scrollTo).toHaveBeenCalledWith({ top: 26, behavior: 'instant' });
 });
+
+it('scrolls only the clipped amount when a focused button is just below the viewport', () => {
+  focusAndReveal(region(750, 810));
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 134, behavior: 'instant' });
+});
+
+it('keeps the preceding stimulus visible with a minimal correction', () => {
+  focusAndReveal(region(800, 850), region(500, 650));
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 174, behavior: 'instant' });
+});
+
+it('shows the start of an oversized stimulus instead of jumping to its button', () => {
+  focusAndReveal(region(1200, 1250), region(200, 1150));
+  expect(window.scrollTo).toHaveBeenCalledWith({ top: 276, behavior: 'instant' });
+});

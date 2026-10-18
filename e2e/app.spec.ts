@@ -9,7 +9,7 @@ async function start(page: Page, game: string) {
 }
 async function digitEntry(page: Page, value: string) {
   for (const digit of value) await page.getByRole('button', { name: digit, exact: true }).click();
-  await page.getByRole('button', { name: 'Bestätigen', exact: true }).click();
+  await page.getByRole('button', { name: 'Bestätigen', exact: true }).last().click();
 }
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => { Math.random = () => 0.1; });

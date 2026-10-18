@@ -1,16 +1,16 @@
 # Qualitätssicherung
 
-## Prüfstand 1.3.0
+## Prüfstand 1.3.1
 
 **18.10.2026 · Windows · Node.js 24.19.0 · pnpm 11.25.0 · Microsoft Edge (Chromium)**
 
 | Prüfung | Ergebnis |
 | --- | --- |
 | Strikte TypeScript-Prüfung | Bestanden |
-| Logik-, Komponenten-, Audio- und Übersetzungstests | 95 Tests in 22 Dateien bestanden |
-| Produktionsbuild einschließlich PWA | Bestanden; 31 Precache-Dateien, rund 473 KiB |
-| Playwright am Produktionsbuild | 27 Browserprüfungen bestanden |
-| Visuelle Durchsicht | Mobile Zahlenfelder, Einstellungen, Rekordspalten und Ergebnisansichten; Deutsch und Türkisch, auch 320 Pixel mit sehr großer Schrift |
+| Logik-, Komponenten-, Audio- und Übersetzungstests | 98 Tests in 22 Dateien bestanden |
+| Produktionsbuild einschließlich PWA | Bestanden; 31 Precache-Dateien, rund 474 KiB |
+| Playwright am Produktionsbuild | 30 Browserprüfungen bestanden |
+| Visuelle Durchsicht | Symmetrisches Zahlenfeld, Katalogziele, neue Rastermuster, Einstellungen, Rekordspalten und Ergebnisansichten; Deutsch und Türkisch, auch 320 Pixel mit sehr großer Schrift |
 
 Lokale Browserprüfungen verwenden `PLAYWRIGHT_CHANNEL=msedge`. Der [CI-Workflow](https://github.com/mnstrkm/mindmix/actions/workflows/pages.yml) führt die Prüfungen mit Chromium unter Linux aus. Der jeweilige Workflow-Lauf dokumentiert den externen Stand separat.
 
@@ -37,17 +37,18 @@ pnpm test:e2e
 | Bereich | Nachgewiesene Eigenschaften |
 | --- | --- |
 | Wörter | Neuer/bekannter Status vor Eintragung, nie unmittelbar identische Wörter, Zufallsrandfälle, Poolende, Normalisierung und Dubletten beider Sprachen |
-| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge |
+| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge, kleine und große Bestätigung mit derselben Prüfung |
 | Farbreihenfolge | Gesperrte Vorführung, Eingabereihenfolge, sichtbare letzte Eingabe, Pause vor/nach erster Eingabe, Timerbereinigung |
-| Räumliches Gedächtnis | Eindeutige und unterschiedliche Muster, Mengengleichheit, Progression bis 8×4, mindestens 48×48-Pixel-Touchziele, verborgene Vorlage auch bei Pause |
+| Räumliches Gedächtnis | Eindeutige und unterschiedliche Muster, Mengengleichheit, Progression bis 8×4, mindestens 48×48-Pixel-Touchziele, verborgene Vorlage auch bei Pause, sichtbarer Musteranfang nach den ersten fünf Zeilen-/Spaltenwechseln bei 320/390/1366 Pixeln |
 | Kopfrechnen | Zahlenbereiche, alle Rechenarten, ganzzahlige Division, keine direkte Aufgabenwiederholung, begrenzte Erzeugung und ausgewogene Rechenarten |
 | Visuelle Suche | Genau ein Ziel, Progression bis 4×4, Richtungen, kurze Rückmeldung und keine hängenbleibende Touch-Auswahl |
 | Regelwechsel | Alle Farbe/Form/Regel-Kombinationen, feste Antwortflächen, Einstiegsblöcke und Wechselwahrscheinlichkeiten |
 | Reaktion | Fünf Messungen, Fehlstarts, Unterbrechungen, Durchschnitt, getrennte Einzelrekorde und bewusst angezeigte fünfte Zeit |
 | Ergebnisse | Einmalige Finalisierung, Fehlerübersichten, vorheriger vergleichbarer Rekord, keine doppelten Reaktionswerte, keine Speicherung der temporären Raster |
-| Navigation | Wiederholen öffnet Vorbereitung in allen acht Spielen, gewählter Modus bleibt erhalten, keine unbeabsichtigte neue Sitzung, Menü führt zum Katalog |
-| Scrollen und Fokus | Sichtbare Inhalte bleiben stehen, große Bereiche werden ausgerichtet, Katalogziel bei 320/768/1440 Pixeln, Tastatur und 200-Prozent-Textvergrößerung |
+| Navigation | Wiederholen öffnet Vorbereitung in allen acht Spielen, gewählter Modus bleibt erhalten, keine unbeabsichtigte neue Sitzung, Ergebnis-Menü führt zum Katalog, oberes „Spiele“ führt zum Anfang |
+| Scrollen und Fokus | Sichtbare Inhalte bleiben stehen, große Bereiche werden ausgerichtet, vollständige Katalogüberschrift mit Rand bei 320/390/1366 Pixeln, nur minimale Korrektur angeschnittener Fokusziele, Tastatur und 200-Prozent-Textvergrößerung |
 | Einstellungen | Sprache und Theme bleiben erhalten, drei ungebrochene Buchstabengrößen, neue Lautstärken bei 50 Prozent, gespeicherte Werte unverändert |
+| Archive | Frühere Wortspielwerte ausgeblendet und intern unverändert erhalten; Vergleichshinweis mit Abstand |
 | Mobile Rekorde | Durchschnitt und Einzelzeit bündig in Vorbereitung und Bestleistungen, auch mit sehr großer türkischer Schrift bei 320 Pixeln |
 | Audio | Einzelner UI-Ton, keine zusätzliche Klickebene auf Farbtönen, Fehlerton trotz neuem Rekord, stumme Effekte, Regleränderungen, optionale Dateien und kein verspäteter Ersatzton nach Pause |
 | Speicherung | Validierung, Speicherausfall, maximal 30 Partien je Spiel, langfristige Rekorde, getrennte Vergleichsgruppen und keine doppelte Finalisierung |
