@@ -30,11 +30,15 @@ App-, Regel-, Inhalts- und Schemaversionen bleiben getrennt. Eine kosmetische Ap
 
 ## Kein allgemeines Antwortzeitlimit
 
-Die Aufgaben belohnen richtige Antworten beziehungsweise vollständig erinnerte Folgen. Ein Zeitbonus würde ruhiges Spielen benachteiligen. Nur die Reaktions-Challenge misst Zeit und verwendet fünf gültige Versuche mit Median, um einzelne ungewöhnliche Messungen weniger stark zu gewichten. Diese Browsermessung ist ein persönlicher Vergleichswert; Geräte- und Eingabelatenz bleiben enthalten.
+Die Aufgaben belohnen richtige Antworten beziehungsweise vollständig erinnerte Folgen. Ein Zeitbonus würde ruhiges Spielen benachteiligen. Nur die Reaktions-Challenge misst Zeit. Seit 1.1.0 verwendet sie auf Nutzerwunsch den verständlichen Durchschnitt aus fünf gültigen Versuchen; der schnellste Einzelversuch ist ein eigenständiger Rekord. Frühere Medianwerte bleiben getrennt beschriftet. Geräte- und Eingabelatenz bleiben enthalten.
 
 ## Fortschritt mit bedienbarem Plateau
 
-Such- und räumliche Raster enden bei 4×4, damit Touch-Ziele erkennbar bleiben. Kopfrechnen bleibt in definierten Zahlenbereichen; Regelwechsel erreicht eine begrenzte Wechselwahrscheinlichkeit. Die Partien können auf dem Plateau weitergehen. Zahlen- und Simon-Folgen wachsen dagegen in ihrer Länge, ohne zugleich das Tempo zu erhöhen.
+Die visuelle Suche endet bei 4×4. Das räumliche Gedächtnis wächst seit 1.1.0 auf Nutzerwunsch darüber hinaus bis 8×4. Zusätzliche Zeilen erhöhen den Umfang, während maximal vier Spalten die Touch-Ziele auf dem Handy groß halten. Vertikales Scrollen ist erlaubt. Größere Stufen bleiben mehrere Aufgaben lang bestehen. Kopfrechnen und Regelwechsel behalten begrenzte Schwierigkeitsstufen. Auf den Plateaus sind weitere neue Aufgaben möglich.
+
+## Dunkle Ansicht und vollständige Rückmeldungen
+
+Die gesamte App startet auf Nutzerwunsch dunkel; eine helle Ansicht bleibt wählbar. Reaktion und Simon beenden die sichtbare Rückmeldung des letzten Schritts vollständig: Die fünfte Reaktionszeit wartet auf eine ausdrückliche Ergebnisaktion, Simons letztes Feld bleibt vor dem Übergang hervorgehoben. Statische Beispiele erleichtern die Erklärung ohne zusätzliche Trainingsmodi oder ungewertete Wiederholungen der laufenden Aufgabe.
 
 ## Sichtbare Regeln und zusätzliche Kennzeichnungen
 

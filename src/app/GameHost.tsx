@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { getGame } from './registry';
+import { getGame, getRuleVersion } from './registry';
 import type { GameResult, Language } from './types';
 import { useActivity, useSavedData } from './state';
 import { comparisonKey, isBetter, storage, type Result } from '../services/storage/storage';
@@ -11,7 +11,8 @@ import { ErrorBoundary } from '../shared/ui/ErrorBoundary';
 
 function Instructions({ id }: { id: string }) {
   const { t } = useTranslation('common');
-  return <div className="instructions">{['goal', 'controls', 'ending', 'scoring'].map(key => <div key={key}><h3>{t(key)}</h3><p>{t(`${id}:${key}`)}</p></div>)}</div>;
+  const Guide = getGame(id)?.guide;
+  return <div className="instructions">{Guide && <Guide />}{['goal', 'controls', 'ending', 'scoring'].map(key => <div key={key}><h3>{t(key)}</h3><p>{t(`${id}:${key}`)}</p></div>)}</div>;
 }
 export default function GameRoute() {
   const { id } = useParams();
@@ -81,7 +82,7 @@ function GameHost({ id }: { id?: string }) {
     wasPaused.current = Boolean(pause);
   }, [pause, phase]);
   if (!game) return <div className="panel"><h1>{t('notFound')}</h1><Link to="/">{t('menu')}</Link></div>;
-  const meta = { game: game.id, variant, ruleVersion: game.ruleVersion, language: game.id === 'recognition' ? phase === 'prepare' ? data.settings.language : language : undefined, contentVersion: game.contentVersion };
+  const meta = { game: game.id, variant, ruleVersion: getRuleVersion(game, variant), language: game.id === 'recognition' ? phase === 'prepare' ? data.settings.language : language : undefined, contentVersion: game.contentVersion };
   const key = comparisonKey(meta);
   const record = data.records.find(item => comparisonKey(item) === key);
   const history = data.history.filter(item => comparisonKey(item) === key).slice(-5).reverse();
@@ -101,26 +102,29 @@ function GameHost({ id }: { id?: string }) {
         <button className="button secondary" aria-expanded={showHelp} onClick={() => setShowHelp(value => !value)}>{t('explain')}</button>
         {showHelp && <Instructions id={game.id} />}
         {game.id === 'arithmetic' && <fieldset className="mode-picker"><legend>{t('mode')}</legend><div className="segmented">{['basic', 'mixed'].map(mode => <button key={mode} aria-pressed={variant === mode} onClick={() => setVariant(mode)}>{t(`arithmetic:variants.${mode}`)}</button>)}</div></fieldset>}
-        <div className="best-summary"><span>{t('personalBest')}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
+        <div className="best-summary"><span>{t(`${game.id}:recordLabel`, { defaultValue: t('personalBest') })}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
+        {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="secondary-record" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${number(best.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
+        {data.records.some(item => item.game === game.id && item.variant === variant && item.ruleVersion !== meta.ruleVersion) && <Link className="text-link" to="/records">{t('previousRules')} →</Link>}
         <button className="button primary start-button" onClick={start}>{t('start')}<span aria-hidden="true">→</span></button>
         {game.id === 'recognition' && <p className="hint">{t('recognitionLanguage')}</p>}
       </section>
       <section className="history"><h2>{t('recent')}</h2>{history.length ? <ul>{history.map(item => <li key={item.id}><time dateTime={item.date}>{new Date(item.date).toLocaleDateString(data.settings.language)}</time><span>{number(item.score)} {t(`${game.id}:unit`)}{item.eligible === false && ' *'}</span><small>{t(`reasons.${item.reason ?? 'stopped'}`)}</small></li>)}</ul> : <p>{t('noHistory')}</p>}{history.some(item => item.eligible === false) && <p className="hint">* {t('noRecord')}</p>}</section>
     </>}
     {phase === 'playing' && <section className="panel play-panel">
-      <div className="play-toolbar"><div><span className="score-label">{t(`${game.id}:unit`)}</span><strong className="live-score">{number(progress.score)}</strong></div><button className="button secondary" onClick={() => { audio.pause(); setPause('help'); }}>{t('explain')}</button></div>
+      <div className="play-toolbar"><div><span className="score-label">{t(`${game.id}:scoreLabel`, { defaultValue: t(`${game.id}:unit`) })}</span><strong className="live-score">{progress.eligible === false ? '—' : number(progress.score)}</strong></div><button className="button secondary" onClick={() => { audio.pause(); setPause('help'); }}>{t('explain')}</button></div>
       {pause && <div className="pause-panel"><h2 ref={pauseTitle} tabIndex={-1}>{t(pause === 'help' ? 'explain' : 'paused')}</h2>{pause === 'help' ? <Instructions id={game.id} /> : <p>{t('pausedText')}</p>}<button className="button primary" onClick={() => { audio.unlock(); setPause(null); }}>{t('continue')}</button></div>}
       <div ref={gameArea} hidden={Boolean(pause)}><ErrorBoundary><Suspense fallback={<p role="status">{t('loading')}</p>}><Game key={round} language={language} variant={variant} paused={Boolean(pause)} onProgress={onProgress} onFinish={onFinish} /></Suspense></ErrorBoundary></div>
       <div className="stop-row"><button className="button quiet" onClick={() => finish({ ...session.current!.progress, reason: 'stopped' })}>{t('stop')}</button><p className="hint">{t('sessionNavigation')}</p></div>
     </section>}
     {phase === 'result' && result && <section className="panel result-panel">
       <p className="eyebrow">{t(`reasons.${result.reason ?? 'completed'}`)}</p><h2>{t(newBest ? 'newBest' : 'result')}</h2>
-      <div className="result-score">{number(result.score)}<span>{t(`${game.id}:unit`)}</span></div>
-      {result.eligible === false && <p className="notice">{t('noRecord')}</p>}{result.actions === 0 && <p className="hint">{t('noActions')}</p>}
-      <div className="best-summary"><span>{t('bestSoFar')}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
+      <div className="result-score">{result.eligible === false ? '—' : number(result.score)}<span>{t(`${game.id}:scoreLabel`, { defaultValue: t(`${game.id}:unit`) })}</span></div>
+      {result.eligible === false && <p className="notice">{t(`${game.id}:incomplete`, { defaultValue: t('noRecord') })}</p>}{result.actions === 0 && <p className="hint">{t('noActions')}</p>}
+      <div className="best-summary"><span>{t(`${game.id}:recordLabel`, { defaultValue: t('bestSoFar') })}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
+      {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="secondary-record" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${number(best.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
       {result.stats && <dl className="result-stats">{Object.entries(result.stats).map(([stat, value]) => <div key={stat}><dt>{t(`${game.id}:${stat}`)}</dt><dd>{typeof value === 'number' ? number(value) : value}</dd></div>)}</dl>}
       <div className="actions"><button className="button primary" onClick={start}>{t('again')}</button><Link className="button secondary" to="/">{t('menu')}</Link></div><p className="hint">{t('resultNote')}</p>
     </section>}
-    <p className="rule-version">{t('rulesVersion', { version: game.ruleVersion })}</p>
+    <p className="rule-version">{t('rulesVersion', { version: meta.ruleVersion })}</p>
   </div>;
 }

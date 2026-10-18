@@ -1,15 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { PROGRESSION } from './config';
+import { LEVEL_THRESHOLDS, PROGRESSION } from './config';
 import { createPattern, difficultyIndex, getDifficulty, matchesPattern, toggleCell } from './logic';
 
 describe('spatial patterns', () => {
-  it('uses the exact progression and plateaus without growing the grid', () => {
-    expect(PROGRESSION.map(level => [level.rows, level.columns, level.marked])).toEqual([
+  it('keeps the initial progression and adds larger grids with slower steps', () => {
+    expect(PROGRESSION.slice(0, 11).map(level => [level.rows, level.columns, level.marked])).toEqual([
       [2, 2, 2], [3, 2, 2], [3, 2, 3], [3, 3, 3], [3, 3, 4], [4, 3, 4],
       [4, 3, 5], [4, 4, 5], [4, 4, 6], [4, 4, 7], [4, 4, 8],
     ]);
-    expect(getDifficulty(10_000)).toEqual({ rows: 4, columns: 4, marked: 8 });
-    expect(difficultyIndex(10_000)).toBe(10);
+    expect(getDifficulty(11)).toEqual(getDifficulty(10));
+    expect(getDifficulty(12)).toEqual({ rows: 5, columns: 4, marked: 8 });
+    expect(getDifficulty(10_000)).toEqual({ rows: 8, columns: 4, marked: 16 });
+    expect(difficultyIndex(10_000)).toBe(PROGRESSION.length - 1);
+    expect(LEVEL_THRESHOLDS).toHaveLength(PROGRESSION.length);
+    expect(PROGRESSION.every(level => level.columns <= 4)).toBe(true);
   });
 
   it('creates distinct, valid cells with no identical adjacent pattern', () => {

@@ -1,6 +1,7 @@
 export const translations = {
   de: {
-    title: 'Regelwechsel', description: 'Entscheide nach Farbe oder Form. Die Regel gibt den Weg vor.',
+    example: 'Die Regel lautet „Farbe“. Ein orangefarbener Kreis gehört deshalb nach rechts. Bei der Regel „Form“ würde derselbe Kreis nach links gehören.',
+    title: 'Regelwechsel', description: 'Entscheide nach Farbe oder Form. Die aktuelle Regel steht über dem Objekt.',
     goal: 'Wähle die passende Antwort nach der aktuell angezeigten Regel.',
     controls: 'Bei Farbe zählt Blau oder Orange, bei Form zählt Kreis oder Dreieck. Links bleibt immer Blau / Kreis, rechts Orange / Dreieck. Der Farbname steht zusätzlich am Objekt.',
     ending: 'Die erste falsche Entscheidung beendet die Partie. Du kannst jederzeit freiwillig beenden. Es gibt kein Zeitlimit.',
@@ -15,6 +16,7 @@ export const translations = {
     stats: { switches: 'Richtig nach Regelwechsel', level: 'Stufe', solution: 'Richtige Antwort' },
   },
   tr: {
+    example: 'Kural “Renk” ise turuncu daire için sağa basarsın. Kural “Şekil” olduğunda aynı daire için sola basman gerekir.',
     title: 'Kural değişimi', description: 'Renge veya şekle göre karar ver. Görünen kuralı izle.',
     goal: 'Gösterilen kurala göre doğru yanıtı seç.',
     controls: 'Renk kuralında Mavi veya Turuncu, Şekil kuralında Daire veya Üçgen önemlidir. Solda her zaman Mavi / Daire, sağda Turuncu / Üçgen bulunur. Rengin adı nesnenin yanında ayrıca yazılıdır.',

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Settings } from '../storage/storage';
 
-const settings: Settings = { language: 'de', effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2, textSize: 'normal' };
+const settings: Settings = { language: 'de', theme: 'dark', effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2, textSize: 'normal' };
 
 class FakeAudio extends EventTarget {
   readyState = 0;

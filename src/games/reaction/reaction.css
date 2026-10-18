@@ -5,8 +5,9 @@
   font: inherit; font-size: clamp(1.5rem, 5vw, 2.6rem); font-weight: 750;
   cursor: pointer; touch-action: manipulation; overflow-wrap: anywhere;
 }
-.reaction-target.waiting { background: #fbe3d5; color: #732816; }
-.reaction-target.signal { background: #d3f5de; color: #125632; }
+.reaction-target.waiting { background: #322022; color: #f0b8b6; border-color: #815153; }
+.reaction-target.signal { background: #174737; color: #d6ffe9; border-color: #82dbaf; }
+.reaction-summary { font-weight: 650; color: var(--green); }
 .reaction-target:disabled { cursor: default; }
 .reaction-indicator { font-size: 1.8em; line-height: 1.2; }
 .reaction-counts { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.25rem 1rem; }

@@ -3,5 +3,6 @@ export const START_LENGTH = 2;
 export const PRESENTATION_DELAY_MS = 600;
 export const SIGNAL_DURATION_MS = 650;
 export const SIGNAL_GAP_MS = 280;
-export const INPUT_FEEDBACK_MS = 140;
+export const INPUT_FEEDBACK_MS = 180;
+export const ROUND_FEEDBACK_MS = 400;
 export const PAD_SYMBOLS = ['●', '▲', '■', '◆'] as const;

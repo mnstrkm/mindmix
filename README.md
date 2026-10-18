@@ -4,7 +4,7 @@ MindMix ist eine Sammlung von acht kleinen Browser-Spielen auf Deutsch und Türk
 
 Die Ergebnisse beschreiben ausschließlich die jeweils gespielte Aufgabe. Es gibt keine Gesamtbewertung der Person, medizinischen Aussagen, Konten, Werbung oder Tracking. Einstellungen und Ergebnisse bleiben im verwendeten Browser.
 
-**Version:** 1.0.1 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
+**Version:** 1.1.0 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
 
 | Spiel | Ergebnis |
 | --- | --- |
@@ -15,7 +15,7 @@ Die Ergebnisse beschreiben ausschließlich die jeweils gespielte Aufgabe. Es gib
 | Kopfrechnen | Richtige Aufgaben, getrennt nach Grundrechnen und Gemischt |
 | Visuelle Suche | Richtig gefundene Zielsymbole |
 | Regelwechsel | Richtige Entscheidungen nach Farbe oder Form |
-| Reaktions-Challenge | Median aus fünf gültigen Messungen in Millisekunden |
+| Reaktions-Challenge | Durchschnitt aus fünf Versuchen und separat schnellster Einzelversuch |
 
 ## Lokal starten
 
@@ -74,6 +74,8 @@ Die Installation ist optional und wird vom jeweiligen Browser angeboten. HTTPS b
 Eine neue Version wird angekündigt und erst nach einer bewussten Aktualisierung aktiviert. Während einer laufenden Partie ist die Aktualisierung gesperrt. Alte Asset-Caches werden bereinigt; die lokalen Spielergebnisse liegen getrennt davon in `localStorage`.
 
 ## Anpassen und weiterentwickeln
+
+Die Oberfläche startet standardmäßig dunkel. In den Einstellungen lässt sich eine helle Ansicht wählen; die Wahl wird lokal gespeichert. Alle Erklärungen enthalten ein kleines visuelles Beispiel. Alte Rekorde bleiben nach Regeländerungen unter **Bestleistungen → Frühere Bestleistungen** einsehbar. Frühere Reaktionsrekorde waren Medianwerte und werden deshalb ausdrücklich so beschriftet; neue Durchschnittswerte werden damit nicht vermischt.
 
 | Bereich | Ort |
 | --- | --- |

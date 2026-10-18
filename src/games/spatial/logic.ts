@@ -1,7 +1,9 @@
-import { PROGRESSION, type Difficulty } from './config';
+import { LEVEL_THRESHOLDS, PROGRESSION, type Difficulty } from './config';
 
 export function difficultyIndex(solved: number): number {
-  return Math.min(Math.max(0, solved), PROGRESSION.length - 1);
+  let index = 0;
+  LEVEL_THRESHOLDS.forEach((threshold, level) => { if (solved >= threshold) index = level; });
+  return index;
 }
 
 export function getDifficulty(solved: number): Difficulty {

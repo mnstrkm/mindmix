@@ -34,7 +34,7 @@ describe('reaction interaction', () => {
   });
   afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
-  it('measures five valid pointer/keyboard responses once and reports their median', () => {
+  it('keeps the last response visible and reports average and fastest separately after confirmation', () => {
     const onFinish = vi.fn();
     render(<Game paused={false} language="de" variant="default" onProgress={vi.fn()} onFinish={onFinish} />);
     startMeasured();
@@ -54,9 +54,14 @@ describe('reaction interaction', () => {
         fireEvent.click(screen.getByRole('button', { name: 'nextTrial' }));
       }
     }
+    expect(onFinish).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'showResult' })).toBeVisible();
+    advance(60_000);
+    expect(onFinish).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'showResult' }));
     expect(onFinish).toHaveBeenCalledTimes(1);
-    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 230, actions: 5, eligible: true, reason: 'completed', stats: {
-      'stats.validTrials': 5, 'stats.falseStarts': 0, 'stats.fastest': 100, 'stats.measurements': '300 · 100 · 500 · 230 · 200',
+    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 266, actions: 5, eligible: true, reason: 'completed', recordScores: { fastest: 100 }, stats: {
+      'stats.validTrials': 5, 'stats.falseStarts': 0, 'stats.average': 266, 'stats.fastest': 100, 'stats.measurements': '300 · 100 · 500 · 230 · 200',
     } }));
   });
 

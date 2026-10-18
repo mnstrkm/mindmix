@@ -1,4 +1,4 @@
-export const RULE_VERSION = 1;
+export const RULE_VERSION = 2;
 export const REACTION_CONFIG = {
   validTrials: 5,
   maximumFalseStarts: 3,

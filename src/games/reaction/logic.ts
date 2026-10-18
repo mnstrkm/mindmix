@@ -18,7 +18,7 @@ export function chooseReactionMode(state: ReactionState, practice: boolean): Rea
   return { ...state, phase: 'ready', practice, lastTime: null, lastWasEarly: false };
 }
 export function beginTrial(state: ReactionState): ReactionState {
-  if (state.phase !== 'ready' && !(state.phase === 'feedback' && !state.practice)) return state;
+  if (state.times.length >= REACTION_CONFIG.validTrials || (state.phase !== 'ready' && !(state.phase === 'feedback' && !state.practice))) return state;
   return { ...state, phase: 'waiting', signalAt: null, lastTime: null, lastWasEarly: false };
 }
 export function showSignal(state: ReactionState, now: number): ReactionState {
@@ -34,7 +34,7 @@ export function reactToSignal(state: ReactionState, now: number): ReactionState 
   if (state.phase !== 'signal' || state.signalAt === null || !Number.isFinite(now) || now < state.signalAt) return state;
   const elapsed = now - state.signalAt;
   const times = state.practice ? state.times : [...state.times, elapsed];
-  return { ...state, times, phase: times.length === REACTION_CONFIG.validTrials ? 'ended' : 'feedback',
+  return { ...state, times, phase: 'feedback',
     signalAt: null, lastTime: elapsed, lastWasEarly: false };
 }
 /** Interrupted attempts never become measurements or false starts. */
@@ -52,6 +52,12 @@ export function median(times: readonly number[]): number {
   const sorted = [...times].sort((a, b) => a - b);
   const middle = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[middle]! : (sorted[middle - 1]! + sorted[middle]!) / 2;
+}
+export function average(times: readonly number[]): number {
+  return times.length ? times.reduce((sum, time) => sum + time, 0) / times.length : 0;
+}
+export function completeReaction(state: ReactionState): ReactionState {
+  return state.phase === 'feedback' && isEligible(state) ? { ...state, phase: 'ended' } : state;
 }
 export function isEligible(state: ReactionState): boolean {
   return state.times.length === REACTION_CONFIG.validTrials && state.falseStarts < REACTION_CONFIG.maximumFalseStarts;

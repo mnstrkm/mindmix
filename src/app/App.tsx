@@ -22,6 +22,8 @@ function Shell() {
     void i18n.changeLanguage(data.settings.language);
     document.documentElement.lang = data.settings.language;
     document.documentElement.dataset.textSize = data.settings.textSize;
+    document.documentElement.dataset.theme = data.settings.theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', data.settings.theme === 'dark' ? '#10171c' : '#f6f5f0');
     audio.configure(data.settings);
   }, [data.settings, i18n]);
   useEffect(() => {

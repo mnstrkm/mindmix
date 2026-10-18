@@ -1,5 +1,6 @@
 export const translations = {
   de: {
+    example: 'Merke dir 4, 0, 7. Blende die Vorlage aus und gib 4, 0, 7 über das Zahlenfeld ein. Erst „Bestätigen“ wertet die Eingabe.',
     title: 'Zahlenfolge merken',
     description: 'Merke dir eine Zahlenfolge und gib sie aus dem Gedächtnis ein.',
     goal: 'Gib die komplette Zahlenfolge richtig wieder. Die erste Folge hat zwei Ziffern.',
@@ -18,6 +19,7 @@ export const translations = {
     stats: { completedRounds: 'Richtig wiedergegebene Folgen' },
   },
   tr: {
+    example: '4, 0, 7 rakamlarını hatırla. Örneği gizle ve sayı tuşlarıyla 4, 0, 7 gir. Giriş yalnızca “Onayla” ile değerlendirilir.',
     title: 'Sayı dizisini hatırla',
     description: 'Bir rakam dizisini aklında tut ve hafızandan gir.',
     goal: 'Rakam dizisinin tamamını doğru sırayla gir. İlk dizi iki rakamdan oluşur.',

@@ -9,8 +9,8 @@ export default defineConfig({
     registerType: 'prompt',
     includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
     manifest: {
-      name: 'MindMix', short_name: 'MindMix', description: 'Kleine Spiele, große Spielfreude.',
-      lang: 'de', theme_color: '#173e37', background_color: '#f6f5f0',
+      name: 'MindMix', short_name: 'MindMix', description: 'Acht Spiele. Dein Tempo.',
+      lang: 'de', theme_color: '#10171c', background_color: '#10171c',
       display: 'standalone', start_url: base, scope: base, id: base,
       icons: [
         { src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },

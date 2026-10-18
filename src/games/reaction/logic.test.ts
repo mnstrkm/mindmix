@@ -1,18 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { beginTrial, chooseReactionMode, createReaction, interruptTrial, isEligible, median, randomDelay, reactToSignal, showSignal } from './logic';
+import { average, beginTrial, chooseReactionMode, completeReaction, createReaction, interruptTrial, isEligible, median, randomDelay, reactToSignal, showSignal } from './logic';
 
 const measured = () => chooseReactionMode(createReaction(), false);
 
 describe('reaction rules', () => {
-  it('runs five valid measurements and uses the median instead of the fastest', () => {
+  it('keeps the fifth time visible, computes the arithmetic average and finishes explicitly', () => {
     let state = measured();
     for (const elapsed of [280, 150, 410, 230, 320]) {
       state = reactToSignal(showSignal(beginTrial(state), 1000), 1000 + elapsed);
     }
-    expect(state.phase).toBe('ended');
+    expect(state.phase).toBe('feedback');
     expect(state.times).toEqual([280, 150, 410, 230, 320]);
     expect(median(state.times)).toBe(280);
+    expect(average(state.times)).toBe(278);
     expect(isEligible(state)).toBe(true);
+    expect(beginTrial(state)).toBe(state);
+    state = completeReaction(state);
+    expect(state.phase).toBe('ended');
     expect(reactToSignal(state, 2000)).toBe(state);
   });
 
@@ -62,5 +66,7 @@ describe('reaction rules', () => {
     expect(median(values)).toBe(100);
     expect(values).toEqual([1000, 90, 100]);
     expect(median([100, 200])).toBe(150);
+    expect(average([100, 200, 900])).toBe(400);
+    expect(average([])).toBe(0);
   });
 });

@@ -21,7 +21,7 @@ test('eight games, navigation and browser back', async ({ page }) => {
   await page.getByRole('link', { name: 'Zahlenfolge merken öffnen' }).click();
   await expect(page.getByRole('heading', { name: 'Zahlenfolge merken' })).toBeVisible();
   await page.goBack();
-  await expect(page.getByRole('heading', { name: 'Kleine Spiele. Große Spielfreude.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Acht Spiele. Dein Tempo.' })).toBeVisible();
   await page.getByRole('link', { name: 'Bestleistungen', exact: true }).click();
   await expect(page.locator('.record-card')).toHaveCount(8);
 });
@@ -67,13 +67,18 @@ test('digits concealment, correction, result, restart, persistence and navigatio
 
 test('recognition evaluates previous appearance and ends on wrong answer', async ({ page }) => {
   await start(page, 'recognition');
-  await page.getByRole('button', { name: 'Neu', exact: true }).click();
-  await expect(page.locator('.live-score')).toHaveText('1');
-  await page.getByRole('button', { name: 'Schon gesehen', exact: true }).click();
-  await expect(page.locator('.live-score')).toHaveText('2');
-  await page.getByRole('button', { name: 'Neu', exact: true }).click();
-  await expect(page.locator('.result-score')).toContainText('2');
-  await expect(page.locator('.result-stats')).toContainText('schon gesehen');
+  const seen = new Set<string>();
+  for (let score = 1; score <= 6; score++) {
+    const word = await page.locator('.stimulus').innerText();
+    await page.getByRole('button', { name: seen.has(word) ? 'Schon gesehen' : 'Neu', exact: true }).click();
+    seen.add(word);
+    await expect(page.locator('.live-score')).toHaveText(String(score));
+    await expect(page.getByRole('button', { name: 'Neu', exact: true })).not.toHaveAttribute('aria-disabled', 'true');
+  }
+  const word = await page.locator('.stimulus').innerText();
+  await page.getByRole('button', { name: seen.has(word) ? 'Neu' : 'Schon gesehen', exact: true }).click();
+  await expect(page.locator('.result-score')).toContainText('6');
+  await expect(page.locator('.result-stats')).toContainText('Richtige Antwort');
 });
 
 test('spatial patterns can be recalled and the next task has the right dimensions', async ({ page }) => {
@@ -146,7 +151,12 @@ test('reaction measures five valid trials and rejects three false starts', async
     await page.locator('.reaction-target').press('Space');
     if (index < 4) { await page.clock.fastForward(400); await page.getByRole('button', { name: /Nächster Versuch/ }).click(); }
   }
+  await expect(page.getByRole('button', { name: 'Ergebnis ansehen', exact: true })).toBeVisible();
+  await expect(page.locator('.result-panel')).toHaveCount(0);
+  await page.screenshot({ path: '.preview/reaction-fifth-time.png', fullPage: true });
+  await page.getByRole('button', { name: 'Ergebnis ansehen', exact: true }).click();
   await expect(page.locator('.result-panel')).toBeVisible();
+  await page.screenshot({ path: '.preview/reaction-result.png', fullPage: true });
   const data = await page.evaluate(() => JSON.parse(localStorage.getItem('mindmix:data')!));
   expect(data.records.find((item: { game: string }) => item.game === 'reaction').eligible).toBe(true);
   await page.getByRole('button', { name: 'Noch einmal' }).click();
@@ -157,7 +167,7 @@ test('reaction measures five valid trials and rejects three false starts', async
     if (index < 2) { await page.clock.fastForward(400); await page.getByRole('button', { name: /Nächster Versuch/ }).click(); }
   }
   await expect(page.getByText('Drei Fehlstarts – Partie beendet')).toBeVisible();
-  await expect(page.getByText('Diese Partie ergibt keinen regulären Rekord.')).toBeVisible();
+  await expect(page.getByText(/Für einen Durchschnittsrekord brauchst du fünf gültige Versuche/)).toBeVisible();
 });
 
 test('settings persist, Turkish is complete, large text fits phone/tablet/desktop and rotation', async ({ page }) => {

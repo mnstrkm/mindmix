@@ -3,7 +3,9 @@
 .switch-rule-changed { border-style: dashed; border-width: 3px; }
 .switch-object { display: grid; justify-items: center; gap: .75rem; margin-block: .5rem 1.25rem; text-align: center; font-weight: 650; }
 .switch-shape { width: 7rem; height: 7rem; }
-.switch-blue { color: #2563eb; }
-.switch-orange { color: #c05600; }
+.switch-blue { color: #6aa6ff; }
+.switch-orange { color: #f2a15b; }
+[data-theme='light'] .switch-blue { color: #255a9e; }
+[data-theme='light'] .switch-orange { color: #bd5610; }
 .switch-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
 .switch-answers .button { min-width: 0; min-height: 4rem; white-space: normal; padding: 1rem .6rem; }

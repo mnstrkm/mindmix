@@ -10,14 +10,14 @@
   min-height: 48px;
   aspect-ratio: 1;
   padding: .35rem;
-  border: 2px solid var(--border, #9baead);
+  border: 2px solid var(--control-border);
   border-radius: .75rem;
 }
 .spatial-game .spatial-cell:disabled { opacity: 1; }
 .spatial-game .spatial-cell.marked,
 .spatial-game .spatial-cell.selected {
-  color: #fff;
-  background: #245a59;
-  border-color: #153f3e;
+  color: var(--on-accent);
+  background: var(--green);
+  border-color: var(--green);
 }
 .spatial-cell svg { display: block; width: 100%; max-width: 3rem; margin: auto; }

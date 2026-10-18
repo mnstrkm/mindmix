@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { GameProps, GameResult } from '../../app/types';
 import { audio } from '../../services/audio/audio';
 import { REACTION_CONFIG } from './config';
-import { beginTrial, chooseReactionMode, createReaction, interruptTrial, isEligible, median, randomDelay,
+import { average, beginTrial, chooseReactionMode, completeReaction, createReaction, interruptTrial, isEligible, randomDelay,
   reactToSignal, showSignal, type ReactionState } from './logic';
 import './reaction.css';
 
@@ -58,11 +58,13 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
   useEffect(() => {
     const eligible = isEligible(state);
     const result: GameResult = {
-      score: eligible ? Math.round(median(state.times)) : 0,
+      score: eligible ? Math.round(average(state.times)) : 0,
       actions: state.times.length + state.falseStarts, eligible,
       stats: { 'stats.validTrials': state.times.length, 'stats.falseStarts': state.falseStarts },
     };
     if (state.times.length > 0) {
+      result.recordScores = { fastest: Math.round(Math.min(...state.times)) };
+      result.stats!['stats.average'] = Math.round(average(state.times));
       result.stats!['stats.fastest'] = Math.round(Math.min(...state.times));
       result.stats!['stats.measurements'] = state.times.map(time => Math.round(time).toLocaleString(language)).join(' · ');
     }
@@ -91,7 +93,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
 
   return <section className="game-content reaction-game">
     <p className="status-line">{state.practice ? t('practiceLabel') : t('measuredLabel', {
-      current: Math.min(REACTION_CONFIG.validTrials, state.times.length + 1), total: REACTION_CONFIG.validTrials,
+      current: Math.min(REACTION_CONFIG.validTrials, state.times.length + (state.phase === 'feedback' ? 0 : 1)), total: REACTION_CONFIG.validTrials,
     })}</p>
     {state.phase === 'choice' && <>
       <p>{t('practiceQuestion')}</p>
@@ -122,8 +124,12 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
       <p className="stimulus" role="status">{state.lastWasEarly
         ? t(state.practice ? 'practiceEarly' : 'early')
         : t(state.practice ? 'practiceTime' : 'measuredTime', { time: format(state.lastTime ?? 0) })}</p>
-      <button ref={nextAction} className="button primary" disabled={paused} onClick={() => state.practice
-        ? commit(chooseReactionMode(current.current, false)) : start()}>{t(state.practice ? 'startMeasured' : 'nextTrial')}</button>
+      {isEligible(state) && <p className="reaction-summary">{t('averagePreview', { time: format(average(state.times)) })}</p>}
+      <button ref={nextAction} className="button primary" disabled={paused} onClick={() => {
+        if (state.practice) commit(chooseReactionMode(current.current, false));
+        else if (isEligible(state)) commit(completeReaction(current.current));
+        else start();
+      }}>{t(state.practice ? 'startMeasured' : isEligible(state) ? 'showResult' : 'nextTrial')}</button>
     </>}
     {state.phase === 'ended' && <p role="status">{t(isEligible(state) ? 'completed' : 'failed')}</p>}
     <div className="reaction-counts">

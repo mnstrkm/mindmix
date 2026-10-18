@@ -13,4 +13,4 @@ export function GameIcon({ id, className = '' }: { id: GameId; className?: strin
   return <svg className={className} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{shapes[id]}</svg>;
 }
 export function ArrowIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" /></svg>; }
-export function BrandMark() { return <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="13" fill="currentColor" /><path d="M11 28V14l9 9 9-9v14" fill="none" stroke="#fff" strokeWidth="3" strokeLinejoin="round" /><circle cx="28" cy="10" r="3" fill="#e7b872" /></svg>; }
+export function BrandMark() { return <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="11" fill="#182c2d" stroke="#49766b" /><path d="M10 28V12l10 11 10-11v16" fill="none" stroke="#91dec3" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" /></svg>; }

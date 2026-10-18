@@ -35,7 +35,7 @@ Die vom Terminal ausgegebene Adresse einschließlich `/mindmix/` öffnen. Ein Te
 | Kopfrechnen | Gültige Zahlenbereiche, korrekte Operationen, ganzzahlige Division, ausgewogene Rechenarten, begrenzte Erzeugung, keine direkte Wiederholung |
 | Visuelle Suche | Exakt ein Ziel, gültige Positionen, Rastergrenze 4×4, Progression vor Ähnlichkeit |
 | Regelwechsel | Alle acht Farbe/Form/Regel-Kombinationen, feste Antwortzuordnung, Blöcke und Wechselplateau |
-| Reaktion | Phasen, Fehlstarts, unterbrochene Versuche, fünf gültige Messungen, Median und Rekordberechtigung |
+| Reaktion | Phasen, Fehlstarts, Unterbrechungen, fünf gültige Messungen, Durchschnitt, sichtbare fünfte Zeit und getrennte Rekorde |
 | Komponenten | Bestätigung und Korrektur, keine Systemtastatur, verborgene Vorlagen, Pausen, Doppelwertung und einmaliges Ende |
 | Speicherung | Datenvalidierung, Ausfall des Speichers, maximal 30 Einträge pro Spiel, separate Rekorde, vergleichbare Gruppen, doppelte Finalisierung |
 | Übersetzungen | Gleiche Schlüssel und Platzhalter in Deutsch und Türkisch |
@@ -45,6 +45,16 @@ Die vom Terminal ausgegebene Adresse einschließlich `/mindmix/` öffnen. Ein Te
 Zufallstests verwenden kontrollierte Quellen und prüfen garantierte Eigenschaften. Eine bestimmte statistische Trefferquote aus einer unkontrollierten Stichprobe ist keine stabile Testbedingung. Timer werden in Komponententests kontrolliert weitergeschaltet; tatsächliche Reaktions- und Audiolatenz lässt sich daraus nicht ableiten.
 
 ## Prüfprotokoll dieser Version
+
+### Überarbeitung 1.1.0
+
+Am **18.10.2026** bestanden unter Windows mit Node.js 24.19.0 und Microsoft Edge zunächst die strikte Typprüfung, der Produktionsbuild, **80 Vitest-Prüfungen in 20 Dateien** und **17 Browserprüfungen**. Die lokale Browserkonfiguration wurde weiterhin mit `PLAYWRIGHT_CHANNEL=msedge` ausgeführt. Der Build umfasst rund **466 KiB** im vollständigen Offline-Precache.
+
+Neue beziehungsweise erweiterte Nachweise: Standard-Dark-Mode und persistente helle Ansicht, alle acht visuellen Erklärungen bei 320 Pixeln und sehr großer türkischer Schrift, unabhängige Durchschnitts-/Einzelrekorde, unveränderte und beschriftete alte Medianrekorde, kein dreifach direkt wiederholtes Wort, Simons sichtbare letzte Eingabe und eine bis zur Bestätigung sichtbare fünfte Reaktionszeit. Das räumliche Spiel wurde bis zur neuen höchsten Stufe mit **8×4 Feldern und 16 Markierungen** durchgespielt; alle 32 Touch-Ziele waren mindestens **48×48 CSS-Pixel** groß. Die Rekordtests prüfen zusätzlich, dass der schnellste Einzelwert nach mehr als 30 weiteren Partien erhalten bleibt.
+
+Die folgenden älteren Protokolle dokumentieren die damaligen Versionen; ihre Median- und 4×4-Angaben gelten nicht als Beschreibung der aktuellen Regeln. Die Grenzen echter Geräte-, Systemschrift- und Haptikprüfung bestehen weiterhin.
+
+Nach der letzten Straffung des mobilen Kopfbereichs bestanden zusätzlich alle **neun betroffenen Browserabläufe** erneut. Visuell geprüft wurden die dunkle Desktop-Startseite, Kopfrechnen und die visuelle Reaktionserklärung mit großer türkischer Schrift sowie die stehenbleibende fünfte Zeit mit separat beschriftetem Durchschnitt.
 
 ### Deployment-Korrektur 1.0.1
 
@@ -107,7 +117,7 @@ Zusätzlich wurde gesperrter Browserspeicher im Browser getestet. Die Audiotests
 - [ ] Beide Sprachen bei normaler, großer und extra großer App-Schrift prüfen.
 - [ ] Browser-Zoom bis mindestens 200 % und große Android-Systemschrift gesondert prüfen.
 - [ ] Keine abgeschnittenen Beschriftungen, überlappenden Aktionen oder unerreichbaren Inhalte.
-- [ ] Raster bleiben bis 4×4 gut bedienbar; lange Zahlenfolgen umbrechen lesbar.
+- [ ] Suchraster bis 4×4 und räumliche Raster bis 8×4 bleiben gut bedienbar; lange Zahlenfolgen umbrechen lesbar.
 - [ ] Querformat und Rotation erhalten den Spielstand; Scrollen bleibt möglich.
 - [ ] Alle normalen Aktionen mit Tab, Enter und Leertaste bedienen; sichtbaren Fokus und Fokusführung prüfen.
 - [ ] Gedächtnisvorlagen in der Abrufphase auch im Accessibility-Baum kontrollieren.

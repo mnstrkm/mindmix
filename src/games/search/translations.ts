@@ -1,5 +1,6 @@
 export const translations = {
   de: {
+    example: 'Die Vorlage zeigt nach oben. Wähle im Raster den einzigen Pfeil nach oben. Die Vorlage bleibt während der Suche sichtbar.',
     title: 'Visuelle Suche', description: 'Finde den passenden Pfeil im Raster.',
     goal: 'Finde im Raster genau den Pfeil, der über dem Raster gezeigt wird.',
     controls: 'Wähle den Pfeil mit derselben Richtung wie die sichtbare Vorlage. Die Vorlage bleibt sichtbar. Es gibt kein Zeitlimit.',
@@ -13,6 +14,7 @@ export const translations = {
     stats: { level: 'Stufe', grid: 'Raster' },
   },
   tr: {
+    example: 'Örnek ok yukarı bakar. Izgarada yukarı bakan tek oku seç. Örnek, arama sırasında görünür kalır.',
     title: 'Görsel arama', description: 'Izgarada aynı yöne bakan oku bul.',
     goal: 'Izgaranın üzerinde gösterilen okla aynı yöne bakan tek oku bul.',
     controls: 'Görünen örnekle aynı yöne bakan oku seç. Örnek görünür kalır. Süre sınırı yoktur.',

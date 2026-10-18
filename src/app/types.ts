@@ -8,6 +8,8 @@ export interface GameResult {
   stats?: Record<string, number | string>;
   reason?: EndReason;
   eligible?: boolean;
+  /** Additional independent records, using the game's existing score direction. */
+  recordScores?: Record<string, number>;
 }
 export interface GameProps {
   language: Language;

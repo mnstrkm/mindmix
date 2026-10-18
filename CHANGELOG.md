@@ -2,6 +2,17 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.1.0 – 2026-10-18
+
+- Dark Mode als Standard, dauerhaft wählbare helle Ansicht, zurückhaltendere Startseite, überarbeitete Texte und ein vereinfachtes App-Icon.
+- Alle acht Erklärungen erhalten visuelle Beispiele in Deutsch und Türkisch.
+- Wortspiel: höchstens zweimal dasselbe Wort direkt nacheinander; direkte Wiederholungen seltener und kürzlich gezeigte Wörter nach Möglichkeit ausgespart. Regelversion 2, unveränderte Wortvorräte.
+- Reaktion: Durchschnitt statt Median als Hauptwert; bester Durchschnitt und schnellster gültiger Einzelversuch werden unabhängig gespeichert. Die fünfte Zeit bleibt bis „Ergebnis ansehen“ sichtbar. Regelversion 2; frühere Medianrekorde bleiben im Archiv beschriftet erhalten.
+- Simon: Auch die letzte korrekte Eingabe bleibt 400 ms hervorgehoben, bevor die nächste Vorführung beginnt. Zwischeneingaben erhalten 180 ms Rückmeldung. Regeln und Score bleiben vergleichbar.
+- Räumliches Gedächtnis: zusätzliche, langsamer steigende Stufen bis 8×4 mit 16 Markierungen. Vier Spalten erhalten ausreichend große Touch-Flächen auf schmalen Displays. Regelversion 2.
+- Gemischtes Kopfrechnen: Faktoren und Divisionen bis 12, Einstieg bis 6; höchste Stufe ab 18 gelösten Aufgaben. Neue Regelversion 2 nur für diesen Modus; Grundrechnen bleibt bei Regelversion 1.
+- Frühere Rekorde bleiben lesbar. Zusätzliche Rekordmetriken und die Theme-Einstellung ergänzen das bestehende Speicherschema mit sicheren Standardwerten.
+
 ## 1.0.1 – 2026-10-18
 
 - Einen Timingfehler im Browsertest für das Beenden per Navigation behoben: Die Prüfung wartet auf die abgeschlossene Navigation und die gespeicherte Partie, statt den noch vorherigen Verlauf zu lesen. Zusätzlich werden Ergebnis, Beendigungsgrund und genau ein neuer Eintrag geprüft.

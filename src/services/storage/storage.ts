@@ -3,15 +3,16 @@ import { gameIds, type GameId, type GameResult, type Language } from '../../app/
 export const STORAGE_KEY = 'mindmix:data';
 export const SCHEMA_VERSION = 1;
 export interface Settings {
-  language: Language; effects: boolean; effectVolume: number; music: boolean; musicVolume: number; textSize: 'normal' | 'large' | 'extra';
+  language: Language; theme: 'dark' | 'light'; effects: boolean; effectVolume: number; music: boolean; musicVolume: number; textSize: 'normal' | 'large' | 'extra';
 }
 export interface Result extends GameResult {
   id: string; game: GameId; variant: string; ruleVersion: number;
   language?: Language; contentVersion?: number; date: string;
+  metric?: string;
 }
 export interface SavedData { version: 1; settings: Settings; history: Result[]; records: Result[] }
 export interface Snapshot { data: SavedData; persistent: boolean }
-export const defaultSettings: Settings = { language: 'de', effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2, textSize: 'normal' };
+export const defaultSettings: Settings = { language: 'de', theme: 'dark', effects: true, effectVolume: 0.25, music: false, musicVolume: 0.2, textSize: 'normal' };
 const emptyData = (): SavedData => ({ version: 1, settings: { ...defaultSettings }, history: [], records: [] });
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0;
@@ -24,12 +25,15 @@ export function validResult(value: unknown): value is Result {
     && (value.language === undefined || value.language === 'de' || value.language === 'tr')
     && (value.contentVersion === undefined || finite(value.contentVersion))
     && (value.eligible === undefined || typeof value.eligible === 'boolean')
+    && (value.metric === undefined || (typeof value.metric === 'string' && /^[a-z][a-zA-Z0-9]{0,39}$/.test(value.metric)))
+    && (value.recordScores === undefined || (object(value.recordScores) && Object.keys(value.recordScores).length <= 5
+      && Object.entries(value.recordScores).every(([key, score]) => /^[a-z][a-zA-Z0-9]{0,39}$/.test(key) && finite(score))))
     && (value.reason === undefined || ['mistake', 'completed', 'stopped', 'false-starts'].includes(String(value.reason)))
     && (value.stats === undefined || (object(value.stats) && Object.keys(value.stats).length <= 20
       && Object.entries(value.stats).every(([key, stat]) => key.length <= 80 && ((typeof stat === 'number' && Number.isFinite(stat)) || (typeof stat === 'string' && stat.length <= 400)))));
 }
-export function comparisonKey(result: Pick<Result, 'game' | 'variant' | 'ruleVersion' | 'language' | 'contentVersion'>): string {
-  return [result.game, result.variant, result.ruleVersion, result.game === 'recognition' ? result.language : '', result.contentVersion ?? ''].join(':');
+export function comparisonKey(result: Pick<Result, 'game' | 'variant' | 'ruleVersion' | 'language' | 'contentVersion' | 'metric'>): string {
+  return [result.game, result.variant, result.ruleVersion, result.game === 'recognition' ? result.language : '', result.contentVersion ?? '', result.metric ?? 'score'].join(':');
 }
 export function isBetter(next: Pick<Result, 'game' | 'score'>, previous?: Pick<Result, 'score'>): boolean {
   return !previous || (next.game === 'reaction' ? next.score < previous.score : next.score > previous.score);
@@ -42,6 +46,7 @@ export function parseData(raw: string | null): SavedData {
   if (object(parsed.settings)) {
     const source = parsed.settings;
     if (source.language === 'de' || source.language === 'tr') settings.language = source.language;
+    if (source.theme === 'dark' || source.theme === 'light') settings.theme = source.theme;
     if (typeof source.effects === 'boolean') settings.effects = source.effects;
     if (typeof source.music === 'boolean') settings.music = source.music;
     if (finite(source.effectVolume) && source.effectVolume <= 1) settings.effectVolume = source.effectVolume;
@@ -82,9 +87,12 @@ export function createStorage(storage?: StorageLike) {
       const history = [...snapshot.data.history, result];
       const trimmed = gameIds.flatMap(game => history.filter(item => item.game === game).slice(-30));
       const records = [...snapshot.data.records];
-      const index = records.findIndex(item => comparisonKey(item) === comparisonKey(result));
-      if (result.eligible !== false && result.score > 0 && isBetter(result, index < 0 ? undefined : records[index])) {
-        if (index < 0) records.push(result); else records[index] = result;
+      const candidates = [result, ...Object.entries(result.recordScores ?? {}).map(([metric, score]) => ({ ...result, metric, score, eligible: true }))];
+      for (const candidate of candidates) {
+        const index = records.findIndex(item => comparisonKey(item) === comparisonKey(candidate));
+        if (candidate.eligible !== false && candidate.score > 0 && isBetter(candidate, index < 0 ? undefined : records[index])) {
+          if (index < 0) records.push(candidate); else records[index] = candidate;
+        }
       }
       publish({ ...snapshot.data, history: trimmed, records });
       return true;

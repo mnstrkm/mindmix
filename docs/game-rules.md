@@ -1,12 +1,12 @@
-# Spielregeln – Version 1.0.0
+# Spielregeln – Version 1.1.0
 
-Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Alle acht Spiele beginnen mit **Regelversion 1**. Der Wortvorrat besitzt zusätzlich **Inhaltsversion 1**. Änderungen an Regeln, Punktberechnung oder vergleichbarkeitsrelevanten Inhalten müssen versioniert und hier dokumentiert werden.
+Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Wortspiel, räumliches Gedächtnis und Reaktion verwenden **Regelversion 2**, ebenso nur der gemischte Rechenmodus. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt einsehbar.
 
 ## Gemeinsame Regeln
 
 - Eine richtige gewertete Antwort erhöht das jeweilige Ergebnis. Es gibt keine gemeinsame Gesamtpunktzahl über verschiedene Spiele.
 - Außer der Reaktions-Challenge laufen Partien ohne feste Aufgabenanzahl und ohne Antwortzeitlimit weiter, bis eine falsche gewertete Antwort erfolgt oder freiwillig beendet wird. Das Wortspiel endet zusätzlich bei vollständig ausgeschöpftem Wortvorrat.
-- „Beenden“ und das Verlassen der Spielseite bewahren das bereits korrekt erreichte Ergebnis. Es darf als Rekord zählen. Die Reaktions-Challenge benötigt dafür allerdings alle fünf gültigen Messungen.
+- „Beenden“ und das Verlassen der Spielseite bewahren das erreichte Ergebnis. Die Reaktions-Challenge benötigt für den Durchschnitt alle fünf gültigen Messungen; der schnellste gültige Einzelversuch wird separat berücksichtigt.
 - Eine geöffnete Partie ohne gewertete Aktion erzeugt keinen Verlaufseintrag. Eine erste falsche Antwort zählt als Aktion und kann einen Verlaufseintrag mit Ergebnis 0 erzeugen; sie erzeugt keinen positiven Rekord.
 - Bestätigungsaufgaben dürfen bis zur Bestätigung korrigiert werden. Einzelne Auswahlaufgaben werten unmittelbar beim Betätigen der Antwortfläche.
 - Eine Partie wird höchstens einmal finalisiert. Eingaben aus gesperrten Phasen und unmittelbare Doppelwertungen werden abgefangen.
@@ -16,7 +16,7 @@ Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Alle ac
 
 Ein Wort wird als **Neu** oder **Schon gesehen** beurteilt. Bekannt bedeutet, dass dieses Wort irgendwann zuvor in derselben Partie gezeigt wurde. Frühere Partien zählen nicht.
 
-Das erste Wort ist neu. Anschließend wird zuerst unabhängig entschieden, ob eine Wiederholung erzeugt wird: Ausgangswahrscheinlichkeit **45 %**. Erst danach wird das konkrete Wort gewählt. Gibt es ältere Wörter zusätzlich zum unmittelbar vorherigen Wort, wird innerhalb des Wiederholungszweigs mit **12 %** das direkt vorherige Wort gewählt; ansonsten eines der älteren Wörter. Bei erst einem bekannten Wort ist eine Wiederholung zwangsläufig unmittelbar. Wiederholungen können damit bereits bei der zweiten Aufgabe auftreten; es gibt weder eine feste Abwechslung noch eine vorgeschriebene Abschnittsquote.
+Das erste Wort ist neu. Anschließend wird zuerst entschieden, ob eine Wiederholung erzeugt werden soll: Ausgangswahrscheinlichkeit **45 %**. Erst danach wird das konkrete Wort gewählt. Eine unmittelbare Wiederholung wird im Wiederholungszweig mit **6 %** zugelassen, jedoch niemals ein drittes identisches Wort in Folge. Ansonsten wird ein anderes bekanntes Wort gewählt; bevorzugt eines, das nicht unter den letzten vier gezeigten Wörtern liegt. Ist erst ein Wort bekannt und keine unmittelbare Wiederholung zulässig, folgt ein neues Wort. Damit verhindert auch der Einstieg lange identische Serien. Mehrere unterschiedliche bekannte Wörter hintereinander bleiben möglich; es gibt keine feste Abwechslung oder Abschnittsquote.
 
 Wörter können mehrfach wiederkehren und bleiben während der gesamten Partie bekannt. Der Status wird vor dem Eintragen des aktuellen Wortes in die Gesehen-Menge bestimmt. Eine richtige Entscheidung zeigt das nächste Wort; die erste falsche Entscheidung beendet. Ein Eingabeschutz von **260 ms** verhindert unmittelbare Mehrfachwertung, ohne eine Antwortfrist einzuführen.
 
@@ -44,7 +44,7 @@ Die Vorlage bleibt in der Abrufphase auch bei einer Erklärung oder Pause verbor
 
 Vier Felder behalten ihre Position, Farbe, ihr Symbol und ihren eigenen Ton. Die erste Folge enthält **zwei Signale**. Nach einer vollständig richtigen Wiedergabe wird **dieselbe Folge um ein zufälliges Signal verlängert**. Auch unmittelbar gleiche Signale sind erlaubt.
 
-Die Vorführung beginnt nach **600 ms**. Jedes Signal wird **650 ms** hervorgehoben; zwischen Signalen liegen **280 ms** ohne Hervorhebung. Diese Zeiten bleiben unabhängig von der Folgenlänge gleich. Während der Vorführung sind Eingaben gesperrt. Die Eingabephase wird ausdrücklich angezeigt und besitzt kein Zeitlimit. Eine kurze Eingaberückmeldung mit **140 ms** Sperre schützt vor unmittelbarer Mehrfachwertung.
+Die Vorführung beginnt nach **600 ms**. Jedes Signal wird **650 ms** hervorgehoben; zwischen Signalen liegen **280 ms** ohne Hervorhebung. Diese Zeiten bleiben unabhängig von der Folgenlänge gleich. Während der Vorführung sind Eingaben gesperrt. Zwischeneingaben besitzen **180 ms** Rückmeldung und Schutz vor Mehrfachwertung. Das letzte richtige Signal bleibt **400 ms** sichtbar; erst danach wird die Folge verlängert und die nächste Vorführung vorbereitet. Die Eingabe hat kein Zeitlimit.
 
 Die erste falsche Feldeingabe beendet. **Ergebnis:** längste vollständig reproduzierte Folge. Einzelne richtige Signale einer noch nicht abgeschlossenen Folge zählen als gewertete Aktionen, erhöhen jedoch nicht das Ergebnis. Zusatzwert: vollständig gelöste Folgen.
 
@@ -54,7 +54,7 @@ Eine vor der ersten gültigen Eingabe unterbrochene Vorführung beginnt nach bew
 
 Ein Raster zeigt markierte Felder ohne Begrenzung der Merkzeit. „Ausblenden“ entfernt die Markierungen. Anschließend können Felder ausgewählt und durch erneutes Betätigen abgewählt werden. Die ausgewählte und die benötigte Anzahl bleiben sichtbar. Erst die Bestätigung wertet die gesamte Menge; Reihenfolge spielt keine Rolle. Die erste falsch bestätigte Auswahl beendet.
 
-Die Schwierigkeit erhöht sich nach jedem vollständig richtigen Muster:
+Die ersten elf Stufen steigen nach jedem richtigen Muster. Größere Raster bleiben anschließend mehrere Aufgaben lang gleich:
 
 | Stufe | Zeilen × Spalten | Markierungen |
 | --- | --- | --- |
@@ -68,24 +68,31 @@ Die Schwierigkeit erhöht sich nach jedem vollständig richtigen Muster:
 | 8 | 4 × 4 | 5 |
 | 9 | 4 × 4 | 6 |
 | 10 | 4 × 4 | 7 |
-| 11 und weitere Aufgaben | 4 × 4 | 8 |
+| 11 (ab 10 richtigen Mustern) | 4 × 4 | 8 |
+| 12 (ab 12) | 5 × 4 | 8 |
+| 13 (ab 14) | 5 × 4 | 9 |
+| 14 (ab 16) | 6 × 4 | 10 |
+| 15 (ab 18) | 6 × 4 | 12 |
+| 16 (ab 21) | 7 × 4 | 13 |
+| 17 (ab 24) | 8 × 4 | 14 |
+| 18 (ab 27) und weitere Aufgaben | 8 × 4 | 16 |
 
-Nach Stufe 11 folgen neue zufällige Muster auf derselben Schwierigkeit. Unmittelbar identische Muster werden verhindert. Es gibt keine besonderen Musterklassen und kein weiteres Verkleinern des Rasters.
+Nach Stufe 18 folgen neue zufällige Muster auf derselben Schwierigkeit. Maximal vier Spalten halten die Felder auf kleinen Displays groß; längere Raster dürfen vertikal gescrollt werden. Unmittelbar identische Muster werden verhindert. Es gibt keine besonderen Musterklassen oder immer kleinere Touch-Flächen.
 
-**Ergebnis:** Anzahl vollständig richtig gelöster Muster. Zusatzwerte beschreiben die höchste erreichte aktuelle Schwierigkeit mit Stufe, Zeilen, Spalten und Markierungszahl. Die Aufgabenzahl kann weiter steigen, während die Stufe bei 11 bleibt. Die Vorlage bleibt während der Abrufphase auch bei Pausen verborgen.
+**Ergebnis:** Anzahl vollständig richtig gelöster Muster. Zusatzwerte beschreiben die höchste erreichte Schwierigkeit mit Stufe, Zeilen, Spalten und Markierungszahl. Die Aufgabenzahl kann weiter steigen, während die Stufe bei 18 bleibt. Die Vorlage bleibt während der Abrufphase auch bei Pausen verborgen.
 
 ## 5. Kopfrechnen (`arithmetic`)
 
 Antworten erfolgen über das eigene Zahlenfeld. Vor der Bestätigung darf korrigiert werden. Die erste falsch bestätigte Antwort beendet und zeigt die korrekte Gleichung. Es gibt weder Zeitbonus noch Antwortzeitlimit.
 
-**Grundrechnen:** Addition und Subtraktion; die Operanden und Ergebnisse liegen innerhalb 0–100. **Gemischt:** zusätzlich Multiplikation des kleinen Einmaleins und Division mit ganzzahligen Ergebnissen; Addition und Subtraktion bleiben innerhalb 0–200.
+**Grundrechnen:** Addition und Subtraktion innerhalb 0–100. **Gemischt:** zusätzlich Multiplikation mit Faktoren bis 12 und passende Division mit ganzzahligen Ergebnissen. Addition und Subtraktion bleiben innerhalb 0–200.
 
 | Bereits richtige Aufgaben | Grundrechnen: Obergrenze | Gemischt: Obergrenze Addition/Subtraktion | Gemischt: größte Faktoren |
 | --- | --- | --- | --- |
-| 0–4 | 20 | 20 | 5 |
-| 5–9 | 50 | 50 | 7 |
-| 10–14 | 100 | 100 | 9 |
-| ab 15 | 100 | 200 | 10 |
+| 0–4 | 20 | 20 | 6 |
+| 5–9 | 50 | 50 | 8 |
+| 10–17 | 100 | 100 | 10 |
+| ab 18 | 100 | 200 | 12 |
 
 Im gemischten Modus kommen alle vier Rechenarten bereits im Einstieg vor. Faktoren beziehungsweise Divisor und Quotient werden unabhängig im Bereich 2 bis zur jeweiligen Faktorgrenze gewählt. Divisionen werden aus deren Produkt erzeugt; dadurch sind Division durch null, Dezimalzahlen und negative Ergebnisse ausgeschlossen. Addition und Subtraktion verzichten auf Operanden und Ergebnisse 0 oder 1, damit nicht viele triviale Aufgaben entstehen.
 
@@ -146,6 +153,8 @@ Nur die Reaktionsfläche wertet bereits primäres `pointerdown` beziehungsweise 
 
 Die Zeitbasis ist `performance.now()`. Das Signal wird innerhalb eines `requestAnimationFrame` mit synchroner DOM-Aktualisierung ausgelöst. Das bringt den Zeitstempel nahe an die Ausgabe, misst aber weder das tatsächliche Aufleuchten eines Pixels noch eliminiert es Geräte-, Browser- oder Eingabelatenz.
 
-**Ergebnis:** auf Millisekunden gerundeter Median der fünf gültigen Zeiten, also der mittlere Wert der sortierten Messungen. **Weniger ist besser.** Zusatzwerte: schnellster Versuch, Einzelzeiten, Anzahl gültiger Messungen und Fehlstarts. Freiwillig beendete oder durch drei Fehlstarts abgebrochene Partien zeigen vorhandene Einzelwerte, aber keinen regulären Medianrekord.
+Die fünfte Zeit bleibt wie alle vorherigen Zeiten sichtbar. Erst **„Ergebnis ansehen“** öffnet die Zusammenfassung. Es gibt keinen automatischen Sprung, der diesen Wert überspringt.
+
+**Ergebnis:** arithmetischer Durchschnitt der fünf gültigen Zeiten, auf Millisekunden gerundet. **Weniger ist besser.** Zwei unabhängige Rekorde werden geführt: bester Durchschnitt einer vollständigen Partie und schnellster gültiger Einzelversuch. Der schnellste Einzelversuch darf auch aus einer bewusst beendeten oder nach drei Fehlstarts abgebrochenen Partie stammen; ohne fünf gültige Versuche gibt es dagegen keinen Durchschnittsrekord. Die optionalen Probemessungen zählen für keinen Rekord. Zusatzwerte sind Durchschnitt, schnellster Versuch dieser Partie, alle Einzelzeiten und Fehlstarts. Frühere Werte aus Regelversion 1 bleiben ausdrücklich als Median im Archiv sichtbar.
 
 Bei Pause, Erklärung oder Hintergrundwechsel wird ein wartender oder bereits signalisierter Versuch verworfen. Er zählt weder als Messung noch als Fehlstart. Nach Fortsetzung muss ein neuer Versuch gestartet werden. Die übrigen gültigen Messungen bleiben erhalten. Unterschiedliche Geräte und Eingabemethoden können die Werte beeinflussen; Altersnormen oder medizinische Deutungen werden nicht verwendet.

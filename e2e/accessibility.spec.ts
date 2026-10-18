@@ -6,6 +6,9 @@ test('every game remains usable at 320px with very large Turkish text', async ({
   await page.getByRole('button', { name: 'Çok büyük', exact: true }).click();
   for (const game of ['recognition', 'digits', 'simon', 'spatial', 'arithmetic', 'search', 'switch', 'reaction']) {
     await page.goto(`#/game/${game}`);
+    await page.getByRole('button', { name: 'Oyun nasıl oynanır?', exact: true }).click();
+    await expect(page.locator('.guide')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${game} guide`).toBe(true);
     await page.getByRole('button', { name: 'Oyuna başla', exact: true }).click();
     await expect(page.locator('.game-content')).toBeVisible();
     const overflow = await page.evaluate(() => [...document.querySelectorAll('main *')].filter(element => element.getBoundingClientRect().right > innerWidth + 1).map(element => element.className));
@@ -15,13 +18,14 @@ test('every game remains usable at 320px with very large Turkish text', async ({
   }
 });
 
-test('spatial plateau uses at least 48px targets with large text on the smallest viewport', async ({ page }) => {
+test('spatial 8 by 4 plateau keeps 48px targets with large text on the smallest viewport', async ({ page }) => {
+  test.setTimeout(90000);
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto('#/settings');
   await page.getByRole('button', { name: 'Sehr groß', exact: true }).click();
   await page.goto('#/game/spatial');
   await page.getByRole('button', { name: 'Spiel starten', exact: true }).click();
-  for (let solved = 0; solved < 11; solved++) {
+  for (let solved = 0; solved < 28; solved++) {
     await expect(page.locator('.marked')).not.toHaveCount(0);
     const marked = await page.locator('.spatial-cell').evaluateAll(items => items.map((item, index) => item.classList.contains('marked') ? index : -1).filter(index => index >= 0));
     await page.getByRole('button', { name: 'Muster ausblenden' }).click();
@@ -29,11 +33,43 @@ test('spatial plateau uses at least 48px targets with large text on the smallest
     await page.getByRole('button', { name: 'Auswahl bestätigen' }).click();
     await expect(page.locator('.live-score')).toHaveText(String(solved + 1));
   }
-  await expect(page.locator('.spatial-cell')).toHaveCount(16);
+  await expect(page.locator('.spatial-cell')).toHaveCount(32);
   for (const box of await page.locator('.spatial-cell').evaluateAll(items => items.map(item => ({ width: item.getBoundingClientRect().width, height: item.getBoundingClientRect().height })))) {
     expect(box.width).toBeGreaterThanOrEqual(48); expect(box.height).toBeGreaterThanOrEqual(48);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test('dark mode is the default and the light choice persists', async ({ page }) => {
+  await page.goto('#/settings');
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByRole('button', { name: 'Hell', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.getByRole('button', { name: 'Dunkel', exact: true }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('reaction records show average and fastest independently while preserving old medians', async ({ page }) => {
+  await page.addInitScript(() => {
+    const base = { game: 'reaction', variant: 'default', actions: 5, eligible: true, date: '2026-10-18T12:00:00Z' };
+    localStorage.setItem('mindmix:data', JSON.stringify({ version: 1, settings: {}, history: [], records: [
+      { ...base, id: 'average', ruleVersion: 2, score: 310 },
+      { ...base, id: 'fastest', ruleVersion: 2, metric: 'fastest', score: 180 },
+      { ...base, id: 'old-median', ruleVersion: 1, score: 190 },
+    ] }));
+  });
+  await page.goto('#/game/reaction');
+  await expect(page.locator('.best-summary')).toContainText('310 ms');
+  await expect(page.locator('.secondary-record')).toContainText('180 ms');
+  await page.getByRole('link', { name: 'Bestleistungen', exact: true }).click();
+  const reaction = page.locator('.record-card').filter({ has: page.getByRole('heading', { name: 'Reaktions-Challenge', exact: true }) });
+  await expect(reaction).toContainText('Bester Durchschnitt aus 5 Versuchen');
+  await expect(reaction).toContainText('Schnellster Einzelversuch');
+  await reaction.locator('summary').click();
+  await expect(reaction).toContainText('Median, frühere Wertung');
+  await expect(reaction).toContainText('190 ms');
 });
 
 test('storage denial remains playable and displays a clear warning', async ({ page }) => {
@@ -51,7 +87,7 @@ test('storage denial remains playable and displays a clear warning', async ({ pa
 
 test('keyboard navigation and 200 percent text zoom preserve controls', async ({ page }) => {
   await page.goto('');
-  await expect(page.getByRole('heading', { name: 'Kleine Spiele. Große Spielfreude.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Acht Spiele. Dein Tempo.' })).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Zum Inhalt' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -84,4 +120,8 @@ test('capture visual review artifacts at desktop and small phone sizes', async (
   await page.getByRole('button', { name: 'Oyuna başla', exact: true }).click();
   await expect(page.locator('.number-pad')).toBeVisible();
   await page.screenshot({ path: '.preview/arithmetic-mobile-large-tr.png', fullPage: true });
+  await page.goto('#/game/reaction');
+  await page.getByRole('button', { name: 'Oyun nasıl oynanır?', exact: true }).click();
+  await expect(page.locator('.guide')).toBeVisible();
+  await page.screenshot({ path: '.preview/reaction-guide-mobile-tr.png', fullPage: true });
 });

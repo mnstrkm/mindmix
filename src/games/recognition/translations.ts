@@ -1,5 +1,7 @@
 export const translations = {
   de: {
+    example: 'Radio ist zuerst neu. Nach Baum erscheint Radio erneut: Jetzt ist „Schon gesehen“ richtig. Es zählt alles, was in dieser Partie bereits gezeigt wurde.',
+    exampleWords: { first: 'Radio', second: 'Baum' },
     title: 'Schon gesehen?', description: 'Erkenne Wörter wieder, die in dieser Partie schon vorkamen.',
     goal: 'Entscheide für jedes Wort, ob du es in dieser Partie bereits gesehen hast. Frühere Partien zählen nicht.',
     controls: 'Wähle „Neu“ oder „Schon gesehen“. Du hast so viel Zeit, wie du möchtest. Mit der Tastatur erreichst du beide Antworten über Tab und bestätigst mit Enter oder der Leertaste.',
@@ -14,6 +16,8 @@ export const translations = {
     stats: { newWords: 'Neue Wörter richtig erkannt', repeats: 'Wiederholungen richtig erkannt', correction: 'Richtige Antwort', completion: 'Abschluss' },
   },
   tr: {
+    example: 'Kitap ilk gösterildiğinde yenidir. Deniz kelimesinden sonra tekrar Kitap görünürse “Daha önce gördüm” doğrudur. Bu oyun sırasında gösterilen tüm kelimeler sayılır.',
+    exampleWords: { first: 'Kitap', second: 'Deniz' },
     title: 'Daha önce gördün mü?', description: 'Bu oyunda daha önce gösterilen kelimeleri tanı.',
     goal: 'Her kelimenin bu oyun sırasında daha önce gösterilip gösterilmediğine karar ver. Önceki oyunlar sayılmaz.',
     controls: '„Yeni“ veya „Daha önce gördüm“ seçeneğini seç. Süre sınırı yok. Klavyede Tab ile seçeneklere ulaşabilir, Enter veya boşluk tuşuyla yanıtlayabilirsin.',

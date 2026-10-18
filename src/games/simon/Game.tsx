@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { GameProps, GameResult } from '../../app/types';
 import { audio } from '../../services/audio/audio';
-import { INPUT_FEEDBACK_MS, PAD_SYMBOLS, PRESENTATION_DELAY_MS, SIGNAL_DURATION_MS, SIGNAL_GAP_MS, START_LENGTH } from './config';
+import { INPUT_FEEDBACK_MS, PAD_SYMBOLS, PRESENTATION_DELAY_MS, ROUND_FEEDBACK_MS, SIGNAL_DURATION_MS, SIGNAL_GAP_MS, START_LENGTH } from './config';
 import { checkSignal, createSequence, extendSequence, type Signal } from './logic';
 import './simon.css';
 
 interface State {
-  phase: 'presenting' | 'input' | 'ended';
+  phase: 'presenting' | 'input' | 'round-complete' | 'ended';
   sequence: Signal[];
   inputIndex: number;
   active: Signal | null;
@@ -43,7 +43,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     clearTimeout(feedbackTimer.current);
     inputLocked.current = false;
     const previous = current.current;
-    if (previous.phase !== 'ended') {
+    if (previous.phase !== 'ended' && previous.phase !== 'round-complete') {
       // Once recall has started, pausing may never reveal the sequence again.
       update({ ...previous, active: null, phase: previous.inputIndex > 0 ? 'input' : 'presenting' });
     }
@@ -76,6 +76,17 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   }, [paused, round]);
 
   useEffect(() => {
+    if (state.phase !== 'round-complete' || paused) return;
+    // Keep the final accepted pad visibly lit before extending the sequence.
+    update({ ...current.current, active: current.current.sequence.at(-1)! });
+    const timer = setTimeout(() => {
+      update({ ...current.current, phase: 'presenting', sequence: extendSequence(current.current.sequence), inputIndex: 0, active: null });
+      setRound(value => value + 1);
+    }, ROUND_FEEDBACK_MS);
+    return () => clearTimeout(timer);
+  }, [state.phase, paused]);
+
+  useEffect(() => {
     if (state.phase === 'input' && !paused) firstPad.current?.focus();
   }, [state.phase, paused]);
 
@@ -93,12 +104,11 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     audio.play(`simon${signal}`);
     if (outcome === 'complete') {
       const next: State = {
-        phase: 'presenting', sequence: extendSequence(previous.sequence), inputIndex: 0,
-        active: null, score: previous.sequence.length, solved: previous.solved + 1, actions: previous.actions + 1,
+        phase: 'round-complete', sequence: previous.sequence, inputIndex: previous.sequence.length,
+        active: signal, score: previous.sequence.length, solved: previous.solved + 1, actions: previous.actions + 1,
       };
       update(next);
       onProgress(progress(next));
-      setRound(value => value + 1);
       return;
     }
     const next = { ...previous, active: signal, inputIndex: previous.inputIndex + 1, actions: previous.actions + 1 };
@@ -113,7 +123,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   return (
     <div className="game-content simon-game">
       <p className="status-line">{t('length', { count: state.sequence.length })}</p>
-      <p className="simon-phase" role="status">{t(state.phase === 'input' ? 'yourTurn' : 'watching')}</p>
+      <p className="simon-phase" role="status">{t(state.phase === 'input' ? 'yourTurn' : state.phase === 'round-complete' ? 'roundComplete' : 'watching')}</p>
       <div className="simon-grid">
         {PAD_SYMBOLS.map((symbol, index) => (
           <button

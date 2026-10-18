@@ -26,8 +26,9 @@ describe('recognition interaction', () => {
     fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
     expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 2, actions: 2, stats: { 'stats.newWords': 1, 'stats.repeats': 1 } }));
     act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
-    fireEvent.click(newButton);
-    fireEvent.click(newButton);
+    expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Birne');
+    fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
+    fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
     expect(onFinish).toHaveBeenCalledTimes(1);
     expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 2, actions: 3, reason: 'mistake' }));
   });

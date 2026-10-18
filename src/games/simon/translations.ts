@@ -1,5 +1,7 @@
 export const translations = {
   de: {
+    roundComplete: 'Richtig. Die nächste Folge kommt gleich.',
+    example: 'Erst siehst du Kreis und Dreieck aufleuchten. Danach drückst du Kreis und Dreieck in derselben Reihenfolge. Auch das letzte Feld leuchtet als Rückmeldung auf.',
     title: 'Farbreihenfolge',
     description: 'Folge den vier Farben und Symbolen in der richtigen Reihenfolge.',
     goal: 'Wiederhole die vorgespielte Folge auf den vier Feldern. Die erste Folge hat zwei Signale.',
@@ -19,6 +21,8 @@ export const translations = {
     stats: { completedRounds: 'Vollständig wiedergegebene Folgen' },
   },
   tr: {
+    roundComplete: 'Doğru. Bir sonraki dizi birazdan geliyor.',
+    example: 'Önce daire ve üçgenin yandığını görürsün. Ardından aynı sırayla daire ve üçgene basarsın. Son alan da yanarak geri bildirim verir.',
     title: 'Renk sırası',
     description: 'Dört renk ve simgeyi doğru sırayla tekrarla.',
     goal: 'Dört alanda gösterilen diziyi tekrarla. İlk dizi iki işaretten oluşur.',

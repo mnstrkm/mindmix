@@ -18,9 +18,9 @@ describe('arithmetic', () => {
         const maximum = difficulty(mode, solved).maximum;
         expect(Math.max(q.left, q.right, q.answer)).toBeLessThanOrEqual(maximum);
       } else if (q.operation === '×') {
-        expect(Math.max(q.left, q.right)).toBeLessThanOrEqual(10);
+        expect(Math.max(q.left, q.right)).toBeLessThanOrEqual(difficulty(mode, solved).factor);
       } else {
-        expect(Math.max(q.answer, q.right)).toBeLessThanOrEqual(10);
+        expect(Math.max(q.answer, q.right)).toBeLessThanOrEqual(difficulty(mode, solved).factor);
       }
       expect(q).not.toEqual(previous?.question);
       previous = task;
@@ -35,7 +35,8 @@ describe('arithmetic', () => {
       counts.set(previous.question.operation, (counts.get(previous.question.operation) ?? 0) + 1);
     }
     expect([...counts.values()]).toEqual([20, 20, 20, 20]);
-    expect(difficulty('mixed', 10000)).toEqual(difficulty('mixed', 15));
+    expect(difficulty('mixed', 10000)).toEqual(difficulty('mixed', 18));
+    expect(difficulty('mixed', 18).factor).toBe(12);
   });
   it('does not hang or repeat with a constant random source', () => {
     let task = nextTask('basic', 0, () => 0);

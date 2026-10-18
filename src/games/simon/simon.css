@@ -25,10 +25,11 @@
 .simon-game .simon-pad-3 { background: #216852; }
 .simon-game .simon-pad.active {
   border-color: #fff;
-  box-shadow: 0 0 0 4px var(--text, #162d2c), inset 0 0 0 3px currentColor;
+  box-shadow: 0 0 0 4px var(--paper), inset 0 0 0 3px currentColor;
   transform: scale(.94);
 }
 .simon-phase { font-weight: 750; }
+.simon-pad:not(:disabled):active { transform: scale(.94); }
 @media (prefers-reduced-motion: reduce) {
   .simon-game .simon-pad { transition: none; }
   .simon-game .simon-pad.active { transform: none; }

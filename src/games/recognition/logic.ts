@@ -4,6 +4,7 @@ export type RecognitionAnswer = 'new' | 'repeat';
 export interface WordPrompt { word: string; seenBefore: boolean }
 export interface RecognitionState {
   seen: readonly string[];
+  recent: readonly string[];
   prompt: WordPrompt;
   score: number;
   newCorrect: number;
@@ -24,17 +25,24 @@ export function decideRepeat(seenCount: number, random: Random): boolean {
 }
 
 export function selectPrompt(
-  pool: readonly string[], seen: readonly string[], previous: string | undefined, random: Random,
+  pool: readonly string[], seen: readonly string[], previous: string | undefined, random: Random, recent: readonly string[] = previous ? [previous] : [],
 ): WordPrompt | null {
   const seenSet = new Set(seen);
   const unseen = pool.filter(word => !seenSet.has(word));
   if (unseen.length === 0) return null;
   const repeat = decideRepeat(seen.length, random);
   if (!repeat) return { word: pick(unseen, random), seenBefore: false };
+  let identicalRun = 0;
+  for (let i = recent.length - 1; i >= 0 && recent[i] === previous; i--) identicalRun++;
+  const allowImmediate = identicalRun < RECOGNITION_CONFIG.maximumIdenticalRun
+    && random() < RECOGNITION_CONFIG.immediateRepeatProbability;
+  if (allowImmediate && previous) return { word: previous, seenBefore: true };
   const older = seen.filter(word => word !== previous);
-  // Immediate repeats remain possible, but most repeats have a longer gap.
-  const candidates = older.length > 0 && random() >= RECOGNITION_CONFIG.immediateRepeatProbability
-    ? older : (previous ? [previous] : seen);
+  // With only one seen word there is no varied repeat to offer. Introduce a new
+  // word instead of allowing the opening word to repeat indefinitely.
+  if (older.length === 0) return { word: pick(unseen, random), seenBefore: false };
+  const rested = older.filter(word => !recent.includes(word));
+  const candidates = rested.length ? rested : older;
   const word = pick(candidates, random);
   return { word, seenBefore: seenSet.has(word) };
 }
@@ -42,7 +50,7 @@ export function selectPrompt(
 export function createRecognition(pool: readonly string[], random: Random = Math.random): RecognitionState {
   const prompt = selectPrompt(pool, [], undefined, random);
   if (!prompt) throw new Error('Recognition needs a nonempty word pool');
-  return { seen: [prompt.word], prompt, score: 0, newCorrect: 0, repeatCorrect: 0, actions: 0, ended: false };
+  return { seen: [prompt.word], recent: [prompt.word], prompt, score: 0, newCorrect: 0, repeatCorrect: 0, actions: 0, ended: false };
 }
 
 export function answerRecognition(
@@ -56,8 +64,8 @@ export function answerRecognition(
     newCorrect: state.newCorrect + Number(!state.prompt.seenBefore),
     repeatCorrect: state.repeatCorrect + Number(state.prompt.seenBefore),
   };
-  const prompt = selectPrompt(pool, state.seen, state.prompt.word, random);
+  const prompt = selectPrompt(pool, state.seen, state.prompt.word, random, state.recent);
   if (!prompt) return { ...next, ended: 'completed' };
   // Its status was checked above, before it becomes part of the seen set.
-  return { ...next, prompt, seen: prompt.seenBefore ? state.seen : [...state.seen, prompt.word] };
+  return { ...next, prompt, recent: [...state.recent, prompt.word].slice(-RECOGNITION_CONFIG.recentWindow), seen: prompt.seenBefore ? state.seen : [...state.seen, prompt.word] };
 }

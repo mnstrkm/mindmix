@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { audio } from '../../services/audio/audio';
-import { INPUT_FEEDBACK_MS, PRESENTATION_DELAY_MS, SIGNAL_DURATION_MS, SIGNAL_GAP_MS } from './config';
+import { INPUT_FEEDBACK_MS, PRESENTATION_DELAY_MS, ROUND_FEEDBACK_MS, SIGNAL_DURATION_MS, SIGNAL_GAP_MS } from './config';
 import Game from './Game';
 
 vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
@@ -37,6 +37,12 @@ describe('Simon presentation and interruption', () => {
     expect(onProgress).toHaveBeenCalledTimes(2);
     fireEvent.click(pad);
     expect(onProgress).toHaveBeenLastCalledWith({ score: 2, actions: 2, stats: { 'stats.completedRounds': 1 } });
+    expect(pad).toHaveClass('active');
+    expect(pad).toBeDisabled();
+    act(() => vi.advanceTimersByTime(ROUND_FEEDBACK_MS - 1));
+    expect(pad).toHaveClass('active');
+    act(() => vi.advanceTimersByTime(1));
+    expect(pad).not.toHaveClass('active');
   });
 
   it('cancels a presentation on pause, starts it over on resume, and removes timers on unmount', () => {

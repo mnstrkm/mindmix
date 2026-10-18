@@ -59,6 +59,8 @@ Pro Spiel bleiben höchstens 30 Verlaufseinträge erhalten, über alle Varianten
 
 Der Vergleichsschlüssel enthält Spiel, Variante, Regelversion und gegebenenfalls Inhaltsversion. Nur das Wortspiel verwendet zusätzlich die Spielsprache. Die UI-Sprache trennt keine sprachunabhängigen Rekorde. Beim Kopfrechnen trennen `basic` und `mixed` die Rekorde. Bei Reaktionszeiten ist kleiner besser; bei den anderen Spielen ist größer besser. Gleichstände ersetzen den bestehenden Rekord nicht.
 
+Seit 1.1.0 enthält der Vergleichsschlüssel zusätzlich eine optionale Metrikkennung. `recordScores` meldet weitere unabhängige Rekorde derselben Vergleichsrichtung; bei der Reaktion ist dies `fastest`. Der Speicher hält diesen Rekord getrennt vom Durchschnitt, auch wenn seine ursprüngliche Partie aus dem 30-Einträge-Verlauf herausfällt. Eine gültige Einzelzeit kann einen solchen Rekord ergeben, obwohl die Partie noch keinen vollständigen Durchschnitt besitzt. `variantRuleVersions` ermöglicht eine Regeländerung nur im gemischten Rechenmodus. Frühere Vergleichsgruppen bleiben unter den Bestleistungen einsehbar.
+
 Versionen haben unterschiedliche Aufgaben:
 
 - `package.json` / `CHANGELOG.md`: veröffentlichte App-Version, zunächst **1.0.0**.
@@ -68,6 +70,8 @@ Versionen haben unterschiedliche Aufgaben:
 
 Eine neue Regelversion benötigt keine Datenmigration, nur eine neue Vergleichsgruppe. Eine Änderung am Speicherformat benötigt dagegen eine bewusst implementierte Migration. Für Version 1 existiert kein älteres unterstütztes Schema.
 
+Die Erweiterungen von 1.1.0 sind additive Felder im Schema 1: ältere Einstellungen erhalten `theme: 'dark'`, fehlende Rekordmetriken bedeuten den bisherigen Hauptwert. Bestehende Ergebnisse werden nicht umgerechnet oder entfernt. Insbesondere wird kein Median als Durchschnitt ausgegeben.
+
 ## Sprache, Inhalte und Darstellung
 
 i18next lädt die beiden Sprachressourcen lokal. Jeder Spielname besitzt einen eigenen Namespace; gemeinsame Navigation, Einstellungen und Hinweise liegen in `common`. Komponenten verwenden vollständige übersetzte Sätze mit Platzhaltern. Ein Test vergleicht Schlüssel und Platzhalter beider Sprachen.
@@ -75,6 +79,8 @@ i18next lädt die beiden Sprachressourcen lokal. Jeder Spielname besitzt einen e
 Die Wortlisten sind getrennte Inhalte für Deutsch und Türkisch. Eine Partie fixiert ihren Wortvorrat beim Start. Der Weg zu den Spracheinstellungen beendet die laufende Partie kontrolliert; eine neue Wortpartie verwendet anschließend den neu gewählten Pool. Wortdatenpflege und sprachlicher Prüfbedarf sind bei den [Spielregeln](game-rules.md) beschrieben.
 
 Globale CSS-Variablen definieren Farben, Schrift und Abstände. Spielbezogene Styles bleiben beim jeweiligen Modul. Das Layout verwendet skalierbare Maße, Textumbruch, sichtbare Fokuszustände und lokale SVG-Symbole. Gedächtnis- und Suchaufgaben haben trotz Beschriftungen keine zugesicherte vollständige nichtvisuelle Gleichwertigkeit.
+
+Dark Mode ist der Standard; eine gespeicherte helle Ansicht bleibt optional. Das Theme wird vor dem React-Start gesetzt. Jedes Spiel besitzt ein eigenes `Guide.tsx` mit einem statischen visuellen Beispiel. Nur der darstellende Rahmen ist gemeinsam; die Beispiele greifen nicht auf die laufende Aufgabe oder deren verborgene Gedächtnisvorlage zu.
 
 ## Audio und PWA
 

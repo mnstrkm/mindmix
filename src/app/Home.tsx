@@ -11,19 +11,17 @@ export default function Home() {
   return <>
     <section className="hero">
       <div className="hero-copy">
-        <p className="eyebrow"><span className="tiny-spark">✦</span> {t('eyebrow')}</p>
+        <p className="eyebrow">{t('eyebrow')}</p>
         <h1>{t('heroFirst')}<br /><span>{t('heroSecond')}</span></h1>
         <p className="hero-description">{t('heroDescription')}</p>
         <a className="button primary hero-button" href="#game-list" onClick={event => { event.preventDefault(); document.getElementById('game-list')?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' }); document.getElementById('game-list')?.focus({ preventScroll: true }); }}>{t('explore')}<ArrowIcon /></a>
         <p className="hero-note">{t('heroNote')}</p>
       </div>
       <div className="hero-art" aria-hidden="true">
-        <div className="art-orbit" />
         <div className="art-tile art-one sage"><GameIcon id="spatial" /></div>
         <div className="art-tile art-two peach"><GameIcon id="simon" /></div>
         <div className="art-tile art-three lavender"><GameIcon id="digits" /></div>
         <div className="art-tile art-four yellow"><GameIcon id="reaction" /></div>
-        <span className="art-spark">✳</span><span className="art-dot" />
       </div>
     </section>
     <section className="catalog" aria-labelledby="game-list">
