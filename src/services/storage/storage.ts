@@ -5,7 +5,7 @@ export const SCHEMA_VERSION = 1;
 export interface Settings {
   language: Language; theme: 'dark' | 'light'; effects: boolean; effectVolume: number; music: boolean; musicVolume: number; textSize: 'normal' | 'large' | 'extra';
 }
-export interface Result extends GameResult {
+export interface Result extends Omit<GameResult, 'review'> {
   id: string; game: GameId; variant: string; ruleVersion: number;
   language?: Language; contentVersion?: number; date: string;
   metric?: string;

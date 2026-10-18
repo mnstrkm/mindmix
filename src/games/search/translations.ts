@@ -1,5 +1,9 @@
 export const translations = {
   de: {
+    reviewTitle: 'Deine letzte Suche',
+    reviewLegend: '✓ Richtiger Pfeil · × Deine Auswahl',
+    reviewCell: 'Zeile {{row}}, Spalte {{column}}, {{direction}}: {{status}}',
+    reviewStates: { correct: 'richtiger Pfeil', wrong: 'deine falsche Auswahl', empty: 'nicht gewählt' },
     example: 'Die Vorlage zeigt nach oben. Wähle im Raster den einzigen Pfeil nach oben. Die Vorlage bleibt während der Suche sichtbar.',
     title: 'Visuelle Suche', description: 'Finde den passenden Pfeil im Raster.',
     goal: 'Finde im Raster genau den Pfeil, der über dem Raster gezeigt wird.',
@@ -14,6 +18,10 @@ export const translations = {
     stats: { level: 'Stufe', grid: 'Raster' },
   },
   tr: {
+    reviewTitle: 'Son araman',
+    reviewLegend: '✓ Doğru ok · × Senin seçimin',
+    reviewCell: 'Satır {{row}}, sütun {{column}}, {{direction}}: {{status}}',
+    reviewStates: { correct: 'doğru ok', wrong: 'yanlış seçimin', empty: 'seçilmedi' },
     example: 'Örnek ok yukarı bakar. Izgarada yukarı bakan tek oku seç. Örnek, arama sırasında görünür kalır.',
     title: 'Görsel arama', description: 'Izgarada aynı yöne bakan oku bul.',
     goal: 'Izgaranın üzerinde gösterilen okla aynı yöne bakan tek oku bul.',

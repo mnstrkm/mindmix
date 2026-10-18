@@ -32,6 +32,7 @@ function GameHost({ id }: { id?: string }) {
   const [progress, setProgress] = useState<GameResult>({ score: 0, actions: 0 });
   const [result, setResult] = useState<GameResult | null>(null);
   const [newBest, setNewBest] = useState(false);
+  const [previousBest, setPreviousBest] = useState<number | null>(null);
   const session = useRef<{ id: string; done: boolean; meta: Omit<Result, keyof GameResult | 'id' | 'date'>; progress: GameResult } | null>(null);
   const title = useRef<HTMLHeadingElement>(null);
   const pauseTitle = useRef<HTMLHeadingElement>(null);
@@ -41,13 +42,14 @@ function GameHost({ id }: { id?: string }) {
     const current = session.current;
     if (!current || current.done) return;
     current.done = true;
-    const saved: Result = { ...value, ...current.meta, id: current.id, date: new Date().toISOString() };
+    const { review: _review, ...persisted } = value;
+    const saved: Result = { ...persisted, ...current.meta, id: current.id, date: new Date().toISOString() };
     const previous = storage.getSnapshot().data.records.find(item => comparisonKey(item) === comparisonKey(saved));
     const best = value.actions > 0 && value.eligible !== false && value.score > 0 && isBetter(saved, previous);
     storage.finalize(saved);
     audio.pause();
     if (show) {
-      setResult(value); setPhase('result'); setPause(null); setNewBest(best);
+      setResult(value); setPhase('result'); setPause(null); setNewBest(best); setPreviousBest(best && previous ? previous.score : null);
     }
     setActive(false);
   }, [setActive]);
@@ -120,11 +122,11 @@ function GameHost({ id }: { id?: string }) {
       <p className="eyebrow">{t(`reasons.${result.reason ?? 'completed'}`)}</p><h2>{t(newBest ? 'newBest' : 'result')}</h2>
       <div className="result-score">{result.eligible === false ? '—' : number(result.score)}<span>{t(`${game.id}:scoreLabel`, { defaultValue: t(`${game.id}:unit`) })}</span></div>
       {result.eligible === false && <p className="notice">{t(`${game.id}:incomplete`, { defaultValue: t('noRecord') })}</p>}{result.actions === 0 && <p className="hint">{t('noActions')}</p>}
-      <div className="best-summary"><span>{t(`${game.id}:recordLabel`, { defaultValue: t('bestSoFar') })}</span><strong>{record ? `${number(record.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>
-      {game.recordMetrics?.map(metric => { const best = data.records.find(item => comparisonKey(item) === comparisonKey({ ...meta, metric })); return <div className="secondary-record" key={metric}><span>{t(`${game.id}:records.${metric}`)}</span><strong>{best ? `${number(best.score)} ${t(`${game.id}:unit`)}` : t('notPlayed')}</strong></div>; })}
+      {previousBest !== null && <p className="previous-best">{t('previousBest', { score: number(previousBest), unit: t(`${game.id}:unit`) })}</p>}
+      {!game.hideResultRecord && !newBest && record && <div className="best-summary"><span>{t('bestSoFar')}</span><strong>{number(record.score)} {t(`${game.id}:unit`)}</strong></div>}
+      {result.review}
       {result.stats && <dl className="result-stats">{Object.entries(result.stats).map(([stat, value]) => <div key={stat}><dt>{t(`${game.id}:${stat}`)}</dt><dd>{typeof value === 'number' ? number(value) : value}</dd></div>)}</dl>}
       <div className="actions"><button className="button primary" onClick={start}>{t('again')}</button><Link className="button secondary" to="/">{t('menu')}</Link></div><p className="hint">{t('resultNote')}</p>
     </section>}
-    <p className="rule-version">{t('rulesVersion', { version: meta.ruleVersion })}</p>
   </div>;
 }

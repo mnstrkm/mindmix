@@ -8,7 +8,7 @@ export default function NumericPad({ value, onChange, onConfirm, maxLength = 100
       {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map(digit => <button key={digit} className="number-key" disabled={disabled || value.length >= maxLength} onClick={() => onChange(value + digit)}>{digit}</button>)}
       <button className="number-key" aria-label={t('backspace')} disabled={disabled || !value} onClick={() => onChange(value.slice(0, -1))}>⌫</button>
       <button className="number-key" disabled={disabled || value.length >= maxLength} onClick={() => onChange(value + '0')}>0</button>
-      <button className="number-key confirm-key" aria-label={t('confirm')} disabled={disabled || !value} onClick={onConfirm}>✓</button>
+      <span aria-hidden="true" />
     </div>
     <button className="button primary full-width" disabled={disabled || !value} onClick={onConfirm}>{t('confirm')}</button>
   </div>;

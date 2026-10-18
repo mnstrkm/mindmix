@@ -4,6 +4,7 @@ import type { GameProps, GameResult } from '../../app/types';
 import { audio } from '../../services/audio/audio';
 import { createPattern, difficultyIndex, getDifficulty, matchesPattern, toggleCell } from './logic';
 import './spatial.css';
+import ResultReview from './ResultReview';
 
 interface State {
   phase: 'memorize' | 'recall' | 'ended';
@@ -17,6 +18,7 @@ function progress(state: State): GameResult {
   return {
     score: state.solved,
     actions: state.solved,
+    review: state.phase !== 'memorize' ? <ResultReview pattern={state.pattern} selected={state.selected} rows={difficulty.rows} columns={difficulty.columns} /> : undefined,
     stats: {
       'stats.highestLevel': difficultyIndex(state.solved) + 1,
       'stats.rows': difficulty.rows,
@@ -36,6 +38,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   function update(next: State) {
     current.current = next;
     setState(next);
+    onProgress(progress(next));
   }
 
   useEffect(() => { onProgress(progress(current.current)); }, [onProgress]);
@@ -69,7 +72,6 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     };
     update(next);
     audio.play('correct');
-    onProgress(progress(next));
   }
 
   if (state.phase === 'ended') return null;

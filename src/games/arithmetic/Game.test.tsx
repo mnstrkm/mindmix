@@ -19,7 +19,7 @@ describe('arithmetic interactions', () => {
     expect(callbacks.onFinish).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'backspace' }));
     fireEvent.click(screen.getByRole('button', { name: '4' }));
-    const confirm = screen.getAllByRole('button', { name: 'confirm' })[1]!;
+    const confirm = screen.getByRole('button', { name: 'confirm' });
     fireEvent.click(confirm);
     fireEvent.click(confirm);
     expect(callbacks.onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 1 }));
@@ -34,7 +34,7 @@ describe('arithmetic interactions', () => {
     const callbacks = props();
     render(<Game {...callbacks} />);
     fireEvent.click(screen.getByRole('button', { name: '5' }));
-    const confirm = screen.getAllByRole('button', { name: 'confirm' })[1]!;
+    const confirm = screen.getByRole('button', { name: 'confirm' });
     fireEvent.click(confirm);
     fireEvent.click(confirm);
     expect(callbacks.onFinish).toHaveBeenCalledTimes(1);

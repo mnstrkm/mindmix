@@ -21,6 +21,7 @@ export interface GameDefinition {
   ruleVersion: number; contentVersion?: number; tone: string;
   variantRuleVersions?: Record<string, number>; recordMetrics?: string[];
   guide?: ComponentType;
+  hideResultRecord?: boolean;
 }
 export const games: GameDefinition[] = [
   { id: 'recognition', component: lazy(() => import('../games/recognition/Game')), ruleVersion: recognitionVersion, contentVersion: CONTENT_VERSION, tone: 'sage' },
@@ -30,7 +31,7 @@ export const games: GameDefinition[] = [
   { id: 'arithmetic', component: lazy(() => import('../games/arithmetic/Game')), ruleVersion: arithmeticVersion, variantRuleVersions: { mixed: MIXED_RULE_VERSION }, tone: 'yellow' },
   { id: 'search', component: lazy(() => import('../games/search/Game')), ruleVersion: searchVersion, tone: 'rose' },
   { id: 'switch', component: lazy(() => import('../games/switch/Game')), ruleVersion: switchVersion, tone: 'mint' },
-  { id: 'reaction', component: lazy(() => import('../games/reaction/Game')), ruleVersion: reactionVersion, recordMetrics: ['fastest'], tone: 'sand' },
+  { id: 'reaction', component: lazy(() => import('../games/reaction/Game')), ruleVersion: reactionVersion, recordMetrics: ['fastest'], hideResultRecord: true, tone: 'sand' },
 ];
 export const getRuleVersion = (game: GameDefinition, variant: string) => game.variantRuleVersions?.[variant] ?? game.ruleVersion;
 export const getGame = (id: string | undefined) => games.find(game => game.id === id);

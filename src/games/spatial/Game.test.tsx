@@ -19,7 +19,7 @@ describe('spatial recall interaction', () => {
     for (const index of marked) fireEvent.click(cells[index]!);
     fireEvent.click(cells[marked[0]!]!);
     fireEvent.click(cells[marked[0]!]!);
-    expect(onProgress).toHaveBeenCalledTimes(1);
+    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 0, actions: 0 }));
     fireEvent.click(screen.getByRole('button', { name: 'confirm' }));
     expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 1, actions: 1 }));
     expect(within(screen.getByRole('group')).getAllByRole('button')).toHaveLength(6);

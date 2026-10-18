@@ -12,43 +12,44 @@ describe('recognition rules', () => {
     expect(answerRecognition(state, 'new', ['Apfel', 'Birne'], sample(0.9, 0)).prompt).toEqual({ word: 'Birne', seenBefore: false });
   });
 
-  it('separates repeat decisions and allows an early repeat but never a third identical word', () => {
+  it('separates repeat decisions and introduces another word before the first repeat', () => {
     const random = vi.fn(() => 0);
     expect(decideRepeat(0, random)).toBe(false);
     expect(random).not.toHaveBeenCalled();
     expect(decideRepeat(1, () => 0.44)).toBe(true);
     expect(decideRepeat(1, () => 0.45)).toBe(false);
-    const pool = ['Apfel', 'Birne'];
+    const pool = ['Apfel', 'Birne', 'Kirsche'];
     let state = answerRecognition(createRecognition(pool, () => 0), 'new', pool, () => 0);
-    expect(state.prompt).toEqual({ word: 'Apfel', seenBefore: true });
-    state = answerRecognition(state, 'repeat', pool, () => 0);
     expect(state.prompt).toEqual({ word: 'Birne', seenBefore: false });
     state = answerRecognition(state, 'new', pool, () => 0);
-    expect(state).toMatchObject({ score: 3, newCorrect: 2, repeatCorrect: 1, actions: 3, ended: 'completed' });
+    expect(state.prompt).toEqual({ word: 'Apfel', seenBefore: true });
+    state = answerRecognition(state, 'repeat', pool, () => 0);
+    expect(state.prompt).toEqual({ word: 'Birne', seenBefore: true });
+    expect(state).toMatchObject({ score: 3, newCorrect: 2, repeatCorrect: 1, actions: 3, ended: false });
   });
 
-  it('prevents long identical runs even when random always requests an immediate repeat', () => {
+  it.each([0, 0.03, 0.1, 0.44, 0.45, 0.9, 0.999])('never repeats consecutive words with random=%s, for new or seen prompts', (value) => {
     const pool = ['Radio', 'Baum', 'Apfel', 'Tisch', 'Wolke'];
-    let state = createRecognition(pool, () => 0);
+    let state = createRecognition(pool, () => value);
     const shown = [state.prompt.word];
     for (let i = 0; i < 100 && !state.ended; i++) {
-      state = answerRecognition(state, state.prompt.seenBefore ? 'repeat' : 'new', pool, () => 0);
+      state = answerRecognition(state, state.prompt.seenBefore ? 'repeat' : 'new', pool, () => value);
       if (!state.ended) shown.push(state.prompt.word);
     }
-    for (let i = 2; i < shown.length; i++) expect(shown.slice(i - 2, i + 1).every(word => word === shown[i])).toBe(false);
+    for (let i = 1; i < shown.length; i++) expect(shown[i]).not.toBe(shown[i - 1]);
     expect(new Set(shown).size).toBeGreaterThan(1);
     expect(selectPrompt(pool, ['Radio'], 'Radio', () => 0.1)).toEqual({ word: 'Baum', seenBefore: false });
   });
 
   it('prefers seen words outside the recent window when alternatives exist', () => {
-    expect(selectPrompt(['A', 'B', 'C', 'D', 'E'], ['A', 'B', 'C', 'D'], 'D', sample(0, 0.9, 0), ['B', 'C', 'D'])).toEqual({ word: 'A', seenBefore: true });
+    expect(selectPrompt(['A', 'B', 'C', 'D', 'E'], ['A', 'B', 'C', 'D'], 'D', sample(0, 0), ['B', 'C', 'D'])).toEqual({ word: 'A', seenBefore: true });
   });
 
-  it('keeps old words seen and can choose longer or immediate repetition gaps', () => {
+  it('keeps old words seen while excluding the previous word from every repeat choice', () => {
     const pool = ['Apfel', 'Birne', 'Pflaume', 'Kirsche'];
     const seen = ['Apfel', 'Birne', 'Pflaume'];
-    expect(selectPrompt(pool, seen, 'Pflaume', sample(0, 0.9, 0))).toEqual({ word: 'Apfel', seenBefore: true });
-    expect(selectPrompt(pool, seen, 'Pflaume', sample(0, 0, 0))).toEqual({ word: 'Pflaume', seenBefore: true });
+    expect(selectPrompt(pool, seen, 'Pflaume', sample(0, 0))).toEqual({ word: 'Apfel', seenBefore: true });
+    expect(selectPrompt(pool, seen, 'Pflaume', sample(0, 0.99))).toEqual({ word: 'Birne', seenBefore: true });
     expect(selectPrompt(pool, seen, 'Pflaume', sample(0.9, 0))).toEqual({ word: 'Kirsche', seenBefore: false });
   });
 

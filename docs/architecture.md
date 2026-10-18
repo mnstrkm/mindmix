@@ -33,9 +33,11 @@ Spielverzeichnis → Vorbereitung → Spielmodul → Ergebnis
                                aktueller Stand   Speicher
 ```
 
-Der Host fixiert beim Start die Vergleichsmetadaten und erzeugt eine Sitzungskennung. Das Spiel erhält `language`, `variant`, `paused`, `onProgress` und `onFinish`. Es meldet ausschließlich Ergebnisdaten; direkte Schreibzugriffe auf den lokalen Ergebnisspeicher bleiben beim Host.
+Der Host fixiert beim Start die Vergleichsmetadaten und erzeugt eine Sitzungskennung. Das Spiel erhält `language`, `variant`, `paused`, `onProgress` und `onFinish`. Es meldet Ergebnisdaten und bei Bedarf eine vorübergehende Ergebnisansicht; direkte Schreibzugriffe auf den lokalen Ergebnisspeicher bleiben beim Host.
 
 `onProgress` aktualisiert den sichtbaren Score und den zuletzt erreichten Stand für ein freiwilliges Ende. `onFinish` liefert das abschließende Ergebnis mit einem Grund wie Fehler oder erfolgreich abgeschlossen. `actions` unterscheidet eine lediglich geöffnete Partie von einer bereits gewerteten Aktion. `eligible: false` schließt insbesondere unvollständige Reaktionsmessungen von Rekorden aus.
+
+Seit 1.2.0 kann ein Spiel mit `review` eine eigene, nicht interaktive React-Ergebnisansicht liefern. Die zugehörigen `ResultReview.tsx`-Komponenten bleiben im Spielmodul; der Host kennt ihre Regeln nicht. Er zeigt diese Ansicht erst nach dem Ende und entfernt sie vor der Speicherung. Raster und einzelne Reaktionszeiten werden so nicht als Eingabeprotokoll gespeichert. `hideResultRecord` unterdrückt bei Bedarf den allgemeinen Rekordblock, damit die Reaktionsübersicht ihren Durchschnitt nicht mehrfach zeigt. Bei einer verbesserten Hauptbestleistung hält der Host den vorherigen vergleichbaren Wert für die Ergebnisansicht fest.
 
 Der Host besitzt eine Finalisierungssperre pro Sitzung. Der Speicherdienst weist zusätzlich dieselbe Sitzungskennung zurück. Dadurch erzeugen wiederholte Ereignisse keine doppelten Verlaufseinträge. Navigieren aus einem Spiel beendet die aktuelle Partie mit dem zuletzt gemeldeten Stand. Ein vollständiges Schließen des Browsers stellt keine laufende Partie wieder her.
 

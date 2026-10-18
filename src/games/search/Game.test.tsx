@@ -18,6 +18,7 @@ describe('search interactions', () => {
     const first = screen.getAllByRole('button')[0]!;
     fireEvent.click(first);
     fireEvent.click(first);
+    expect(first).toHaveClass('selected');
     expect(callbacks.onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 1, actions: 1 }));
     expect(callbacks.onFinish).not.toHaveBeenCalled();
     rerender(<Game {...callbacks} paused />);
@@ -26,6 +27,7 @@ describe('search interactions', () => {
     rerender(<Game {...callbacks} />);
     act(() => { vi.advanceTimersByTime(FEEDBACK_MS); });
     expect(first).toBeEnabled();
+    expect(first).not.toHaveClass('selected');
     fireEvent.click(first, { detail: 2 });
     expect(callbacks.onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 1 }));
     fireEvent.click(first, { detail: 1 });

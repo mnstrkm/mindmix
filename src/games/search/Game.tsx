@@ -3,18 +3,14 @@ import { useTranslation } from 'react-i18next';
 import type { GameProps } from '../../app/types';
 import { audio } from '../../services/audio/audio';
 import { FEEDBACK_MS } from './config';
-import { createTask, directions, isTarget, type Direction } from './logic';
+import { createTask, isTarget } from './logic';
 import './search.css';
-
-function Arrow({ direction }: { direction: Direction }) {
-  return <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-    <path d="M24 4 43 23H31V44H17V23H5Z" fill="currentColor" transform={`rotate(${directions.indexOf(direction) * 45} 24 24)`} />
-  </svg>;
-}
+import Arrow from './Arrow';
+import ResultReview from './ResultReview';
 
 export default function Game({ paused, onProgress, onFinish }: GameProps) {
   const { t } = useTranslation('search');
-  const [state, setState] = useState(() => ({ task: createTask(0, Math.random), solved: 0, feedback: false }));
+  const [state, setState] = useState(() => ({ task: createTask(0, Math.random), solved: 0, feedback: false, selected: null as number | null }));
   const locked = useRef(false);
   const { task } = state;
   const stats = { 'stats.level': task.level, 'stats.grid': `${task.rows} × ${task.columns}` };
@@ -26,7 +22,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
   useEffect(() => {
     if (!state.feedback || paused) return;
     const timer = window.setTimeout(() => {
-      setState((current) => ({ solved: current.solved, task: createTask(current.solved, Math.random), feedback: false }));
+      setState((current) => ({ solved: current.solved, task: createTask(current.solved, Math.random), feedback: false, selected: null }));
       locked.current = false;
     }, FEEDBACK_MS);
     return () => window.clearTimeout(timer);
@@ -36,11 +32,11 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     if (paused || locked.current || state.feedback || clickCount > 1) return;
     locked.current = true;
     if (!isTarget(task, index)) {
-      onFinish({ score: state.solved, actions: state.solved + 1, reason: 'mistake', stats });
+      onFinish({ score: state.solved, actions: state.solved + 1, reason: 'mistake', stats, review: <ResultReview task={task} selected={index} /> });
       return;
     }
     audio.play('correct');
-    setState((current) => ({ ...current, solved: current.solved + 1, feedback: true }));
+    setState((current) => ({ ...current, solved: current.solved + 1, feedback: true, selected: index }));
   }
 
   return <div className="game-content">
@@ -51,7 +47,7 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
     </div>
     <p className="hint" role="status">{state.feedback ? t('correct') : t('hint')}</p>
     <div className="game-grid search-grid" style={{ gridTemplateColumns: `repeat(${task.columns}, minmax(0, 1fr))` }} role="group" aria-label={t('grid')}>
-      {task.cells.map((direction, index) => <button type="button" className="tile" key={index}
+      {task.cells.map((direction, index) => <button type="button" className={`tile${state.selected === index ? ' selected' : ''}`} key={index}
         disabled={paused || state.feedback} onClick={(event) => choose(index, event.detail)}
         aria-label={t('cell', { row: Math.floor(index / task.columns) + 1, column: index % task.columns + 1, direction: t(`directions.${direction}`) })}>
         <Arrow direction={direction} />

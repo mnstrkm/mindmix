@@ -32,11 +32,6 @@ export function selectPrompt(
   if (unseen.length === 0) return null;
   const repeat = decideRepeat(seen.length, random);
   if (!repeat) return { word: pick(unseen, random), seenBefore: false };
-  let identicalRun = 0;
-  for (let i = recent.length - 1; i >= 0 && recent[i] === previous; i--) identicalRun++;
-  const allowImmediate = identicalRun < RECOGNITION_CONFIG.maximumIdenticalRun
-    && random() < RECOGNITION_CONFIG.immediateRepeatProbability;
-  if (allowImmediate && previous) return { word: previous, seenBefore: true };
   const older = seen.filter(word => word !== previous);
   // With only one seen word there is no varied repeat to offer. Introduce a new
   // word instead of allowing the opening word to repeat indefinitely.

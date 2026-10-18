@@ -46,6 +46,16 @@ Zufallstests verwenden kontrollierte Quellen und prüfen garantierte Eigenschaft
 
 ## Prüfprotokoll dieser Version
 
+### Mobile Überarbeitung 1.2.0
+
+Am **18.10.2026** bestanden unter Windows mit Node.js 24.19.0 `pnpm check` mit strikter Typprüfung, **86 Vitest-Prüfungen in 20 Dateien** und Produktionsbuild sowie anschließend **alle 22 Playwright-Prüfungen** mit `PLAYWRIGHT_CHANNEL=msedge`. Der vollständige Offline-Precache umfasst **31 Dateien, rund 470 KiB**.
+
+Neue Nachweise: kein unmittelbar identisches Wort bei kontrollierten Zufallswerten in beiden Antwortzuständen; genau ein numerischer Bestätigungsknopf; feste Verlaufsspalten; Einstellungsreihenfolge; vorheriger vergleichbarer Rekord bei Verbesserung; Reaktionsergebnis ohne doppelte Durchschnitts-/Schnellstwertblöcke und mit markierter schnellster Einzelzeit. Touch-Emulation prüft, dass die bewusste Suchhervorhebung und die Hover-Farbe nach dem Aufgabenwechsel verschwinden. Die Ergebnisraster zeigen richtige, übersehene und falsche Felder beziehungsweise Zielpfeil und eigene Auswahl. Während der Aufgabe oder Erklärung werden keine Ergebnisraster angezeigt, und im lokalen Speicher landet kein `review`-Feld.
+
+Die neuen Ergebnisansichten wurden bei **320 CSS-Pixeln**, auch mit **sehr großer türkischer Schrift**, auf horizontalen Überlauf geprüft. Browseraufnahmen von Reaktion, räumlichem Gedächtnis, visueller Suche, Verlauf und Zahleneingabe wurden visuell durchgesehen. Offline-Start aller acht Spiele, Sprachwechsel, kontrolliertes PWA-Update, Pausen, Tastaturbedienung und die 8×4-Raster mit mindestens 48×48-Pixel-Zielen bestehen weiterhin.
+
+Dies sind Browserprüfungen und Touch-Emulation auf einem Windows-Rechner. Reale Handyhaptik, iOS/Safari und native Android-Systemschrift wurden dadurch nicht nachgewiesen; die Gerätecheckliste unten bleibt dafür maßgeblich.
+
 ### Überarbeitung 1.1.0
 
 Am **18.10.2026** bestanden unter Windows mit Node.js 24.19.0 und Microsoft Edge zunächst die strikte Typprüfung, der Produktionsbuild, **80 Vitest-Prüfungen in 20 Dateien** und **17 Browserprüfungen**. Die lokale Browserkonfiguration wurde weiterhin mit `PLAYWRIGHT_CHANNEL=msedge` ausgeführt. Der Build umfasst rund **466 KiB** im vollständigen Offline-Precache.

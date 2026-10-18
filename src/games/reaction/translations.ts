@@ -1,5 +1,6 @@
 export const translations = {
   de: {
+    trialNumber: 'Versuch {{number}}', fastestLabel: 'Schnellste Zeit',
     title: 'Reaktions-Challenge', description: 'Warte auf das Signal und reagiere mit einer Berührung.',
     goal: 'Reagiere erst, wenn die große Fläche „Jetzt!“ zeigt. Fünf gültige Messungen ergeben dein Ergebnis.',
     controls: 'Starte einen Versuch. Warte etwa zwei bis fünf Sekunden auf „Jetzt!“. Tippe dann auf die Fläche oder drücke dort Enter beziehungsweise die Leertaste. Die Messung erfolgt schon beim Drücken. Eine optionale Probe zählt nicht.',
@@ -24,6 +25,7 @@ export const translations = {
     example: 'Warte, bis „Jetzt!“ erscheint. Erst dann tippen. Nach jedem Versuch bleibt deine Zeit sichtbar; nach dem fünften öffnest du selbst das Ergebnis.',
   },
   tr: {
+    trialNumber: 'Deneme {{number}}', fastestLabel: 'En hızlı süre',
     title: 'Tepki Mücadelesi', description: 'İşareti bekle ve tek dokunuşla tepki ver.',
     goal: 'Büyük alanda „Şimdi!“ yazınca tepki ver. Beş geçerli ölçüm sonucunu oluşturur.',
     controls: 'Bir deneme başlat. Yaklaşık iki ila beş saniye sonra „Şimdi!“ işaretini bekle. Sonra alana dokun veya alan seçiliyken Enter ya da boşluk tuşuna bas. Ölçüm tuşa basıldığı anda yapılır. İsteğe bağlı alıştırma sayılmaz.',

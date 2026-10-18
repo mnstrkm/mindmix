@@ -23,14 +23,18 @@ describe('recognition interaction', () => {
     act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
     fireEvent.click(newButton, { detail: 2 });
     expect(onFinish).not.toHaveBeenCalled();
+    fireEvent.click(newButton);
+    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 2, actions: 2, stats: { 'stats.newWords': 2, 'stats.repeats': 0 } }));
+    act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
+    expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Apfel');
     fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
-    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 2, actions: 2, stats: { 'stats.newWords': 1, 'stats.repeats': 1 } }));
+    expect(onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 3, stats: { 'stats.newWords': 2, 'stats.repeats': 1 } }));
     act(() => vi.advanceTimersByTime(RECOGNITION_CONFIG.inputGuardMs));
     expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Birne');
-    fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
-    fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
+    fireEvent.click(newButton);
+    fireEvent.click(newButton);
     expect(onFinish).toHaveBeenCalledTimes(1);
-    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 2, actions: 3, reason: 'mistake' }));
+    expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 3, actions: 4, reason: 'mistake' }));
   });
 
   it('cancels input timers on pause and freezes the original word pool', () => {
@@ -40,11 +44,11 @@ describe('recognition interaction', () => {
     view.rerender(<Game {...props} language="tr" paused />);
     act(() => vi.advanceTimersByTime(0));
     expect(vi.getTimerCount()).toBe(0);
-    expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Apfel');
+    expect(screen.getByLabelText('promptLabel')).toHaveTextContent('Birne');
     fireEvent.click(screen.getByRole('button', { name: 'new' }));
     expect(props.onFinish).not.toHaveBeenCalled();
     view.rerender(<Game {...props} language="tr" paused={false} />);
-    fireEvent.click(screen.getByRole('button', { name: 'repeat' }));
+    fireEvent.click(screen.getByRole('button', { name: 'new' }));
     expect(props.onProgress).toHaveBeenLastCalledWith(expect.objectContaining({ score: 2, actions: 2 }));
     view.unmount();
     act(() => vi.advanceTimersByTime(0));

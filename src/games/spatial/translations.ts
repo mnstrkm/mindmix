@@ -1,5 +1,9 @@
 export const translations = {
   de: {
+    reviewTitle: 'Deine letzte Auswahl',
+    reviewLegend: '✓ Richtig gewählt · ○ Übersehen · × Falsch gewählt',
+    reviewCell: 'Zeile {{row}}, Spalte {{column}}: {{status}}',
+    reviewStates: { correct: 'richtig gewählt', missed: 'übersehen', wrong: 'falsch gewählt', empty: 'nicht markiert, nicht gewählt' },
     title: 'Räumliches Gedächtnis',
     description: 'Merke dir die markierten Felder und finde sie im leeren Raster wieder.',
     goal: 'Wähle nach dem Ausblenden genau die zuvor markierten Felder aus.',
@@ -20,6 +24,10 @@ export const translations = {
     stats: { highestLevel: 'Höchste erreichte Stufe', rows: 'Rasterzeilen', columns: 'Rasterspalten', marked: 'Benötigte Markierungen' },
   },
   tr: {
+    reviewTitle: 'Son seçimin',
+    reviewLegend: '✓ Doğru seçim · ○ Atlanan · × Yanlış seçim',
+    reviewCell: 'Satır {{row}}, sütun {{column}}: {{status}}',
+    reviewStates: { correct: 'doğru seçim', missed: 'atlanmış', wrong: 'yanlış seçim', empty: 'işaretsiz, seçilmedi' },
     title: 'Konum hafızası',
     description: 'İşaretli kareleri aklında tut ve boş tabloda yeniden bul.',
     goal: 'İşaretler gizlendikten sonra daha önce işaretli olan karelerin tamamını seç.',

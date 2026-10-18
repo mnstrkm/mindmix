@@ -46,7 +46,7 @@ export default function Game({ variant, paused, onProgress, onFinish }: GameProp
   return <div className="game-content">
     <p className="status-line">{t('status', { count: state.solved, level })}</p>
     <p className="stimulus" aria-live="polite">{t('question', { ...state.task.question })}</p>
-    <p className="hint" role="status">{state.feedback ? t('correct') : t(mode === 'mixed' ? 'mixedDetail' : 'basicDetail')}</p>
+    <p className="answer-feedback hint" role="status">{state.feedback ? t('correct') : ''}</p>
     <NumericPad value={value} onChange={(next) => { if (!paused && !locked.current) setValue(next); }} onConfirm={submit} maxLength={3} disabled={paused || state.feedback} />
   </div>;
 }

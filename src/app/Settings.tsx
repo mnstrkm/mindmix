@@ -9,11 +9,6 @@ export default function Settings() {
   const set = (patch: Partial<SettingsType>) => { storage.setSettings(patch); audio.configure({ ...settings, ...patch }); audio.unlock(); };
   return <div className="page-narrow">
     <div className="page-title"><p className="eyebrow">{t('brand')}</p><h1>{t('settings')}</h1><p>{t('tagline')}</p></div>
-    <section className="panel settings-section"><h2>{t('appearance')}</h2><p>{t('appearanceDescription')}</p>
-      <div className="segmented" role="group" aria-label={t('appearance')}>
-        {(['dark', 'light'] as const).map(theme => <button key={theme} aria-pressed={settings.theme === theme} onClick={() => set({ theme })}>{t(theme)}</button>)}
-      </div>
-    </section>
     <section className="panel settings-section"><h2>{t('language')}</h2><p>{t('languageDescription')}</p>
       <div className="segmented" role="group" aria-label={t('language')}>
         <button lang="de" aria-pressed={settings.language === 'de'} onClick={() => set({ language: 'de' })}>{t('german')}</button>
@@ -23,6 +18,11 @@ export default function Settings() {
     <section className="panel settings-section"><h2>{t('textSize')}</h2><p>{t('textDescription')}</p>
       <div className="segmented" role="group" aria-label={t('textSize')}>
         {(['normal', 'large', 'extra'] as const).map(size => <button key={size} aria-pressed={settings.textSize === size} onClick={() => set({ textSize: size })}>{t(size)}</button>)}
+      </div>
+    </section>
+    <section className="panel settings-section"><h2>{t('appearance')}</h2><p>{t('appearanceDescription')}</p>
+      <div className="segmented" role="group" aria-label={t('appearance')}>
+        {(['dark', 'light'] as const).map(theme => <button key={theme} aria-pressed={settings.theme === theme} onClick={() => set({ theme })}>{t(theme)}</button>)}
       </div>
     </section>
     <section className="panel settings-section"><h2>{t('sound')}</h2><p>{t('soundDescription')}</p>

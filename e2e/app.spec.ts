@@ -9,7 +9,7 @@ async function start(page: Page, game: string) {
 }
 async function digitEntry(page: Page, value: string) {
   for (const digit of value) await page.getByRole('button', { name: digit, exact: true }).click();
-  await page.getByRole('button', { name: 'Bestätigen', exact: true }).last().click();
+  await page.getByRole('button', { name: 'Bestätigen', exact: true }).click();
 }
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => { Math.random = () => 0.1; });
@@ -140,6 +140,7 @@ test('arithmetic, visual search and rule switch score correct answers and stop a
 });
 
 test('reaction measures five valid trials and rejects three false starts', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
   await page.clock.install();
   await start(page, 'reaction');
   await page.getByRole('button', { name: /Direkt zur Messung/ }).click();
@@ -156,6 +157,12 @@ test('reaction measures five valid trials and rejects three false starts', async
   await page.screenshot({ path: '.preview/reaction-fifth-time.png', fullPage: true });
   await page.getByRole('button', { name: 'Ergebnis ansehen', exact: true }).click();
   await expect(page.locator('.result-panel')).toBeVisible();
+  await expect(page.locator('.result-panel .best-summary, .result-panel .secondary-record')).toHaveCount(0);
+  await expect(page.locator('.trial-list li')).toHaveCount(5);
+  await expect(page.locator('.fastest-trial')).not.toHaveCount(0);
+  await expect(page.locator('.result-stats')).not.toContainText('Durchschnitt');
+  await expect(page.locator('.result-stats')).not.toContainText('Schnellster');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   await page.screenshot({ path: '.preview/reaction-result.png', fullPage: true });
   const data = await page.evaluate(() => JSON.parse(localStorage.getItem('mindmix:data')!));
   expect(data.records.find((item: { game: string }) => item.game === 'reaction').eligible).toBe(true);

@@ -4,7 +4,7 @@ MindMix ist eine Sammlung von acht kleinen Browser-Spielen auf Deutsch und Türk
 
 Die Ergebnisse beschreiben ausschließlich die jeweils gespielte Aufgabe. Es gibt keine Gesamtbewertung der Person, medizinischen Aussagen, Konten, Werbung oder Tracking. Einstellungen und Ergebnisse bleiben im verwendeten Browser.
 
-**Version:** 1.1.0 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
+**Version:** 1.2.0 · **Repository:** [mnstrkm/mindmix](https://github.com/mnstrkm/mindmix)
 
 | Spiel | Ergebnis |
 | --- | --- |

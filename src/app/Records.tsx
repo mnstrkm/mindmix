@@ -22,7 +22,7 @@ export default function Records() {
         </div>;
       })}
       {data.records.some(item => item.game === game.id && item.ruleVersion !== getRuleVersion(game, item.variant)) && <details className="archived-records"><summary>{t('previousRules')}</summary>
-        {data.records.filter(item => item.game === game.id && item.ruleVersion !== getRuleVersion(game, item.variant)).map(item => <div className="record-line" key={comparisonKey(item)}><span>{t('rulesVersion', { version: item.ruleVersion })}{game.id === 'recognition' ? ` · ${t(item.language === 'tr' ? 'turkish' : 'german')}` : game.id === 'arithmetic' ? ` · ${t(`arithmetic:variants.${item.variant}`)}` : game.id === 'reaction' ? ` · ${t('reaction:legacyMedian')}` : ''}</span><strong>{item.score.toLocaleString(data.settings.language)} {t(`${game.id}:unit`)}</strong></div>)}
+        {data.records.filter(item => item.game === game.id && item.ruleVersion !== getRuleVersion(game, item.variant)).map(item => <div className="record-line" key={comparisonKey(item)}><span>{new Date(item.date).toLocaleDateString(data.settings.language)}{game.id === 'recognition' ? ` · ${t(item.language === 'tr' ? 'turkish' : 'german')}` : game.id === 'arithmetic' ? ` · ${t(`arithmetic:variants.${item.variant}`)}` : game.id === 'reaction' ? ` · ${t('reaction:legacyMedian')}` : ''}</span><strong>{item.score.toLocaleString(data.settings.language)} {t(`${game.id}:unit`)}</strong></div>)}
       </details>}
       <Link className="text-link" to={`/game/${game.id}`}>{t('start')}<ArrowIcon /></Link>
     </section>)}</div>

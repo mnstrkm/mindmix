@@ -1,6 +1,6 @@
-# Spielregeln – Version 1.1.0
+# Spielregeln – Version 1.2.0
 
-Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Wortspiel, räumliches Gedächtnis und Reaktion verwenden **Regelversion 2**, ebenso nur der gemischte Rechenmodus. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt einsehbar.
+Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Das Wortspiel verwendet **Regelversion 3**. Räumliches Gedächtnis, Reaktion und nur der gemischte Rechenmodus verwenden weiterhin **2**. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt einsehbar; technische Regelnummern erscheinen nicht mehr in der Spieloberfläche.
 
 ## Gemeinsame Regeln
 
@@ -16,7 +16,7 @@ Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Wortspi
 
 Ein Wort wird als **Neu** oder **Schon gesehen** beurteilt. Bekannt bedeutet, dass dieses Wort irgendwann zuvor in derselben Partie gezeigt wurde. Frühere Partien zählen nicht.
 
-Das erste Wort ist neu. Anschließend wird zuerst entschieden, ob eine Wiederholung erzeugt werden soll: Ausgangswahrscheinlichkeit **45 %**. Erst danach wird das konkrete Wort gewählt. Eine unmittelbare Wiederholung wird im Wiederholungszweig mit **6 %** zugelassen, jedoch niemals ein drittes identisches Wort in Folge. Ansonsten wird ein anderes bekanntes Wort gewählt; bevorzugt eines, das nicht unter den letzten vier gezeigten Wörtern liegt. Ist erst ein Wort bekannt und keine unmittelbare Wiederholung zulässig, folgt ein neues Wort. Damit verhindert auch der Einstieg lange identische Serien. Mehrere unterschiedliche bekannte Wörter hintereinander bleiben möglich; es gibt keine feste Abwechslung oder Abschnittsquote.
+Die ersten beiden Wörter sind neu und unterschiedlich. Anschließend wird zuerst entschieden, ob eine Wiederholung erzeugt werden soll: Ausgangswahrscheinlichkeit **45 %**. Erst danach wird das konkrete Wort gewählt. Das unmittelbar vorherige Wort ist immer ausgeschlossen, unabhängig davon, ob es neu oder bereits bekannt war. Unter den übrigen bekannten Wörtern werden solche bevorzugt, die nicht unter den letzten vier gezeigten Wörtern liegen. Ist noch kein anderes bekanntes Wort verfügbar, folgt ein neues Wort. Mehrere unterschiedliche bekannte Wörter hintereinander bleiben möglich; es gibt keine feste Abwechslung oder Abschnittsquote. Bei einem vollständig ausgeschöpften Vorrat endet die Partie wie bisher.
 
 Wörter können mehrfach wiederkehren und bleiben während der gesamten Partie bekannt. Der Status wird vor dem Eintragen des aktuellen Wortes in die Gesehen-Menge bestimmt. Eine richtige Entscheidung zeigt das nächste Wort; die erste falsche Entscheidung beendet. Ein Eingabeschutz von **260 ms** verhindert unmittelbare Mehrfachwertung, ohne eine Antwortfrist einzuführen.
 
@@ -79,7 +79,7 @@ Die ersten elf Stufen steigen nach jedem richtigen Muster. Größere Raster blei
 
 Nach Stufe 18 folgen neue zufällige Muster auf derselben Schwierigkeit. Maximal vier Spalten halten die Felder auf kleinen Displays groß; längere Raster dürfen vertikal gescrollt werden. Unmittelbar identische Muster werden verhindert. Es gibt keine besonderen Musterklassen oder immer kleinere Touch-Flächen.
 
-**Ergebnis:** Anzahl vollständig richtig gelöster Muster. Zusatzwerte beschreiben die höchste erreichte Schwierigkeit mit Stufe, Zeilen, Spalten und Markierungszahl. Die Aufgabenzahl kann weiter steigen, während die Stufe bei 18 bleibt. Die Vorlage bleibt während der Abrufphase auch bei Pausen verborgen.
+**Ergebnis:** Anzahl vollständig richtig gelöster Muster. Zusatzwerte beschreiben die höchste erreichte Schwierigkeit mit Stufe, Zeilen, Spalten und Markierungszahl. Die Aufgabenzahl kann weiter steigen, während die Stufe bei 18 bleibt. Die Vorlage bleibt während der Abrufphase auch bei Pausen verborgen. Erst nach Ende einer Abrufphase zeigt ein kleines Ergebnisraster richtig gewählte, übersehene und falsch gewählte Felder mit unterschiedlichen Symbolen und Farben. Es ist nicht interaktiv und wird nicht gespeichert.
 
 ## 5. Kopfrechnen (`arithmetic`)
 
@@ -116,7 +116,7 @@ Die Vorlage zeigt einen großen SVG-Pfeil. Im Raster befindet sich **genau ein P
 
 Zunächst variieren Zielpfeile zwischen oben, rechts, unten und links. Ab 24 richtigen Aufgaben sind auch die vier diagonalen Zielrichtungen möglich. Zielposition und Richtung werden zufällig gewählt. Die Schwierigkeit wächst damit zuerst über die Elementzahl und anschließend über die Ähnlichkeit. Auf dem letzten Niveau folgen unbegrenzt neue Aufgaben.
 
-**Ergebnis:** Anzahl richtig gelöster Suchaufgaben. Zusatzwerte: aktuelle Stufe und Rastergröße. Eine richtige Auswahl erhält **350 ms** Rückmeldung mit gesperrten Eingaben. Beschriftungen enthalten Zeile, Spalte und Richtung; vollständige nichtvisuelle Gleichwertigkeit der visuellen Aufgabe wird nicht zugesichert.
+**Ergebnis:** Anzahl richtig gelöster Suchaufgaben. Zusatzwerte: aktuelle Stufe und Rastergröße. Eine richtige Auswahl erhält **350 ms** Rückmeldung mit gesperrten Eingaben. Die Hervorhebung wird mit der nächsten Aufgabe entfernt. Nach einer falschen Auswahl zeigt ein kleines Ergebnisraster den richtigen Pfeil und die eigene Auswahl. Dieses Raster wird nicht gespeichert. Beschriftungen enthalten Zeile, Spalte und Richtung; vollständige nichtvisuelle Gleichwertigkeit der visuellen Aufgabe wird nicht zugesichert.
 
 ## 7. Regelwechsel (`switch`)
 
@@ -155,6 +155,6 @@ Die Zeitbasis ist `performance.now()`. Das Signal wird innerhalb eines `requestA
 
 Die fünfte Zeit bleibt wie alle vorherigen Zeiten sichtbar. Erst **„Ergebnis ansehen“** öffnet die Zusammenfassung. Es gibt keinen automatischen Sprung, der diesen Wert überspringt.
 
-**Ergebnis:** arithmetischer Durchschnitt der fünf gültigen Zeiten, auf Millisekunden gerundet. **Weniger ist besser.** Zwei unabhängige Rekorde werden geführt: bester Durchschnitt einer vollständigen Partie und schnellster gültiger Einzelversuch. Der schnellste Einzelversuch darf auch aus einer bewusst beendeten oder nach drei Fehlstarts abgebrochenen Partie stammen; ohne fünf gültige Versuche gibt es dagegen keinen Durchschnittsrekord. Die optionalen Probemessungen zählen für keinen Rekord. Zusatzwerte sind Durchschnitt, schnellster Versuch dieser Partie, alle Einzelzeiten und Fehlstarts. Frühere Werte aus Regelversion 1 bleiben ausdrücklich als Median im Archiv sichtbar.
+**Ergebnis:** arithmetischer Durchschnitt der fünf gültigen Zeiten, auf Millisekunden gerundet. **Weniger ist besser.** Zwei unabhängige Rekorde werden geführt: bester Durchschnitt einer vollständigen Partie und schnellster gültiger Einzelversuch. Der schnellste Einzelversuch darf auch aus einer bewusst beendeten oder nach drei Fehlstarts abgebrochenen Partie stammen; ohne fünf gültige Versuche gibt es dagegen keinen Durchschnittsrekord. Die optionalen Probemessungen zählen für keinen Rekord. Die Ergebnisansicht zeigt den Durchschnitt einmal und darunter die Einzelzeiten mit grün und textlich markierter schnellster Zeit. Gültige Versuche und Fehlstarts ergänzen die Zusammenfassung. Die Einzelzeiten werden nur für diese Ansicht vorgehalten; Rekordwerte bleiben gespeichert. Frühere Werte aus Regelversion 1 bleiben ausdrücklich als Median im Archiv sichtbar.
 
 Bei Pause, Erklärung oder Hintergrundwechsel wird ein wartender oder bereits signalisierter Versuch verworfen. Er zählt weder als Messung noch als Fehlstart. Nach Fortsetzung muss ein neuer Versuch gestartet werden. Die übrigen gültigen Messungen bleiben erhalten. Unterschiedliche Geräte und Eingabemethoden können die Werte beeinflussen; Altersnormen oder medizinische Deutungen werden nicht verwendet.

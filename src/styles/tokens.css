@@ -2,7 +2,7 @@
   color-scheme: dark;
   --paper: #10171c; --white: #182228; --ink: #e6eeed;
   --green: #88d9bd; --green-soft: #9bb9b0; --muted: #a8b9bb;
-  --line: #304047; --focus: #a2d9ff; --on-accent: #10241f;
+  --line: #304047; --focus: #a2d9ff; --error: #ffb0ad; --on-accent: #10241f;
   --surface: #1e2c32; --hover: #283b40; --control-border: #52676c;
   --accent-hover: #a5e6cd; --notice-bg: #342c1c; --notice-ink: #efd6a4;
   --sage-bg: #203730; --sage-fg: #a2d3b7; --lavender-bg: #302d40; --lavender-fg: #c4b6e2;
@@ -14,7 +14,7 @@
   color-scheme: light;
   --paper: #f6f5f0; --white: #fffefa; --ink: #25372f;
   --green: #173e37; --green-soft: #63816b; --muted: #647066;
-  --line: #dedfd5; --focus: #a76321; --on-accent: #fff;
+  --line: #dedfd5; --focus: #a76321; --error: #a52831; --on-accent: #fff;
   --surface: #eef2e9; --hover: #e1e9dd; --control-border: #aebfad;
   --accent-hover: #24574b; --notice-bg: #fcf0d9; --notice-ink: #6e4d16;
   --sage-bg: #e6eee0; --sage-fg: #47724b; --lavender-bg: #ede8f4; --lavender-fg: #76618d;

@@ -139,8 +139,6 @@ export default function Game({ paused, onProgress, onFinish }: GameProps) {
           ><span aria-hidden="true">{symbol}</span></button>
         ))}
       </div>
-      {state.phase === 'input' && <p className="hint" aria-live="polite">{t('progress', { count: state.inputIndex, required: state.sequence.length })}</p>}
-      <p className="hint">{t('pauseHint')}</p>
     </div>
   );
 }

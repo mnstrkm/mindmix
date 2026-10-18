@@ -7,6 +7,7 @@ import { REACTION_CONFIG } from './config';
 import { average, beginTrial, chooseReactionMode, completeReaction, createReaction, interruptTrial, isEligible, randomDelay,
   reactToSignal, showSignal, type ReactionState } from './logic';
 import './reaction.css';
+import ResultReview from './ResultReview';
 
 export default function ReactionGame({ paused, language, onProgress, onFinish }: GameProps) {
   const { t } = useTranslation('reaction');
@@ -64,9 +65,7 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
     };
     if (state.times.length > 0) {
       result.recordScores = { fastest: Math.round(Math.min(...state.times)) };
-      result.stats!['stats.average'] = Math.round(average(state.times));
-      result.stats!['stats.fastest'] = Math.round(Math.min(...state.times));
-      result.stats!['stats.measurements'] = state.times.map(time => Math.round(time).toLocaleString(language)).join(' · ');
+      result.review = <ResultReview times={state.times} language={language} />;
     }
     onProgress(result);
     if (state.phase === 'ended' && !finalized.current) {
@@ -124,7 +123,6 @@ export default function ReactionGame({ paused, language, onProgress, onFinish }:
       <p className="stimulus" role="status">{state.lastWasEarly
         ? t(state.practice ? 'practiceEarly' : 'early')
         : t(state.practice ? 'practiceTime' : 'measuredTime', { time: format(state.lastTime ?? 0) })}</p>
-      {isEligible(state) && <p className="reaction-summary">{t('averagePreview', { time: format(average(state.times)) })}</p>}
       <button ref={nextAction} className="button primary" disabled={paused} onClick={() => {
         if (state.practice) commit(chooseReactionMode(current.current, false));
         else if (isEligible(state)) commit(completeReaction(current.current));

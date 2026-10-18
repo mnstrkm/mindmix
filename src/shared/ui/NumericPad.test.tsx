@@ -12,7 +12,7 @@ it('retains leading zeroes, permits correction, and never opens a system input',
   expect(screen.getByLabelText('answer')).toHaveTextContent('02');
   fireEvent.click(screen.getByRole('button', { name: 'backspace' }));
   fireEvent.click(screen.getByRole('button', { name: '3' }));
-  fireEvent.click(screen.getAllByRole('button', { name: 'confirm' })[1]);
+  fireEvent.click(screen.getByRole('button', { name: 'confirm' }));
   expect(confirm).toHaveBeenCalledWith('03');
   expect(container.querySelector('input')).toBeNull();
 });

@@ -61,7 +61,7 @@ describe('reaction interaction', () => {
     fireEvent.click(screen.getByRole('button', { name: 'showResult' }));
     expect(onFinish).toHaveBeenCalledTimes(1);
     expect(onFinish).toHaveBeenCalledWith(expect.objectContaining({ score: 266, actions: 5, eligible: true, reason: 'completed', recordScores: { fastest: 100 }, stats: {
-      'stats.validTrials': 5, 'stats.falseStarts': 0, 'stats.average': 266, 'stats.fastest': 100, 'stats.measurements': '300 · 100 · 500 · 230 · 200',
+      'stats.validTrials': 5, 'stats.falseStarts': 0,
     } }));
   });
 

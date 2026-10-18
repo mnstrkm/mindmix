@@ -2,6 +2,17 @@
 
 Die App folgt Semantic Versioning. Spielregeln, Wortvorräte und Speicherformat besitzen zusätzliche eigene Versionen; Änderungen daran müssen die Vergleichbarkeit bestehender Ergebnisse berücksichtigen.
 
+## 1.2.0 – 2026-10-18
+
+- Mobile Verläufe mit festen Spalten: unterschiedliche Abschlussbeschriftungen verschieben die Ergebnisse nicht mehr.
+- Technische Regelnummern aus der Oberfläche entfernt; interne Vergleichsgruppen und frühere Bestleistungen bleiben erhalten. Bei einem verbesserten Hauptrekord wird der bisherige vergleichbare Rekord mit angezeigt.
+- Zahleneingaben besitzen genau einen großen Bestätigungsknopf. Überflüssige Modusbeschreibungen beim Kopfrechnen und die Fortschritts-/Unterbrechungstexte beim Farbreihenspiel entfernt.
+- Wortspiel: identische Wörter sind unmittelbar nacheinander vollständig ausgeschlossen, auch bei bereits bekannten Wörtern. Regelversion 3; Wortvorrat unverändert, alte Rekorde getrennt erhalten.
+- Kleine Ergebnisraster für räumliches Gedächtnis und fehlerhafte visuelle Suche zeigen richtige und eigene Auswahl mit Symbolen, Farben und zugänglichen Beschriftungen. Diese Ansichten werden nicht gespeichert und erscheinen nicht während der Aufgabe oder Pause.
+- Touch-Hervorhebungen bereinigt: Hover-Effekte gelten nur auf hoverfähigen Geräten; die bewusste Suchrückmeldung endet mit dem Aufgabenwechsel. Tastaturfokus bleibt sichtbar.
+- Reaktionsübersicht zeigt den Durchschnitt einmal und die Einzelzeiten mit hervorgehobener schnellster Zeit. Doppelte Durchschnitts-/Schnellstwertblöcke entfernt; unabhängige Rekorde bleiben in Vorbereitung und Bestleistungen verfügbar. Mehr Abstand zwischen laufenden Reaktionsinformationen.
+- Einstellungen beginnen mit Sprache, Schriftgröße und danach Darstellung. Den wiederholten Hinweis zur kleineren Reaktionszeit entfernt. Deutsche und türkische Ressourcen angepasst.
+
 ## 1.1.0 – 2026-10-18
 
 - Dark Mode als Standard, dauerhaft wählbare helle Ansicht, zurückhaltendere Startseite, überarbeitete Texte und ein vereinfachtes App-Icon.
