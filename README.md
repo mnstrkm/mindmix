@@ -10,7 +10,7 @@ Kurze Spiele zum Merken, Rechnen und Reagieren – auf Deutsch und Türkisch, au
 
 [![Prüfungen](https://github.com/mnstrkm/mindmix/actions/workflows/pages.yml/badge.svg)](https://github.com/mnstrkm/mindmix/actions/workflows/pages.yml)
 
-Version **1.4.0** · [Änderungsverlauf](CHANGELOG.md) · [Repository](https://github.com/mnstrkm/mindmix)
+Version **1.4.1** · [Änderungsverlauf](CHANGELOG.md) · [Repository](https://github.com/mnstrkm/mindmix)
 
 ## Spielen
 

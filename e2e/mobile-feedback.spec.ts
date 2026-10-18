@@ -18,13 +18,15 @@ test('digit results compare leading zeroes, wrong and missing digits at 320px wi
     await page.getByRole('button', { name: turkish ? '1' : '0', exact: true }).tap();
     await expect(page.locator('.result-review')).toHaveCount(0);
     await page.getByRole('button', { name: turkish ? 'Onayla' : 'Bestätigen', exact: true }).last().tap();
-    await expect(page.locator('.digit-pair')).toHaveCount(2);
+    await expect(page.locator('.digit-answer')).toHaveCount(2);
+    await expect(page.locator('.digit-review dt')).toHaveText(turkish ? ['Doğru dizi', 'Senin girişin'] : ['Richtige Folge', 'Deine Eingabe']);
+    await expect(page.locator('.result-review .review-legend')).toHaveCount(0);
     await expect(page.locator('.digit-missing')).toHaveCount(1);
     await expect(page.locator(turkish ? '.digit-wrong' : '.digit-correct')).toHaveCount(1);
-    await expect(page.locator('.digit-pair').first()).toHaveAttribute('aria-label', turkish ? /doğru rakam 0, girilen 1/ : /richtig 0, eingegeben 0/);
+    await expect(page.locator('.digit-answer').first()).toHaveAttribute('aria-label', turkish ? /doğru rakam 0, girilen 1/ : /richtig 0, eingegeben 0/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     expect(await page.evaluate(() => localStorage.getItem('mindmix:data')!.includes('review'))).toBe(false);
-    await page.screenshot({ path: `.preview/digits-review-1.4.0-${turkish ? 'tr' : 'de'}.png`, fullPage: true });
+    await page.screenshot({ path: `.preview/digits-review-1.4.1-${turkish ? 'tr' : 'de'}.png`, fullPage: true });
   }
 });
 

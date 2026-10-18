@@ -1,4 +1,4 @@
-# Spielregeln – Version 1.4.0
+# Spielregeln – Version 1.4.1
 
 Diese Beschreibung entspricht den Parametern in `src/games/*/config.ts`. Das Wortspiel verwendet **Regelversion 4**. Räumliches Gedächtnis, Reaktion und nur der gemischte Rechenmodus verwenden weiterhin **2**. Die übrigen Regeln einschließlich Grundrechnen bleiben bei **1**. Der Wortvorrat besitzt unverändert **Inhaltsversion 1**. Frühere Rekorde bleiben getrennt gespeichert; alle Bestleistungsansichten zeigen nur die aktuellen Vergleichsgruppen ohne Archiv-Dropdowns. Technische Regelnummern erscheinen nicht in der Spieloberfläche.
 
@@ -38,7 +38,7 @@ Die erste Aufgabe zeigt **zwei Ziffern** gleichzeitig. Die Merkzeit ist selbstbe
 
 Führende Nullen und wiederholte Ziffern sind gültig; Folgen bleiben Zeichenfolgen. Nach vollständiger richtiger Bestätigung wird eine **vollständig neue** Folge erzeugt, die eine Ziffer länger ist. Es wird nicht die vorherige Folge verlängert. Die erste falsch bestätigte Folge beendet.
 
-**Ergebnis:** Länge der längsten vollständig richtig wiedergegebenen Folge. Zusatzwert: Anzahl vollständig geschaffter Aufgaben. Ein freiwilliges Ende mitten in einer Eingabe erhöht die bisher erreichte Länge nicht. Nach einer falsch bestätigten Folge zeigt die Ergebnisansicht je Stelle die richtige Ziffer über der eingegebenen Ziffer; Fehler und fehlende Ziffern erhalten ein ×, richtige Stellen ein ✓. Führende Nullen bleiben sichtbar. Diese Übersicht bleibt nur für die aktuelle Ergebnisansicht erhalten und wird nicht gespeichert.
+**Ergebnis:** Länge der längsten vollständig richtig wiedergegebenen Folge. Zusatzwert: Anzahl vollständig geschaffter Aufgaben. Ein freiwilliges Ende mitten in einer Eingabe erhöht die bisher erreichte Länge nicht. Nach einer falsch bestätigten Folge zeigt die Ergebnisansicht zwei beschriftete Reihen: „Richtige Folge“ und „Deine Eingabe“. Fehler und fehlende Ziffern erhalten ein ×, richtige Stellen ein ✓. Farben unterstützen den Vergleich; eine zusätzliche Textlegende entfällt. Führende Nullen bleiben sichtbar. Diese Übersicht bleibt nur für die aktuelle Ergebnisansicht erhalten und wird nicht gespeichert.
 
 Die Vorlage bleibt in der Abrufphase auch bei einer Erklärung oder Pause verborgen und aus dem Accessibility-Baum entfernt. Lange Folgen dürfen umbrechen; das Spiel setzt keine künstliche Aufgabenanzahl fest.
 

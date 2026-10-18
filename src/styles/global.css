@@ -101,7 +101,7 @@ nav a.active { background: var(--surface); color: var(--green); }
 .sample-normal { font-size: 18px; }
 .sample-large { font-size: 25px; }
 .sample-extra { font-size: 32px; }
-#game-selection { scroll-margin-top: calc(clamp(1.5rem, 5vh, 3rem) - 6px); }
+#game-selection { scroll-margin-top: calc(clamp(1.5rem, 5vh, 3rem) - 12px); }
 .toggle-row { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .7rem 0; min-height: 52px; font-weight: 550; }
 .toggle-row input { margin: 0; flex-shrink: 0; }
 input[type='checkbox'] { min-width: 26px; min-height: 26px; margin: 12px; accent-color: var(--green); cursor: pointer; }

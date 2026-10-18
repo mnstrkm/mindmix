@@ -10,7 +10,7 @@ test('header opens the top while explicit discovery and result menu include the 
     await page.getByRole('link', { name: 'Spiele entdecken', exact: true }).click();
     await expect(page.locator('#game-list')).toBeFocused();
     const discoveryTop = await page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top);
-    expect(discoveryTop).toBeGreaterThanOrEqual(24);
+    expect(discoveryTop).toBeGreaterThanOrEqual(16);
     expect(discoveryTop).toBeLessThanOrEqual(64);
     await expect(page.locator('.catalog .eyebrow')).toBeInViewport({ ratio: 1 });
     await page.getByRole('link', { name: 'Visuelle Suche öffnen', exact: true }).click();
@@ -21,7 +21,7 @@ test('header opens the top while explicit discovery and result menu include the 
     await expect(page.locator('#game-list')).toBeFocused();
     await expect.poll(() => page.locator('#game-selection').evaluate(element => element.getBoundingClientRect().top)).toBeCloseTo(discoveryTop, 0);
     await expect(page.locator('.catalog .eyebrow')).toBeInViewport({ ratio: 1 });
-    await page.screenshot({ path: `.preview/catalog-1.4.0-${width}.png` });
+    await page.screenshot({ path: `.preview/catalog-1.4.1-${width}.png` });
     // The header also clears the catalog target when the pathname is already '/'.
     await page.getByRole('link', { name: 'Spiele', exact: true }).click();
     await expect.poll(() => page.evaluate(() => scrollY)).toBe(0);

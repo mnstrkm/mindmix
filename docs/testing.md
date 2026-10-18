@@ -1,6 +1,6 @@
 # Qualitätssicherung
 
-## Prüfstand 1.4.0
+## Prüfstand 1.4.1
 
 **18.10.2026 · Windows · Node.js 24.19.0 · pnpm 11.25.0 · Microsoft Edge (Chromium)**
 
@@ -37,7 +37,7 @@ pnpm test:e2e
 | Bereich | Nachgewiesene Eigenschaften |
 | --- | --- |
 | Wörter | Nur neue Wörter geben Punkte, richtige Wiederholungen behalten ihren Bestätigungston, falsche Wiederholungen beenden; neuer/bekannter Status vor Eintragung, nie unmittelbar identische Wörter, Zufallsrandfälle, Poolende, Normalisierung und Dubletten beider Sprachen |
-| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge, kleine und große Bestätigung mit derselben Prüfung, Ergebnisvergleich mit richtigen/falschen/fehlenden Ziffern und führenden Nullen in beiden Sprachen bei 320 Pixeln mit großer Schrift |
+| Zahlenfolgen | Führende Nullen, Korrekturen, genaue Reihenfolge, neue Folgen, gewertete vollständig gelöste Länge, kleine und große Bestätigung mit derselben Prüfung, Zwei beschriftete Ergebnisreihen ohne Textlegende mit richtigen/falschen/fehlenden Ziffern und führenden Nullen in beiden Sprachen bei 320 Pixeln mit großer Schrift |
 | Farbreihenfolge | Gesperrte Vorführung, Eingabereihenfolge, sichtbare letzte Eingabe, Pause vor/nach erster Eingabe, Timerbereinigung |
 | Räumliches Gedächtnis | Eindeutige und unterschiedliche Muster, Mengengleichheit, Progression bis 8×4, mindestens 48×48-Pixel-Touchziele, verborgene Vorlage auch bei Pause, sichtbarer Musteranfang nach den ersten fünf Zeilen-/Spaltenwechseln bei 320/390/1366 Pixeln |
 | Kopfrechnen | Zahlenbereiche, alle Rechenarten, ganzzahlige Division, keine direkte Aufgabenwiederholung, begrenzte Erzeugung und ausgewogene Rechenarten |
